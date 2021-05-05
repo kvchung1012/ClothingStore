@@ -1,0 +1,110 @@
+﻿<style type="text/css">
+    .header {
+        margin: 5px;
+    }
+
+    #fileExploer {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .item {
+        margin: 5px;
+        position: relative;
+        width: 120px;
+    }
+
+        .item img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+        }
+
+        .item .btnDelete {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            color: #fff;
+            outline: none;
+            background-color: red;
+            font-size: 10px;
+            padding: 3px;
+            border: 2px solid red;
+        }
+
+        .item p {
+            font-size: 13px;
+        }
+</style>
+<script>
+    $(document).ready(function () {
+        AddFile();
+        function AddFile() {
+            $('input[name=uploadFile]').change(function () {
+                var input = document.getElementById('SubmitImage');
+                var files = input.files;
+                var ListImage = new FormData();
+                $(files).each(function (index, item) {
+                    console.log(item.name);
+                    ListImage.append(item.name, item);
+                })
+                $.ajax(
+                    {
+                        url: "/Admin/Home/UploadListFileImage",
+                        data: ListImage,
+                        processData: false,
+                        contentType: false,
+                        type: "POST",
+                        success: function (data) {
+                            location.reload();
+                        }
+                    }
+                );
+            })
+        }
+
+        RemoveFile();
+        function RemoveFile() {
+            $('.btnDelete').click(function () {
+                let fileName = $(this).attr('data-src');
+                let conf = confirm("Bạn có chắc muốn xóa")
+                if (conf == true) {
+                    $.ajax(
+                        {
+                            url: "/Admin/Home/DeleteImageByName",
+                            dataType: 'json',
+                            contentType: 'application/json; charset=utf-8',
+                            data: JSON.stringify(fileName),
+                            type: "POST",
+                            success: function () {
+                                location.reload();
+                            }
+                        }
+                    );
+                }
+            })
+        }
+    })
+</script>
+
+<div class="header">
+    <input type="file" name="uploadFile" value="" id="SubmitImage" multiple />
+    <div id="valueImage">
+
+    </div>
+</div>
+<div id="fileExploer">
+    @foreach (var item in ViewBag.data)
+    {
+        <div class="item">
+            <img class="image" src="/Image/Upload/@item.Name" alt="Alternate Text" title="@item.Name" loading="lazy" />
+            <br />
+            @{
+                string name = item.Name;
+                name = name.Length > 20 ? name.Substring(0, 17) + "..." : name;
+            }
+            <p>@name</p>
+            <button class="btnDelete" data-src="@item.Name">Xóa</button>
+        </div>
+    }
+</div>

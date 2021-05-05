@@ -102,3 +102,9 @@ dist
 
 # TernJS port file
 .tern-port
+/ClothesStore/ClothesStore.Service/bin
+/ClothesStore/ClothesStore.Service/obj
+/ClothesStore/ClothesStore.Model/bin
+/ClothesStore/ClothesStore.Model/obj
+/ClothesStore/ClothesStore.WebApp/bin
+/ClothesStore/ClothesStore.WebApp/obj

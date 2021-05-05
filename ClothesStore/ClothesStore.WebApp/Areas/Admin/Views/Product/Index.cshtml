@@ -1,0 +1,90 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main-view">
+    <div class="main-header mb-3">
+        <div class="d-flex justify-content-between mb-2">
+            <div class="pagesize">
+                <select class="form-control pageSize">
+                    <option value="1">1</option>
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20" selected>20</option>
+                    <option value="50">50</option>
+                </select>
+            </div>
+            <div class="action-form">
+                <button class="btn btn-square btn-outline-primary" data-target="#FormSearch" data-toggle="collapse">Tìm kiếm</button>
+                <button class="btn btn-square btn-primary" onclick="location.href='/Admin/Product/Create'">Thêm mới</button>
+            </div>
+        </div>
+
+        <!--Form tìm kiếm-->
+        <div class="collapse" id="FormSearch">
+            <div class="row align-items-end">
+                <div class="col-md-10 row justify-content-end">
+                    <div class="col-md-4">
+                        <div>Tên sản phẩm</div>
+                        <input type="text" name="Name" class="form-control" />
+                    </div>
+                    <div class="col-md-4">
+                        <div>Nhãn hàng</div>
+                        <select class="form-control" name="BrandId">
+                            <option value="0">Chọn loại nhãn hàng</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div>Danh mục</div>
+                        <select class="form-control" name="CategoryId">
+                            <option value="0">Chọn danh mục sản phẩm</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-2 d-flex p-0 justify-content-end" style="margin-left:15px">
+                    <button class="btn btn-square btn-success w-100" onclick="Search(this)">Tìm kiếm</button>
+                    <button class="btn btn-square btn-danger w-100" style="margin-left:15px" onclick="CancelSearch()">Hủy</button>
+                </div>
+            </div>
+        </div>
+        <!--Form Nhập liệu-->
+        <div class="modal fade" id="FormAddOrEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Thêm mới người dùng</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-square btn-success btn-save " onclick="AddOrUpdate(this,'/Admin/Product/AddOrUpdate')">Thêm mới</button>
+                        <button type="button" class="btn btn-square btn-danger" data-dismiss="modal">Hủy tác vụ</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-center-table">
+
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/js/AdminCommon.js"></script>
+    <script>
+        $(document).ready(function () {
+            urlGetData = '/Admin/Product/GetListData';
+            ChangePageSize();
+            GetDataToTable(urlGetData)
+        })
+    </script>
+}

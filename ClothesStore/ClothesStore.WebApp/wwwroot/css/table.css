@@ -1,0 +1,129 @@
+﻿.main-center-table table thead tr th {
+    cursor: pointer !important;
+    -webkit-user-select: none !important;
+    -khtml-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    -webkit-touch-callout: none !important;
+}
+.c-body{
+    background-color : #fff !important;
+}
+.main-center-table table {
+    table-layout: fixed;
+    box-shadow: 0 5px 20px -2px #c0bfbf;
+}
+    .main-center-table table td{
+        font-size:0.85rem;
+    }
+
+    .main-center-table table th:last-child, .main-center-table table td:last-child {
+        text-align: right;
+    }
+
+.main-center-table table .width-120{
+    width:120px;
+}
+
+.main-center-table table .width-150 {
+    width: 150px;
+}
+
+
+    .main-center-table table .width-200 {
+        width: 200px;
+    }
+
+.page-link{
+    cursor:pointer;
+}
+/*loader*/
+.buttonload .fa-spinner {
+    display: inline-block !important;
+}
+.btn-save > i {
+    margin-right: 0.5rem;
+}
+
+
+.loader {
+    border: 10px solid #fff;
+    border-radius: 50%;
+    border-top: 10px solid #707070;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+.overlayout {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(189, 188, 188, 0.53);
+    z-index: 9999;
+    cursor: pointer;
+}
+
+.form-control{
+    border-radius:0px !important;
+}
+
+.modal-content{
+    border-radius :0px !important;
+}
+button{
+    outline:none !important;
+}
+.help-block{
+    font-size:0.75rem;
+    color:red;
+    display:none;
+}
+
+.select2-selection--multiple, .select2-selection--single {
+    height: calc(1.5em + 0.75rem + 2px) !important;
+    border-color: #d8dbe0 !important;
+    border-radius: 0px !important;
+}
+.select2-search__field{
+    outline:none;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: calc(1.5em + 0.75rem + 2px) !important;
+}
+.select2-container--default {
+    width: 100% !important;
+}
+.select2-selection__choice {
+    color: #fff !important;
+    background-color: #2eb85c !important;
+    border: none !important;
+}

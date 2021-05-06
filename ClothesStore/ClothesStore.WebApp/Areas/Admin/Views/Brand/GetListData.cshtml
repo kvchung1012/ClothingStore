@@ -54,11 +54,11 @@
         {
             if (index == Model.PageNumber)
             {
-                <li class="Page-item active"><a class="Page-link" data-index="@index">@index</a></li>
+                <li class="page-item active"><a class="page-link" data-index="@index">@index</a></li>
             }
             else
             {
-                <li class="Page-item"><a class="Page-link" data-index="@index">@index</a></li>
+                <li class="page-item"><a class="page-link" data-index="@index">@index</a></li>
             }
         }
     }
@@ -70,46 +70,46 @@
             {
                 if (index == Model.PageNumber)
                 {
-                    <li class="Page-item active"><a class="Page-link" data-index="@index">@index</a></li>
+                    <li class="page-item active"><a class="page-link" data-index="@index">@index</a></li>
                 }
                 else
                 {
-                    <li class="Page-item"><a class="Page-link" data-index="@index">@index</a></li>
+                    <li class="page-item"><a class="page-link" data-index="@index">@index</a></li>
                 }
             }
-            <li class="Page-item"><a class="Page-link nextPage" data-index="@Model.PageCount">Next</a></li>
+            <li class="page-item"><a class="page-link nextPage" data-index="@Model.PageCount">Next</a></li>
         }
         else if (Model.PageNumber >= Model.PageCount - 2)
         {
-            <li class="Page-item"><a class="Page-link prevPage" data-index="1">Prev</a></li>
+            <li class="page-item"><a class="page-link prevPage" data-index="1">Prev</a></li>
 
             for (int index = Model.PageCount - 3; index <= Model.PageCount; index++)
             {
                 if (index == Model.PageNumber)
                 {
-                    <li class="Page-item active"><a class="Page-link" data-index="@index">@index</a></li>
+                    <li class="page-item active"><a class="page-link" data-index="@index">@index</a></li>
                 }
                 else
                 {
-                    <li class="Page-item"><a class="Page-link" data-index="@index">@index</a></li>
+                    <li class="page-item"><a class="page-link" data-index="@index">@index</a></li>
                 }
             }
         }
         else
         {
-            <li><a class="Page-link prevPage" data-index="1">Prev</a></li>
+            <li><a class="page-link prevPage" data-index="1">Prev</a></li>
             for (int index = Model.PageNumber - 1; index <= Model.PageNumber + 2; index++)
             {
                 if (index == Model.PageNumber)
                 {
-                    <li class="Page-item active"><a class="Page-link" data-index="@index">@index</a></li>
+                    <li class="page-item active"><a class="page-link" data-index="@index">@index</a></li>
                 }
                 else
                 {
-                    <li class="Page-item"><a class="Page-link" data-index="@index">@index</a></li>
+                    <li class="page-item"><a class="page-link" data-index="@index">@index</a></li>
                 }
             }
-            <li class="Page-item"><a class="Page-link nextPage" data-index="@Model.PageCount">Next</a></li>
+            <li class="page-item"><a class="page-link nextPage" data-index="@Model.PageCount">Next</a></li>
         }
     }
 </ul>

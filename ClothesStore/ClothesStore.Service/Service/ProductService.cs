@@ -96,6 +96,16 @@ namespace ClothesStore.Service.Service
             return await db.Products.Where(x => x.IsDeleted == false).ToListAsync();
         }
 
+        public async Task<List<Color>> GetAllColor()
+        {
+            return await db.Colors.Where(x => x.IsDeleted == false).ToListAsync();
+        }
+
+        public async Task<List<Size>> GetAllSize()
+        {
+            return await db.Sizes.Where(x => x.IsDeleted == false).ToListAsync();
+        }
+
         public async Task<ResponseData<Product>> GetListData(RequestData requestData)
         {
             var data = await db.Products.Where(x=>x.IsDeleted == false).ToListAsync();

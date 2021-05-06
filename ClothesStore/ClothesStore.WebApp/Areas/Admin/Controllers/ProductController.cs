@@ -12,9 +12,14 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
     public class ProductController : Controller
     {
         private readonly IProductService _productService;
-        public ProductController(IProductService productService)
+        private readonly IBrandService _brandService;
+        private readonly ICategoryService _categoryService;
+
+        public ProductController(IProductService productService,IBrandService brandService,ICategoryService categoryService)
         {
             _productService = productService;
+            _brandService = brandService;
+            _categoryService = categoryService;
         }
         public IActionResult Index()
         {
@@ -28,8 +33,12 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
 
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            ViewBag.brand = await _brandService.GetAll();
+            ViewBag.category = await _categoryService.GetAll();
+            ViewBag.size = await _productService.GetAllSize();
+            ViewBag.color = await _productService.GetAllColor();
             return View();
         }
         public IActionResult Edit()

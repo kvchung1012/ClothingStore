@@ -27,22 +27,26 @@
                     <label class="col-form-label">Tên sản phẩm</label>
                     <div>
                         <input type="hidden" name="Id" id="Id" value="0">
-                        <input class="form-control validation" type="text" name="Name" placeholder="Nhập tên sản phẩm của bạn">
+                        <input class="form-control validation" type="text" id="Name" name="Name" placeholder="Nhập tên sản phẩm của bạn">
                         <span class="help-block"></span>
                     </div>
                 </div>
                 <div class="form-group col-md-6">
                     <label class="col-form-label">Tên điều hướng</label>
                     <div>
-                        <input class="form-control validation" type="text" name="Slug" placeholder="Tên url của bạn">
+                        <input class="form-control validation" type="text" id="Slug" name="Slug" placeholder="Tên url của bạn">
                         <span class="help-block"></span>
                     </div>
                 </div>
                 <div class="form-group col-md-6">
                     <label class="col-form-label">Tên nhãn hàng</label>
                     <div>
-                        <select class="form-control validation" name="CategoryHouseId">
+                        <select class="form-control validation" name="BrandId">
                             <option value="0">Chọn loại nhãn hàng</option>
+                            @foreach (var item in ViewBag.brand as IEnumerable<ClothesStore.Model.Model.EF.Brand>)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
                         </select>
                         <span class="help-block"></span>
                     </div>
@@ -50,8 +54,12 @@
                 <div class="form-group col-md-6">
                     <label class="col-form-label">Loại sản phẩm</label>
                     <div>
-                        <select class="form-control validation" name="DestinationHouseId">
+                        <select class="form-control validation" name="CategoryId">
                             <option value="0">Chọn loại sản phẩm</option>
+                            @foreach (var item in ViewBag.category as IEnumerable<ClothesStore.Model.Model.EF.Category>)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
                         </select>
                         <span class="help-block"></span>
                     </div>
@@ -63,7 +71,7 @@
                         <span class="help-block"></span>
                     </div>
                 </div>
-                
+
                 <div class="form-group col-md-12">
                     <label class="col-form-label">Mô tả</label>
                     <div>
@@ -90,7 +98,34 @@
                         <label class="form-check-label" for="inline-radio2">Khóa</label>
                     </div>
                 </div>
-                
+
+                <!--Cấu hình sản phẩm -->
+
+                <div class="col-md-12 row">
+                    <div class="col-md-5">
+                        <select class="form-control validation" name="CategoryId">
+                            <option value="0">Chọn loại sản phẩm</option>
+                            @foreach (var item in ViewBag.category as IEnumerable<ClothesStore.Model.Model.EF.Category>)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-5">
+                        <select class="form-control validation" name="CategoryId">
+                            <option value="0">Chọn loại sản phẩm</option>
+                            @foreach (var item in ViewBag.category as IEnumerable<ClothesStore.Model.Model.EF.Category>)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-square btn-outline-info">Thêm mới</button>
+                    </div>
+                </div>
+
                 <div class="col-md-12 d-flex justify-content-end mt-3">
                     <button type="button" class="btn btn-square btn-danger">Quay lại</button>
                     <button type="button" class="btn btn-square btn-success ml-2" onclick="Add()">Thêm mới</button>
@@ -117,6 +152,7 @@
     <script src="~/js/AdminCommon.js"></script>
     <script>
         $(document).ready(function () {
+            ConvertToSlug();
             $('select').select2();
         })
         function Add() {
@@ -171,7 +207,7 @@
                             data: JSON.stringify({
                                 obj: object,
                                 images: images,
-                                utilities : utilities
+                                utilities: utilities
                             }),
                             beforeSend: function () {
                             },

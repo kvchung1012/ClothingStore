@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ClothesStore.Model.Model.EF;
 using ClothesStore.Model.ModelView;
 using ClothesStore.Service.IService;
 using Microsoft.AspNetCore.Mvc;
@@ -30,7 +31,6 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
         {
             var data =await _productService.GetListData(requestData);
             return PartialView(data);
-
         }
 
         public async Task<IActionResult> Create()
@@ -41,9 +41,25 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
             ViewBag.color = await _productService.GetAllColor();
             return View();
         }
-        public IActionResult Edit()
+        public async Task<IActionResult> Edit(int Id)
         {
-            return View();
+            var obj = await _productService.GetObjectById(Id);
+            ViewBag.brand = await _brandService.GetAll();
+            ViewBag.category = await _categoryService.GetAll();
+            ViewBag.size = await _productService.GetAllSize();
+            ViewBag.color = await _productService.GetAllColor();
+
+            // selected 
+            ViewBag.config = await _productService.GetListConfigProductByProductId(Id);
+            ViewBag.image = await _productService.GetListProductImageByProductId(Id);
+            return View(obj);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> AddOrUpdate(Product obj, List<ProductImage> images, List<ConfigProduct> config)
+        {
+            var res = await _productService.AddOrUpdate(obj, config, images);
+            return Json(res);
         }
     }
 }

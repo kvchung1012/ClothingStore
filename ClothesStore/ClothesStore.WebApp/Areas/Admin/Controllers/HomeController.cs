@@ -12,7 +12,7 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
     [Area("Admin")]
     public class HomeController : Controller
     {
-        private IHostingEnvironment _hostingEnvironment;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
         public HomeController(IHostingEnvironment hostingEnvironment)
         {

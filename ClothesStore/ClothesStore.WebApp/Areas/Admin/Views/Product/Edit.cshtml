@@ -1,4 +1,4 @@
-﻿
+﻿@model ClothesStore.Model.Model.EF.Product
 @{
     ViewBag.Title = "Create";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
@@ -34,15 +34,15 @@
                 <div class="form-group col-md-6">
                     <label class="col-form-label">Tên sản phẩm</label>
                     <div>
-                        <input type="hidden" name="Id" id="Id" value="0">
-                        <input class="form-control validation" type="text" id="Name" name="Name" placeholder="Nhập tên sản phẩm của bạn">
+                        <input type="hidden" name="Id" id="Id" value="@Model.Id">
+                        <input class="form-control validation" type="text" id="Name" value="@Model.Name" name="Name" placeholder="Nhập tên sản phẩm của bạn">
                         <span class="help-block"></span>
                     </div>
                 </div>
                 <div class="form-group col-md-6">
                     <label class="col-form-label">Tên điều hướng</label>
                     <div>
-                        <input class="form-control validation" type="text" id="Slug" name="Slug" placeholder="Tên url của bạn">
+                        <input class="form-control validation" type="text" id="Slug" value="@Model.Slug" name="Slug" placeholder="Tên url của bạn">
                         <span class="help-block"></span>
                     </div>
                 </div>
@@ -53,7 +53,7 @@
                             <option value="0">Chọn loại nhãn hàng</option>
                             @foreach (var item in ViewBag.brand as IEnumerable<ClothesStore.Model.Model.EF.Brand>)
                             {
-                                <option value="@item.Id">@item.Name</option>
+                                <option value="@item.Id" @if (item.Id == Model.BrandId) { <text> selected</text> }>@item.Name</option>
                             }
                         </select>
                         <span class="help-block"></span>
@@ -66,7 +66,7 @@
                             <option value="0">Chọn loại sản phẩm</option>
                             @foreach (var item in ViewBag.category as IEnumerable<ClothesStore.Model.Model.EF.Category>)
                             {
-                                <option value="@item.Id">@item.Name</option>
+                                <option value="@item.Id" @if (item.Id == Model.CategoryId) { <text> selected</text> }>@item.Name</option>
                             }
                         </select>
                         <span class="help-block"></span>
@@ -75,7 +75,7 @@
                 <div class="form-group col-md-12">
                     <label class="col-form-label">Số thứ tự hiển thị</label>
                     <div>
-                        <input class="form-control validation" type="number" name="OrderBy" placeholder="Nhập Số thự hiển thị">
+                        <input class="form-control validation" type="number" value="@Model.OrderBy" name="OrderBy" placeholder="Nhập Số thự hiển thị">
                         <span class="help-block"></span>
                     </div>
                 </div>
@@ -83,7 +83,7 @@
                 <div class="form-group col-md-12">
                     <label class="col-form-label">Mô tả</label>
                     <div>
-                        <textarea class="form-control validation" name="Description" rows="5"></textarea>
+                        <textarea class="form-control validation" name="Description" rows="5">@Model.Description</textarea>
                         <span class="help-block"></span>
                     </div>
                 </div>
@@ -91,18 +91,20 @@
                 <div class="form-group col-md-12">
                     <label class="col-form-label">Nội dung chi tiết</label>
                     <div>
-                        <textarea class="form-control validation ckeditor" rows="5" name="Content" id="Content"></textarea>
+                        <textarea class="form-control validation ckeditor" rows="5" name="Content" id="Content">
+                            @Html.Raw(Model.Content)
+                        </textarea>
                         <span class="help-block"></span>
                     </div>
                 </div>
 
                 <div class="col-md-12 col-form-label">
                     <div class="form-check form-check-inline mr-1">
-                        <input class="form-check-input" checked id="inline-radio1" type="radio" value="True" name="Status">
+                        <input class="form-check-input" @if (Model.Status == true) { <text> checked</text> } id="inline-radio1" type="radio" value="True" name="Status">
                         <label class="form-check-label" for="inline-radio1">Hoạt động</label>
                     </div>
                     <div class="form-check form-check-inline mr-1">
-                        <input class="form-check-input" id="inline-radio2" type="radio" value="False" name="Status">
+                        <input class="form-check-input" @if (Model.Status != true) { <text> checked</text> } id="inline-radio2" type="radio" value="False" name="Status">
                         <label class="form-check-label" for="inline-radio2">Khóa</label>
                     </div>
                 </div>
@@ -143,12 +145,16 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @*<tr>
-                                    <td>S</td>
-                                    <td style="background:#000"></td>
-                                    <td><input type="number" min="0" value="1" class="form-control" /></td>
-                                    <td><input type="number" min="0" value="1" class="form-control" /></td>
-                                </tr>*@
+                            @foreach (var item in ViewBag.config as IEnumerable<ClothesStore.Model.Model.EF.ConfigProduct>)
+                            {
+                                <tr>
+                                    <td data-size="@item.SizeId">@((ViewBag.size as IEnumerable<ClothesStore.Model.Model.EF.Size>).Where(x=>x.Id == item.SizeId).FirstOrDefault().Name)</td>
+                                    <td data-color="@item.ColorId" style="background:@((ViewBag.color as IEnumerable<ClothesStore.Model.Model.EF.Color>).Where(x=>x.Id == item.ColorId).FirstOrDefault().Name)"></td>
+                                    <td><input type="number" min="0" value="@item.Stock" class="form-control" /></td>
+                                    <td><input type="number" min="0" value="@item.Price" class="form-control" /></td>
+                                    <td style="text-align:center"><button class=" btn btn-sm btn-square btn-danger" onclick="RemoveConfig(this)" type="button"><i class="bi bi-trash"></i></button></td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
                 </div>
@@ -156,15 +162,22 @@
 
                 <div class="col-md-12 d-flex justify-content-end mt-3">
                     <button type="button" class="btn btn-square btn-danger">Quay lại</button>
-                    <button type="button" class="btn btn-square btn-success ml-2" onclick="Add()">Thêm mới</button>
+                    <button type="button" class="btn btn-square btn-success ml-2" onclick="Add()">Cập nhật</button>
                 </div>
             </div>
             <div class="col-md-3">
-                <input type="text" hidden name="Image" value="~/Image/Static/no-image.jpg" id="Image" />
-                <img src="~/Image/Static/no-image.jpg" class="img-size img-fluid" onclick="OpenFolderImage()" style="object-fit:contain" />
+                <input type="text" hidden name="Image" value="@Model.Image" id="Image" />
+                <img src="@Model.Image" class="img-size img-fluid" onclick="OpenFolderImage()" style="object-fit:contain" />
 
                 <div class="list-image">
                     <div class="d-flex flex-wrap h-100 mt-2">
+                        @foreach (var item in ViewBag.image as IEnumerable<ClothesStore.Model.Model.EF.ProductImage>)
+                        {
+                            <div class="image-item w-50">
+                                <img src="@item.Image" alt="Alternate Text" class="w-100 border show-image" style="object-fit:contain" />
+                                <button class="btn-danger" type="button" onclick="DeleteImage(this)"><i class="bi bi-trash"></i></button>
+                            </div>
+                        }
                     </div>
                     <div class="mt-2">
                         <button type="button" class="btn btn-square btn-success" onclick="OpenFolderImageList()">Thêm ảnh</button>
@@ -242,12 +255,12 @@
                             type: 'post',
                             dataType: 'json',
                             //contentType: 'application/json',
-                            data:{
+                            data: {
                                 obj: object,
                                 images: images,
                                 config: config
                             },
-                           
+
                             beforeSend: function () {
                             },
                             success: function (res) {
@@ -285,12 +298,12 @@
                 })
                 if (check) {
                     let row = `<tr>
-        <td data-size = "${sizeId}">${sizeName}</td>
-        <td data-color = "${colorId}" style="background:${colorName}"></td>
-        <td><input type="number" min="0" value="1" class="form-control" /></td>
-        <td><input type="number" min="0" value="1" class="form-control" /></td>
-        <td style="text-align:center"><button class=" btn btn-sm btn-square btn-danger" onclick="RemoveConfig(this)" type="button"><i class="bi bi-trash"></i></button></td>
-    </tr>`;
+                                    <td data-size = "${sizeId}">${sizeName}</td>
+                                    <td data-color = "${colorId}" style="background:${colorName}"></td>
+                                    <td><input type="number" min="0" value="1" class="form-control" /></td>
+                                    <td><input type="number" min="0" value="1" class="form-control" /></td>
+                                    <td style="text-align:center"><button class=" btn btn-sm btn-square btn-danger" onclick="RemoveConfig(this)" type="button"><i class="bi bi-trash"></i></button></td>
+                                </tr>`;
                     $('.table-config tbody').append(row);
                 }
                 else {

@@ -39,8 +39,8 @@ namespace ClothesStore.WebApp
             services.AddSingleton<IProductService, ProductService>();
             services.AddSingleton<IBrandService, BrandService>();
             services.AddSingleton<ICategoryService, CategoryService>();
-            services.AddSingleton<IColorService, ColorService>();
-            services.AddSingleton<ICustomerService, CustomerService>();
+ services.AddSingleton<IColorService, ColorService>();
+services.AddSingleton<IEmployeeService, EmployeeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

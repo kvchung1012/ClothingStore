@@ -1,0 +1,116 @@
+﻿@model ClothesStore.Model.ModelView.ResponseData<ClothesStore.Model.Model.EF.Employee>
+
+<table class="table table-hover table-hover bg-white">
+    <thead class="table">
+        <tr>
+            <th data-name="IdCard" data-sort="@Model.IsAsc" data-order="@Model.OrderBy">
+                <i class="bi bi-arrow-down-up"></i> Mã thẻ
+            </th>
+            <th data-name="Name" data-sort="@Model.IsAsc" data-order="@Model.OrderBy">
+                <i class="bi bi-arrow-down-up"></i> Tên
+            </th>
+            <th data-name="Phone" data-sort="@Model.IsAsc" data-order="@Model.OrderBy">
+                <i class="bi bi-arrow-down-up"></i> Số điện thoại
+            </th>
+            <th data-name="Email" data-sort="@Model.IsAsc" data-order="@Model.OrderBy">
+                <i class="bi bi-arrow-down-up"></i> Email
+            </th>
+            <th class="width-120">Trạng Thái</th>
+            <th class="width-150">Tác Vụ</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model.Data)
+        {
+            <tr>
+                <td>@item.IdCard</td>
+                <td> @item.Name</td>
+                <td>@item.Phone</td>
+                <td>@item.Email</td>
+                <td>
+                    @if (item.Status == true)
+                    {
+                        <span class="badge badge-success">Hoạt động</span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-danger">Tạm khóa</span>
+                    }
+                </td>
+                <td class="width-150">
+                    <button class=" btn btn-sm btn-square btn-info"><i class="bi bi-info-circle"></i></button>
+                    <button class=" btn btn-sm btn-square btn-warning text-white" onclick="GetFormAddOrEdit('/Admin/Admin/GetFormAddOrEdit',@item.Id)"><i class="bi bi-calendar2-event"></i></button>
+                    <button class=" btn btn-sm btn-square btn-danger" onclick="DeleteById('/Admin/Admin/DeleteById',@item.Id)"><i class="bi bi-trash"></i></button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<ul class="pagination justify-content-end">
+    @if (Model.PageCount <= 4)
+    {
+        for (int index = 1; index <= Model.PageCount; index++)
+        {
+            if (index == Model.PageNumber)
+            {
+                <li class="page-item active"><a class="page-link" data-index="@index">@index</a></li>
+            }
+            else
+            {
+                <li class="page-item"><a class="page-link" data-index="@index">@index</a></li>
+            }
+        }
+    }
+    else
+    {
+        if (Model.PageNumber <= 2)
+        {
+            for (int index = 1; index <= 4; index++)
+            {
+                if (index == Model.PageNumber)
+                {
+                    <li class="page-item active"><a class="page-link" data-index="@index">@index</a></li>
+                }
+                else
+                {
+                    <li class="page-item"><a class="page-link" data-index="@index">@index</a></li>
+                }
+            }
+            <li class="page-item"><a class="page-link nextPage" data-index="@Model.PageCount">Next</a></li>
+        }
+        else if (Model.PageNumber >= Model.PageCount - 2)
+        {
+            <li class="page-item"><a class="page-link prevPage" data-index="1">Prev</a></li>
+
+            for (int index = Model.PageCount - 3; index <= Model.PageCount; index++)
+            {
+                if (index == Model.PageNumber)
+                {
+                    <li class="page-item active"><a class="page-link" data-index="@index">@index</a></li>
+                }
+                else
+                {
+                    <li class="page-item"><a class="page-link" data-index="@index">@index</a></li>
+                }
+            }
+        }
+        else
+        {
+            <li><a class="page-link prevPage" data-index="1">Prev</a></li>
+            for (int index = Model.PageNumber - 1; index <= Model.PageNumber + 2; index++)
+            {
+                if (index == Model.PageNumber)
+                {
+                    <li class="page-item active"><a class="page-link" data-index="@index">@index</a></li>
+                }
+                else
+                {
+                    <li class="page-item"><a class="page-link" data-index="@index">@index</a></li>
+                }
+            }
+            <li class="page-item"><a class="page-link nextPage" data-index="@Model.PageCount">Next</a></li>
+        }
+    }
+</ul>

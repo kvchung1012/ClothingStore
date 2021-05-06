@@ -126,16 +126,18 @@ function GetFormAddOrEdit(url, Id) {
         beforeSend: function () {
         },
         success: function (res) {
-            $('.modal-body').html('');
-            $('.modal-body').append(res);
+            $('.modal-add .modal-body').html('');
+            $('.modal-add .modal-body').append(res);
+            console.log(res);
             $('.btn-save').html('');
+            $('.btn-save').removeClass('d-none');
             if (Id == 0) {
                 $('.btn-save').append('<i class="fa fa-spinner fa-spin d-none"></i><i class="bi bi-check2 d-none"></i >Thêm mới');
             }
             else {
                 $('.btn-save').append('<i class="fa fa-spinner fa-spin d-none"></i><i class="bi bi-check2 d-none"></i >Cập nhật');
             }
-            $('.modal').modal('show');
+            $('.modal-add').modal('show');
         },
         error: function (error) {
             console.log("error");
@@ -144,6 +146,7 @@ function GetFormAddOrEdit(url, Id) {
         complete: function () {
             ChangePageNumber();
             SortByKey();
+            ConvertToSlug();
             $('.loader').remove();
             $('body').removeClass('overlayout');
         }
@@ -281,9 +284,10 @@ function GetViewDetail(url, id) {
             id: id
         },
         success: function (res) {
-            $('#viewDetail .modal-body').html('');
-            $('#viewDetail .modal-body').append(res);
-            $('#viewDetail').modal('show');
+            $('.modal-add .modal-body').html('');
+            $('.modal-add .modal-body').append(res);
+            $('.btn-save').addClass('d-none');
+            $('.modal-add').modal('show');
         },
         error: function (error) {
             console.log(error)
@@ -426,6 +430,7 @@ function DeleteImage(el) {
 
 function ConvertToSlug() {
     $('input#Name').on('keyup', function () {
+        console.log("ccc")
         let val = $(this).val();
         $('input#Slug').val(convertToSlug(val))
 
@@ -443,7 +448,6 @@ function ConvertToSlug() {
             str = str.replace(/ý|ỳ|ỷ|ỹ|ỵ/gi, 'y');
             str = str.replace(/đ/gi, 'd');
             str = str.replace(/\`|\~|\!|\@|\#|\||\$|\%|\^|\&|\*|\(|\)|\+|\=|\,|\.|\/|\?|\>|\<|\'|\"|\:|\;|_/gi, '-');
-            str = '@' + str + '@';
             str = str.replace(/\@\-|\-\@|\@/gi, '-');
             return str;
         }
@@ -476,6 +480,7 @@ function OpenFolderImage() {
 
 function ChooseImage() {
     $('#fileExploer').on('click', 'img', function () {
+        debugger
         var fileUrl = '/Image/Upload/' + $(this).attr('title');
         $('#Image').val(fileUrl);
         $('#Image').siblings('img').attr('src', fileUrl);

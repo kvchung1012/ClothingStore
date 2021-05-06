@@ -56,6 +56,8 @@ namespace ClothesStore.Model.Model.EF
 
                 entity.Property(e => e.Name).HasMaxLength(250);
 
+                entity.Property(e => e.Slug).HasMaxLength(250);
+
                 entity.Property(e => e.UpdatedDate)
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
@@ -72,6 +74,8 @@ namespace ClothesStore.Model.Model.EF
                 entity.Property(e => e.Description).HasMaxLength(4000);
 
                 entity.Property(e => e.Name).HasMaxLength(250);
+
+                entity.Property(e => e.Slug).HasMaxLength(250);
 
                 entity.Property(e => e.UpdatedDate)
                     .HasColumnType("datetime")
@@ -231,6 +235,8 @@ namespace ClothesStore.Model.Model.EF
                 entity.Property(e => e.Description).HasMaxLength(4000);
 
                 entity.Property(e => e.Name).HasMaxLength(250);
+
+                entity.Property(e => e.Slug).HasMaxLength(250);
 
                 entity.Property(e => e.UpdatedDate)
                     .HasColumnType("datetime")

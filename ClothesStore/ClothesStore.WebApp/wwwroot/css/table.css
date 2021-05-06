@@ -127,3 +127,7 @@ button{
     background-color: #2eb85c !important;
     border: none !important;
 }
+
+.modal-second {
+    z-index: 1052 !important;
+}

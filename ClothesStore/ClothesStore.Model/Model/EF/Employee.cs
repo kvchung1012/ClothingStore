@@ -9,6 +9,7 @@ namespace ClothesStore.Model.Model.EF
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string Avatar { get; set; }
         public DateTime? BirthDay { get; set; }
         public string IdCard { get; set; }
         public string Phone { get; set; }

@@ -1,0 +1,111 @@
+﻿@model ClothesStore.Model.Model.EF.Brand
+@if (Model == null)
+{
+    <form class="form-input">
+        <div class="row">
+            <div class="col-md-9 row">
+                <div class="form-group col-md-6">
+                    <input type="hidden" name="Id" id="Id" value="0">
+                    <label class="col-form-label">Tiêu đề</label>
+                    <div>
+                        <input class="form-control validation" type="text" id="Name" name="Name" placeholder="Nhập họ và tên">
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label class="col-form-label">Slug</label>
+                    <div>
+                        <input class="form-control validation" id="Slug" type="text" name="Slug" placeholder="Nhập thanh url">
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-12">
+                    <label class="col-form-label">Thứ tự</label>
+                    <div>
+                        <input class="form-control validation" type="number" name="OrderBy" placeholder="Nhập thứ tự">
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-12">
+                    <label class="col-form-label">Mô tả</label>
+                    <div>
+                        <textarea class="form-control" name="Description"></textarea>
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-12">
+                    <label class="col-form-label" for="text-input">Trạng thái</label>
+                    <div>
+                        <input id="Active" type="radio" name="Status" value="True" checked />
+                        <label class="col-form-label" for="Active">Hoạt động</label>
+                        <input class="ml-2" id="Lock" type="radio" name="Status" value="False" />
+                        <label class="col-form-label" for="Lock">Khóa</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <img src="/Image/Static/avatar.jpg" alt="Alternate Text" class="w-100 show-image" style="object-fit:contain" onclick="OpenFolderImage()" />
+                <input type="text" name="Image" value="/Image/Static/avatar.jpg" hidden id="Image" />
+            </div>
+        </div>
+    </form>
+}
+else
+{
+    <form class="form-input">
+        <div class="row">
+            <div class="col-md-9 row">
+                <div class="form-group col-md-6">
+                    <input type="hidden" name="Id" id="Id" value="@Model.Id">
+                    <label class="col-form-label">Tiêu đề</label>
+                    <div>
+                        <input class="form-control validation" type="text" id="Name" value="@Model.Name" name="Name" placeholder="Nhập họ và tên">
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label class="col-form-label">Slug</label>
+                    <div>
+                        <input class="form-control validation" id="Slug" type="text" name="Slug" value="@Model.Slug" placeholder="Nhập thanh url">
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-12">
+                    <label class="col-form-label">Thứ tự</label>
+                    <div>
+                        <input class="form-control validation" type="number" value="@Model.OrderBy" name="OrderBy" placeholder="Nhập thứ tự">
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-12">
+                    <label class="col-form-label">Mô tả</label>
+                    <div>
+                        <textarea class="form-control" name="Description">@Model.Description</textarea>
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-12">
+                    <label class="col-form-label" for="text-input">Trạng thái</label>
+                    <div>
+                        <input id="Active" type="radio" name="Status" value="True" @if (Model.Status == true) { <text> checked</text> } />
+                        <label class="col-form-label" for="Active">Hoạt động</label>
+                        <input class="ml-2" id="Lock" type="radio" name="Status" value="False" @if (Model.Status != true) { <text> checked</text> }  />
+                        <label class="col-form-label" for="Lock">Khóa</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <img src="@Model.Image" alt="Alternate Text" class="w-100 show-image" style="object-fit:contain" onclick="OpenFolderImage()" />
+                <input type="text" name="Image" value="@Model.Image" hidden id="Image" />
+            </div>
+        </div>
+    </form>
+}

@@ -44,6 +44,7 @@ function CancelSearch() {
 }
 
 function ChangePageSize() {
+    debugger;
     $('.pageSize').on('change', function () {
         let val = $(this).val();
         submitData.pageSize = val;

@@ -104,8 +104,6 @@ namespace ClothesStore.Service.Service
                     list = list.OrderByDescending(x => x.GetType().GetProperty(requestData.OrderBy).GetValue(x)).ToList();
             }
 
-            //paginate
-            requestData.PageSize = totalCount;
             
             if(requestData.PageNumber != 0)
             {

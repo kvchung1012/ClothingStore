@@ -5,13 +5,13 @@
             <th data-name="Name" data-sort="@Model.IsAsc" data-order="@Model.OrderBy">
                 <i class="bi bi-arrow-down-up"></i> Tên sản phẩm
             </th>
-            <th data-name="UserName" data-sort="@Model.IsAsc" data-order="@Model.OrderBy">
+            <th data-name="CategoryId" data-sort="@Model.IsAsc" data-order="@Model.OrderBy">
                 <i class="bi bi-arrow-down-up"></i> Danh mục
             </th>
-            <th data-name="Phone" data-sort="@Model.IsAsc" data-order="@Model.OrderBy">
+            <th data-name="BrandId" data-sort="@Model.IsAsc" data-order="@Model.OrderBy">
                 <i class="bi bi-arrow-down-up"></i> Nhãn hiệu
             </th>
-            <th data-name="Email" data-sort="@Model.IsAsc" data-order="@Model.OrderBy">
+            <th data-name="OrderBy" data-sort="@Model.IsAsc" data-order="@Model.OrderBy">
                 <i class="bi bi-arrow-down-up"></i> Sắp xếp
             </th>
             <th class="width-120">Trạng Thái</th>
@@ -39,7 +39,7 @@
                 </td>
                 <td class="width-150">
                     <button class=" btn btn-sm btn-square btn-info"><i class="bi bi-info-circle"></i></button>
-                    <button class=" btn btn-sm btn-square btn-warning text-white" onclick="GetFormAddOrEdit('/Admin/Product/GetFormAddOrEdit',@item.Id)"><i class="bi bi-calendar2-event"></i></button>
+                    <button class=" btn btn-sm btn-square btn-warning text-white" onclick="location.href = '/Admin/Product/Edit/'+@item.Id"><i class="bi bi-calendar2-event"></i></button>
                     <button class=" btn btn-sm btn-square btn-danger" onclick="DeleteById('/Admin/Product/DeleteById',@item.Id)"><i class="bi bi-trash"></i></button>
                 </td>
             </tr>

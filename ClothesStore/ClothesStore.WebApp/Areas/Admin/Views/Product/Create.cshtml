@@ -17,6 +17,14 @@
             top: 0px;
             right: 0px;
         }
+
+    tbody td {
+        padding: 0px !important;
+    }
+
+        tbody td:first-child {
+            padding: 5px !important;
+        }
 </style>
 <div class="form-add">
     <h5>Thêm mới sản phẩm</h5>
@@ -101,30 +109,50 @@
 
                 <!--Cấu hình sản phẩm -->
 
-                <div class="col-md-12 row">
-                    <div class="col-md-5">
-                        <select class="form-control validation" name="CategoryId">
-                            <option value="0">Chọn loại sản phẩm</option>
-                            @foreach (var item in ViewBag.category as IEnumerable<ClothesStore.Model.Model.EF.Category>)
-                            {
-                                <option value="@item.Id">@item.Name</option>
-                            }
-                        </select>
-                    </div>
-
-                    <div class="col-md-5">
-                        <select class="form-control validation" name="CategoryId">
-                            <option value="0">Chọn loại sản phẩm</option>
-                            @foreach (var item in ViewBag.category as IEnumerable<ClothesStore.Model.Model.EF.Category>)
-                            {
-                                <option value="@item.Id">@item.Name</option>
-                            }
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <button class="btn btn-square btn-outline-info">Thêm mới</button>
-                    </div>
+                <div class="col-md-5">
+                    <select class="form-control" id="Size">
+                        <option value="0">Chọn kích thước</option>
+                        @foreach (var item in ViewBag.size as IEnumerable<ClothesStore.Model.Model.EF.Size>)
+                        {
+                            <option value="@item.Id">@item.Name</option>
+                        }
+                    </select>
                 </div>
+
+                <div class="col-md-5">
+                    <select class="form-control" id="Color">
+                        <option value="0">Chọn màu sắc</option>
+                        @foreach (var item in ViewBag.color as IEnumerable<ClothesStore.Model.Model.EF.Color>)
+                        {
+                            <option data-value="@item.Value" value="@item.Id">@item.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-square btn-outline-info w-100" type="button" onclick="ConfigProduct()">Cấu hình</button>
+                </div>
+                <div class="col-md-12 mt-3">
+                    <table class="table-config table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Kích thước</th>
+                                <th>Màu sắc</th>
+                                <th>Số lượng</th>
+                                <th>Đơn giá</th>
+                                <th>Tác vụ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @*<tr>
+                                    <td>S</td>
+                                    <td style="background:#000"></td>
+                                    <td><input type="number" min="0" value="1" class="form-control" /></td>
+                                    <td><input type="number" min="0" value="1" class="form-control" /></td>
+                                </tr>*@
+                        </tbody>
+                    </table>
+                </div>
+
 
                 <div class="col-md-12 d-flex justify-content-end mt-3">
                     <button type="button" class="btn btn-square btn-danger">Quay lại</button>
@@ -164,7 +192,7 @@
                     object[n.name] = n.value;
                 });
                 $('.form-input textarea').each(function (index, item) {
-                    if ($(this).hasClass('ckeditor') || $(this).hasClass('ckeditor')) {
+                    if ($(this).hasClass('ckeditor') || $(this).hasClass('p-ckeditor')) {
                         let id = $(this).attr('id');
                         object[$(this).attr('name')] = CKEDITOR.instances[id].getData();
                     }
@@ -174,23 +202,33 @@
                 let images = [];
                 $('.list-image img').each(function (i, e) {
                     let obj = {
-                        BuildingForRentId: 0,
+                        Id: 0,
+                        ProductId: 0,
                         Image: $(e).attr('src')
                     }
                     images.push(obj);
                 })
 
-                // get list utiliti
-                let utilities = [];
-                let services = $('.select-service').val();
-                $(services).each(function (index, item) {
-                    let utiliti = {
+                let config = [];
+                $('.table-config tbody tr').each(function (i, e) {
+                    let sizeId = $(e).children('td:first-child').attr('data-size');
+                    let colorId = $(e).children('td:nth-child(2)').attr('data-color');
+                    let stock = $(e).children('td:nth-child(3)').children('input').val();
+                    let price = $(e).children('td:nth-child(4)').children('input').val();
+                    let obj = {
                         Id: 0,
-                        BuildingForRentId: 0,
-                        UtilitiId: item
-                    };
-                    utilities.push(utiliti);
+                        ProductId: 0,
+                        SizeId: sizeId,
+                        ColorId: colorId,
+                        Stock: stock,
+                        Price: price
+                    }
+                    config.push(obj)
                 })
+
+                console.log(object);
+                console.log(images);
+                console.log(config);
                 swal({
                     title: $('#Id').val() == 0 ? "Bạn có chắc chắn muốn thêm" : "Bạn có chắc muốn sửa dữ liệu này?",
                     text: $('#Id').val() == 0 ? "" : "Sau khi sửa thì không thể quay lại!",
@@ -200,29 +238,21 @@
                 }).then((willDelete) => {
                     if (willDelete) {
                         $.ajax({
-                            url: '/Lessor/BuildingForRent/AddOrUpdate',
+                            url: '/Admin/Product/AddOrUpdate',
                             type: 'post',
                             dataType: 'json',
-                            contentType: 'application/json',
-                            data: JSON.stringify({
+                            //contentType: 'application/json',
+                            data:{
                                 obj: object,
                                 images: images,
-                                utilities: utilities
-                            }),
+                                config: config
+                            },
+                           
                             beforeSend: function () {
                             },
                             success: function (res) {
-                                if (res.success) {
-                                    alert("ok")
-                                }
-                                else {
-                                    if (res.error != null) {
-                                        $('.help-block').css('display', 'inline-block');
-                                        res.error.map(x => {
-                                            $('.form-input input[name=' + x.key + ']').siblings('.help-block').html('');
-                                            $('.form-input input[name=' + x.key + ']').siblings('.help-block').append(x.value);
-                                        })
-                                    }
+                                if (res) {
+                                    swal('Bạn đã thêm dữ liệu thành công !!');
                                 }
                             },
                             error: function (error) {
@@ -234,6 +264,57 @@
                     }
                 })
             }
+        }
+
+        function ConfigProduct() {
+            let pickColor = $('#Color').find(':selected');
+            let pickSize = $('#Size').find(':selected');
+
+            let colorId = $(pickColor).attr('value');
+            let colorName = $(pickColor).attr('data-value');
+
+            let sizeId = $(pickSize).attr('value');
+            let sizeName = $(pickSize).text();
+
+            if (sizeId > 0 && colorId > 0) {
+                let check = true;
+                $('.table-config tbody tr').each(function (i, e) {
+                    if ($(e).children('td:first-child').attr('data-size') == sizeId && $(e).children('td:nth-child(2)').attr('data-color') == colorId) {
+                        check = false;
+                    }
+                })
+                if (check) {
+                    let row = `<tr>
+        <td data-size = "${sizeId}">${sizeName}</td>
+        <td data-color = "${colorId}" style="background:${colorName}"></td>
+        <td><input type="number" min="0" value="1" class="form-control" /></td>
+        <td><input type="number" min="0" value="1" class="form-control" /></td>
+        <td style="text-align:center"><button class=" btn btn-sm btn-square btn-danger" onclick="RemoveConfig(this)" type="button"><i class="bi bi-trash"></i></button></td>
+    </tr>`;
+                    $('.table-config tbody').append(row);
+                }
+                else {
+                    swal("Cấu hình này bạn đã chọn!");
+                }
+
+            }
+            else {
+                swal("Bạn cần chọn màu sắc và kích thước!");
+            }
+        }
+
+        function RemoveConfig(el) {
+            swal({
+                title: "Xóa dữ liệu này?",
+                text: "Dữ liệu xóa sẽ không thể khôi phục!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    $(el).parent().parent().remove();
+                }
+            })
         }
     </script>
 }

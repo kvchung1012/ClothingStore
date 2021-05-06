@@ -15,6 +15,11 @@ namespace ClothesStore.Service.IService
         public Task<bool> AddOrUpdate(Product product,List<ConfigProduct> configProducts,List<ProductImage> productImage);
         public Task<bool> DeleteById(int Id);
 
+        // get selected
+        public Task<List<ProductImage>> GetListProductImageByProductId(int Id);
+        public Task<List<ConfigProduct>> GetListConfigProductByProductId(int Id);
+
+
         // define 
         public Task<List<Color>> GetAllColor();
         public Task<List<Size>> GetAllSize();

@@ -20,12 +20,13 @@ namespace ClothesStore.Service.Service
                 if (product.Id == 0)
                 {
                     product.CreatedDate = DateTime.Now;
+                    product.IsDeleted = false;
                     await db.Products.AddAsync(product);
                     await db.SaveChangesAsync();
 
                     if (configProducts != null)
                     {
-                        configProducts = configProducts.Select(x => { x.ProductId = product.Id; return x; }).ToList();
+                        configProducts = configProducts.Select(x => { x.ProductId = product.Id;x.Status = true;x.IsDeleted = false ; return x; }).ToList();
                         db.ConfigProducts.AddRange(configProducts);
                         await db.SaveChangesAsync();
                     }
@@ -57,7 +58,7 @@ namespace ClothesStore.Service.Service
 
                     if (configProducts != null)
                     {
-                        configProducts = configProducts.Select(x => { x.ProductId = product.Id; return x; }).ToList();
+                        configProducts = configProducts.Select(x => { x.ProductId = product.Id; x.Status = true; x.IsDeleted = false; return x; }).ToList();
                         db.ConfigProducts.AddRange(configProducts);
                         await db.SaveChangesAsync();
                     }
@@ -106,6 +107,11 @@ namespace ClothesStore.Service.Service
             return await db.Sizes.Where(x => x.IsDeleted == false).ToListAsync();
         }
 
+        public async Task<List<ConfigProduct>> GetListConfigProductByProductId(int Id)
+        {
+            return await db.ConfigProducts.Where(x => x.ProductId == Id && x.IsDeleted == false).ToListAsync();
+        }
+
         public async Task<ResponseData<Product>> GetListData(RequestData requestData)
         {
             var data = await db.Products.Where(x=>x.IsDeleted == false).ToListAsync();
@@ -145,6 +151,11 @@ namespace ClothesStore.Service.Service
                 IsAsc = requestData.IsAsc
             };
             return responseData;
+        }
+
+        public async Task<List<ProductImage>> GetListProductImageByProductId(int Id)
+        {
+            return await db.ProductImages.Where(x => x.ProductId == Id).ToListAsync();
         }
 
         public async Task<Product> GetObjectById(int Id)

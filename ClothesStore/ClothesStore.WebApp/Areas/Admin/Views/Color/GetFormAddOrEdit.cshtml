@@ -1,0 +1,89 @@
+﻿
+@model ClothesStore.Model.Model.EF.Color
+@if (Model == null)
+{
+    <form class="form-input">
+        <div class="row">
+            <div class="col-md-9 row">
+                <div class="form-group col-md-6">
+                    <input type="hidden" name="Id" id="Id" value="0">
+                    <label class="col-form-label">Tên màu</label>
+                    <div>
+                        <input class="form-control validation" type="text" id="Name" name="Name" placeholder="Nhập tên">
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-12">
+                    <label class="col-form-label">Thứ tự</label>
+                    <div>
+                        <input class="form-control validation" type="number" name="OrderBy" placeholder="Nhập thứ tự">
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-12">
+                    <label class="col-form-label">Giá trị</label>
+                    <div>
+                        <input class="form-control validation" type="text" name="Value" placeholder="Nhập Giá trị">
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-12">
+                    <label class="col-form-label" for="text-input">Trạng thái</label>
+                    <div>
+                        <input id="Active" type="radio" name="Status" value="True" checked />
+                        <label class="col-form-label" for="Active">Hoạt động</label>
+                        <input class="ml-2" id="Lock" type="radio" name="Status" value="False" />
+                        <label class="col-form-label" for="Lock">Khóa</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+}
+else
+{
+    <form class="form-input">
+        <div class="row">
+            <div class="col-md-9 row">
+                <div class="form-group col-md-6">
+                    <input type="hidden" name="Id" id="Id" value="@Model.Id">
+                    <label class="col-form-label">Tiêu đề</label>
+                    <div>
+                        <input class="form-control validation" type="text" id="Name" value="@Model.Name" name="Name" placeholder="Nhập họ và tên">
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label class="col-form-label">Giá trị</label>
+                    <div>
+                        <input class="form-control validation" id="Value" type="text" name="Value" value="@Model.Value" placeholder="Nhập giá trị">
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-12">
+                    <label class="col-form-label">Thứ tự</label>
+                    <div>
+                        <input class="form-control validation" type="number" value="@Model.OrderBy" name="OrderBy" placeholder="Nhập thứ tự">
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-12">
+                    <label class="col-form-label" for="text-input">Trạng thái</label>
+                    <div>
+                        <input id="Active" type="radio" name="Status" value="True" @if (Model.Status == true) { <text> checked</text> } />
+                        <label class="col-form-label" for="Active">Hoạt động</label>
+                        <input class="ml-2" id="Lock" type="radio" name="Status" value="False" @if (Model.Status != true) { <text> checked</text> } />
+                        <label class="col-form-label" for="Lock">Khóa</label>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+}

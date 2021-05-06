@@ -1,0 +1,73 @@
+﻿@model ClothesStore.Model.ModelView.ViewDetailObject<ClothesStore.Model.Model.EF.Color>
+<form class="form-input">
+    <div class="row">
+        <div class="col-md-9 row">
+            <div class="form-group col-md-6">
+                <input type="hidden" name="Id" id="Id" value="@Model.obj.Id">
+                <label class="col-form-label">Tên màu</label>
+                <div>
+                    <input class="form-control validation" type="text" id="Name" value="@Model.obj.Name" name="Name" ">
+                    <span class="help-block"></span>
+                </div>
+            </div>
+
+            <div class="form-group col-md-6">
+                <label class="col-form-label">Giá trị</label>
+                <div>
+                    <input class="form-control validation" id="Slug" type="text" name="Value" value="@Model.obj.Value" />
+                </div>
+            </div>
+
+            <div class="form-group col-md-12">
+                <label class="col-form-label">Thứ tự</label>
+                <div>
+                    <input class="form-control validation" type="number" value="@Model.obj.OrderBy" name="OrderBy" >
+                    <span class="help-block"></span>
+                </div>
+            </div>
+
+            <div class="form-group col-md-12">
+                <label class="col-form-label">Người tạo</label>
+                <div>
+                    <input class="form-control validation" type="text" value="@Model.CreatedBy" name="OrderBy" >
+                    <span class="help-block"></span>
+                </div>
+            </div>
+
+            <div class="form-group col-md-12">
+                <label class="col-form-label">Ngày tạo</label>
+                <div>
+                    <input class="form-control validation" type="text" value="@Model.obj.CreatedDate" name="OrderBy">
+                    <span class="help-block"></span>
+                </div>
+            </div>
+
+            <div class="form-group col-md-12">
+                <label class="col-form-label">Người cập nhật</label>
+                <div>
+                    <input class="form-control validation" type="text" value="@Model.UpdatedBy" name="OrderBy">
+                    <span class="help-block"></span>
+                </div>
+            </div>
+
+            <div class="form-group col-md-12">
+                <label class="col-form-label">Ngày cập nhật</label>
+                <div>
+                    <input class="form-control validation" type="text" value="@Model.obj.UpdatedDate" name="OrderBy" >
+                    <span class="help-block"></span>
+                </div>
+            </div>
+
+            <div class="form-group col-md-12">
+                <label class="col-form-label" for="text-input">Trạng thái</label>
+                <div>
+                    <input id="Active" type="radio" name="Status" value="True" @if (Model.obj.Status == true) { <text> checked</text> } />
+                    <label class="col-form-label" for="Active">Hoạt động</label>
+                    <input class="ml-2" id="Lock" type="radio" name="Status" value="False" @if (Model.obj.Status != true) { <text> checked</text> } />
+                    <label class="col-form-label" for="Lock">Khóa</label>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>

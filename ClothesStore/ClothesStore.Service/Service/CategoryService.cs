@@ -32,7 +32,7 @@ namespace ClothesStore.Service.Service
             throw new NotImplementedException();
         }
 
-        public Task<Brand> GetObjectById(int Id)
+        public Task<Category> GetObjectById(int Id)
         {
             throw new NotImplementedException();
         }

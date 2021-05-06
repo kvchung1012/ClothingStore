@@ -42,6 +42,9 @@ namespace ClothesStore.WebApp
             services.AddSingleton<IColorService, ColorService>();
             services.AddSingleton<IEmployeeService, EmployeeService>();
             services.AddSingleton<ICustomerService, CustomerService>();
+            services.AddSingleton<ICategoryService, CategoryService>();
+            services.AddSingleton<ISizeService, SizeService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

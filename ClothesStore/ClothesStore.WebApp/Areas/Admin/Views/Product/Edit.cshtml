@@ -174,7 +174,7 @@
                         @foreach (var item in ViewBag.image as IEnumerable<ClothesStore.Model.Model.EF.ProductImage>)
                         {
                             <div class="image-item w-50">
-                                <img src="@Model.Image" alt="Alternate Text" class="w-100 border show-image" style="object-fit:contain" />
+                                <img src="@item.Image" alt="Alternate Text" class="w-100 border show-image" style="object-fit:contain" />
                                 <button class="btn-danger" type="button" onclick="DeleteImage(this)"><i class="bi bi-trash"></i></button>
                             </div>
                         }

@@ -29,6 +29,7 @@ namespace ClothesStore.Service.Service
                 {
                     var pro = await db.Customers.FindAsync(customer.Id);
                     pro.Name = customer.Name;
+                    pro.UpdatedBy = customer.UpdatedBy;
                     pro.Phone = customer.Phone;
                     pro.Email = customer.Email;
                     pro.Address = customer.Address;
@@ -73,7 +74,7 @@ namespace ClothesStore.Service.Service
             {
                 foreach (var filter in requestData.ListFilter)
                 {
-                    data = data.Where(x => x.GetType().GetProperty(filter.Key).PropertyType.Name == "String" ? x.GetType().GetProperty(filter.Key).GetValue(x).ToString().Contains(filter.Value) : x.GetType().GetProperty(filter.Key).GetValue(x).Equals(filter.Value)).ToList();
+                    data = data.Where(x => x.GetType().GetProperty(filter.Key).PropertyType.Name == "String" ? x.GetType().GetProperty(filter.Key).GetValue(x).ToString().Contains(filter.Value) : x.GetType().GetProperty(filter.Key).GetValue(x).ToString().Equals(filter.Value)).ToList();
                 }
                 totalRecords = data.Count();
             }

@@ -42,6 +42,7 @@ namespace ClothesStore.Service.Service
                 {
                     var pro = await db.Products.FindAsync(product.Id);
                     pro.BrandId = product.BrandId;
+                    pro.UpdatedBy = product.UpdatedBy;
                     pro.CategoryId = product.CategoryId;
                     pro.Content = product.Content;
                     pro.Description = product.Description;

@@ -29,7 +29,8 @@ namespace ClothesStore.Service.Service
                     var pro = await db.Sizes.FindAsync(size.Id);
                     pro.Name = size.Name;
                     pro.OrderBy = size.OrderBy;
-                    pro.UpdatedDate = size.UpdatedDate;
+                    pro.UpdatedBy = size.UpdatedBy;
+                    pro.UpdatedDate = DateTime.Now;
                     pro.Status = size.Status;
                     db.SaveChanges();
                     return true;

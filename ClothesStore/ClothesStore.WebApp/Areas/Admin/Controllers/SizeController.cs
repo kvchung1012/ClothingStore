@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using ClothesStore.Model.Model.EF;
 using ClothesStore.Model.ModelView;
 using ClothesStore.Service.IService;
+using ClothesStore.WebApp.Common;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClothesStore.WebApp.Areas.Admin.Controllers
@@ -13,10 +16,14 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
     public class SizeController : Controller
     {
         ISizeService _sizeService;
+        IEmployeeService _employeeService;
+        IHttpContextAccessor _HttpContextAccessor;
 
-        public SizeController(ISizeService sizeService)
+        public SizeController(ISizeService sizeService, IEmployeeService employeeService, IHttpContextAccessor HttpContextAccessor)
         {
             _sizeService = sizeService;
+            _employeeService = employeeService;
+            _HttpContextAccessor = HttpContextAccessor;
         }
 
         public IActionResult Index()
@@ -37,11 +44,14 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
         public async Task<PartialViewResult> ViewDetail(int Id)
         {
             var obj = await _sizeService.GetObjectById(Id);
+            var empUpdated = obj.UpdatedBy != null ? await _employeeService.GetObjectById((int)obj.UpdatedBy) : new Employee();
+            var empCreated = obj.CreatedBy != null ? await _employeeService.GetObjectById((int)obj.CreatedBy) : new Employee();
+
             var data = new ViewDetailObject<Size>()
             {
                 obj = obj,
-                CreatedBy = "",
-                UpdatedBy = ""
+                CreatedBy = empCreated.Name,
+                UpdatedBy = empUpdated.Name
             };
             return PartialView(data);
         }
@@ -63,6 +73,18 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
         [HttpPost]
         public async Task<JsonResult> AddOrUpdate(Size obj)
         {
+            string jsonUser = _HttpContextAccessor.HttpContext.Session.GetString(Constant.USER);
+            var emp = new Employee();
+            if (jsonUser != null)
+            {
+                emp = JsonSerializer.Deserialize<Employee>(jsonUser) as Employee;
+                if (obj.Id == 0)
+                    obj.CreatedBy = emp.Id;
+                else
+                {
+                    obj.UpdatedBy = emp.Id;
+                }
+            }
             var response = await _sizeService.AddOrUpdate(obj);
             return Json(new ResponseStatus() { success = response, error = null });
         }

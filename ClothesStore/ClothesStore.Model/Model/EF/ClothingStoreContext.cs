@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -15,6 +16,7 @@ namespace ClothesStore.Model.Model.EF
         public ClothingStoreContext(DbContextOptions<ClothingStoreContext> options)
             : base(options)
         {
+           
         }
 
         public virtual DbSet<Brand> Brands { get; set; }
@@ -36,7 +38,7 @@ namespace ClothesStore.Model.Model.EF
             if (!optionsBuilder.IsConfigured)
             {
 
-                 optionsBuilder.UseSqlServer("Server=KHUATCHUNG\\KHUATCHUNG;Database=ClothingStore;Trusted_Connection=True;");
+                 optionsBuilder.UseSqlServer("Server=KHANH;Database=ClothingStore;Trusted_Connection=True;");
 
             }
         }

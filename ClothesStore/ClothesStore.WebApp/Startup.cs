@@ -2,6 +2,7 @@ using ClothesStore.Service.IService;
 using ClothesStore.Service.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,11 +31,13 @@ namespace ClothesStore.WebApp
 
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.IdleTimeout = TimeSpan.FromSeconds(3600);
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
 
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             // register service
             services.AddSingleton<IProductService, ProductService>();
             services.AddSingleton<IBrandService, BrandService>();
@@ -44,7 +47,7 @@ namespace ClothesStore.WebApp
             services.AddSingleton<ICustomerService, CustomerService>();
             services.AddSingleton<ICategoryService, CategoryService>();
             services.AddSingleton<ISizeService, SizeService>();
-
+            services.AddSingleton<ILoginService, LoginService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

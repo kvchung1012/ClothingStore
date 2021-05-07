@@ -1,4 +1,15 @@
-﻿<header class="c-header c-header-light c-header-fixed c-header-with-subheader">
+﻿@using Microsoft.AspNetCore.Http;
+@using ClothesStore.WebApp.Common;
+@using System.Text.Json;
+@using ClothesStore.Model.Model.EF;
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    string jsonUser = HttpContextAccessor.HttpContext.Session.GetString(Constant.USER);
+    @*var user = null;
+    if(jsonUser != null)
+        user = JsonSerializer.Deserialize<Employee>(jsonUser) as Employee;*@
+}
+<header class="c-header c-header-light c-header-fixed c-header-with-subheader">
     <button class="c-header-toggler c-class-toggler d-lg-none mfe-auto" type="button" data-target="#sidebar" data-class="c-sidebar-show">
         <svg class="c-icon c-icon-lg">
             <use xlink:href="/lib/icon/sprites/free.svg#cil-menu"></use>
@@ -42,30 +53,30 @@
         </li>
         <li class="c-header-nav-item dropdown">
             <a class="c-header-nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                <div class="c-avatar"><img class="c-avatar-img" src="~/Image/Static/avatar.jpg" alt="user@email.com"></div>
+                <div class="c-avatar"><img class="c-avatar-img" src="" alt=""></div>
             </a>
             <div class="dropdown-menu dropdown-menu-right pt-0">
                 @*<div class="dropdown-header bg-light py-2"><strong>Account</strong></div>*@
                 @*<a class="dropdown-item" href="#">
-                    <svg class="c-icon mr-2">
-                        <use xlink:href="/lib/icon/sprites/free.svg#cil-bell"></use>
-                    </svg> Updates<span class="badge badge-info ml-auto">42</span>
-                </a>
-                <a class="dropdown-item" href="#">
-                    <svg class="c-icon mr-2">
-                        <use xlink:href="/lib/icon/sprites/free.svg#cil-envelope-open"></use>
-                    </svg> Messages<span class="badge badge-success ml-auto">42</span>
-                </a>
-                <a class="dropdown-item" href="#">
-                    <svg class="c-icon mr-2">
-                        <use xlink:href="/lib/icon/sprites/free.svg#cil-task"></use>
-                    </svg> Tasks<span class="badge badge-danger ml-auto">42</span>
-                </a>
-                <a class="dropdown-item" href="#">
-                    <svg class="c-icon mr-2">
-                        <use xlink:href="/lib/icon/sprites/free.svg#cil-comment-square"></use>
-                    </svg> Comments<span class="badge badge-warning ml-auto">42</span>
-                </a>*@
+                        <svg class="c-icon mr-2">
+                            <use xlink:href="/lib/icon/sprites/free.svg#cil-bell"></use>
+                        </svg> Updates<span class="badge badge-info ml-auto">42</span>
+                    </a>
+                    <a class="dropdown-item" href="#">
+                        <svg class="c-icon mr-2">
+                            <use xlink:href="/lib/icon/sprites/free.svg#cil-envelope-open"></use>
+                        </svg> Messages<span class="badge badge-success ml-auto">42</span>
+                    </a>
+                    <a class="dropdown-item" href="#">
+                        <svg class="c-icon mr-2">
+                            <use xlink:href="/lib/icon/sprites/free.svg#cil-task"></use>
+                        </svg> Tasks<span class="badge badge-danger ml-auto">42</span>
+                    </a>
+                    <a class="dropdown-item" href="#">
+                        <svg class="c-icon mr-2">
+                            <use xlink:href="/lib/icon/sprites/free.svg#cil-comment-square"></use>
+                        </svg> Comments<span class="badge badge-warning ml-auto">42</span>
+                    </a>*@
                 <div class="dropdown-header bg-light py-2"><strong>Settings</strong></div>
                 <a class="dropdown-item" href="/Admin/Admin/ProfileUser">
                     <svg class="c-icon mr-2">

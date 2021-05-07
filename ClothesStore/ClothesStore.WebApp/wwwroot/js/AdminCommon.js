@@ -44,7 +44,7 @@ function CancelSearch() {
 }
 
 function ChangePageSize() {
-    debugger;
+    //debugger;
     $('.pageSize').on('change', function () {
         let val = $(this).val();
         submitData.pageSize = val;
@@ -117,7 +117,7 @@ function GetDataToTable(url) {
 }
 
 function GetFormAddOrEdit(url, Id) {
-    debugger;
+    //debugger;
     $.ajax({
         url: url,
         type: 'post',
@@ -278,7 +278,7 @@ function GetObjectById(url, id) {
 
 // view detail
 function GetViewDetail(url, id) {
-    debugger;
+    //debugger;
     $.ajax({
         url: url,
         type: 'post',
@@ -287,7 +287,7 @@ function GetViewDetail(url, id) {
             id: id
         },
         success: function (res) {
-            debugger;
+            //debugger;
             $('.modal-add .modal-body').html('');
             $('.modal-add .modal-body').append(res);
             $('.btn-save').addClass('d-none');
@@ -484,7 +484,7 @@ function OpenFolderImage() {
 
 function ChooseImage() {
     $('#fileExploer').on('click', 'img', function () {
-        debugger
+        //debugger
         var fileUrl = '/Image/Upload/' + $(this).attr('title');
         $('#Image').val(fileUrl);
         $('#Image').siblings('img').attr('src', fileUrl);

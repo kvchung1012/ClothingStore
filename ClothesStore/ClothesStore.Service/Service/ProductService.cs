@@ -107,6 +107,26 @@ namespace ClothesStore.Service.Service
             return await db.Sizes.Where(x => x.IsDeleted == false).ToListAsync();
         }
 
+        public async Task<List<ConfigProductModelView>> GetConfigProductDetail(int Id)
+        {
+            List<ConfigProductModelView> data = new List<ConfigProductModelView>();
+            var con = await db.ConfigProducts.Where(x => x.ProductId == Id && x.IsDeleted == false).ToListAsync();
+            foreach(var item in con)
+            {
+                if(item.Stock > 0)
+                {
+                    ConfigProductModelView c = new ConfigProductModelView()
+                    {
+                        config = item,
+                        color = await db.Colors.FindAsync(item.ColorId),
+                        size = await db.Sizes.FindAsync(item.SizeId)
+                    };
+                    data.Add(c);
+                }
+            }
+            return data;
+        }
+
         public async Task<List<ConfigProduct>> GetListConfigProductByProductId(int Id)
         {
             return await db.ConfigProducts.Where(x => x.ProductId == Id && x.IsDeleted == false).ToListAsync();

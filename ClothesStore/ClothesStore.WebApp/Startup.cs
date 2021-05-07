@@ -44,6 +44,7 @@ namespace ClothesStore.WebApp
             services.AddSingleton<ICustomerService, CustomerService>();
             services.AddSingleton<ICategoryService, CategoryService>();
             services.AddSingleton<ISizeService, SizeService>();
+            services.AddSingleton<IOrderService, OrderService>();
 
         }
 

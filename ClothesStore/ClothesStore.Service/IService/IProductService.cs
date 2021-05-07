@@ -19,6 +19,8 @@ namespace ClothesStore.Service.IService
         public Task<List<ProductImage>> GetListProductImageByProductId(int Id);
         public Task<List<ConfigProduct>> GetListConfigProductByProductId(int Id);
 
+        public Task<List<ConfigProductModelView>> GetConfigProductDetail(int Id);
+
 
         // define 
         public Task<List<Color>> GetAllColor();

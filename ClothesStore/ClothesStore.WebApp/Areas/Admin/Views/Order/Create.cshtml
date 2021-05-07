@@ -1,0 +1,291 @@
+﻿
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<style>
+    html {
+        box-sizing: border-box
+    }
+
+    .image-item {
+        position: relative;
+    }
+
+        .image-item button {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+        }
+
+    /*tbody td {
+        padding: 0px !important;
+    }
+
+        tbody td:first-child {
+            padding: 5px !important;
+        }*/
+</style>
+<div class="form-add">
+    <h5>Thêm mới đơn hàng</h5>
+    <form class="form-input">
+        <div class="row">
+            <div class="col-md-6 row">
+                <div class="form-group col-md-12">
+                    <input type="hidden" name="Id" id="Id" value="0">
+                    <label class="col-form-label">Tên nhãn hàng</label>
+                    <div>
+                        <select class="form-control validation select2" name="CustomerId">
+                            <option value="0">Chọn khách hàng</option>
+                            @foreach (var item in ViewBag.customer as IEnumerable<ClothesStore.Model.Model.EF.Customer>)
+                            {
+                                <option value="@item.Id">@item.Name - @item.Phone</option>
+                            }
+                        </select>
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+                
+                <div class="form-group col-md-12">
+                    <label class="col-form-label">Địa chỉ nhận</label>
+                    <div>
+                        <input class="form-control validation" type="text" name="Address" placeholder="Địa chỉ của khách hàng">
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-12">
+                    <label class="col-form-label">Ghi chú</label>
+                    <div>
+                        <textarea class="form-control" name="Note" rows="5"></textarea>
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+              
+                <div class="col-md-12 col-form-label">
+                    <div class="form-check form-check-inline mr-1">
+                        <input class="form-check-input" checked id="inline-radio1" type="radio" value="True" name="Status">
+                        <label class="form-check-label" for="inline-radio1">Hoạt động</label>
+                    </div>
+                    <div class="form-check form-check-inline mr-1">
+                        <input class="form-check-input" id="inline-radio2" type="radio" value="False" name="Status">
+                        <label class="form-check-label" for="inline-radio2">Khóa</label>
+                    </div>
+                </div>
+    
+                <div class="col-md-12 d-flex justify-content-end mt-3">
+                    <button type="button" class="btn btn-square btn-danger">Quay lại</button>
+                    <button type="button" class="btn btn-square btn-success ml-2" onclick="Add()">Thêm mới</button>
+                </div>
+            </div>
+
+
+            <div class="col-md-6 row">
+                <div class="col-md-6">
+                    <label class="col-form-label">Chọn sản phẩm</label>
+                    <div>
+                        <select class="form-control product select2" onchange="LoadConfig(this)">
+                            <option value="0">Chọn sản phẩm</option>
+                            @foreach (var item in ViewBag.product as IEnumerable<ClothesStore.Model.Model.EF.Product>)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        </select>
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="col-form-label">Chọn chi tiết sản phẩm</label>
+                    <div>
+                        <select class="form-control select-config" onchange="PickConfig(this)">
+                        </select>
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <label class="col-form-label">Danh sách hàng đã chọn</label>
+                    <div>
+                        <table class="table-config table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Sản phẩm</th>
+                                    <th>Kích thước</th>
+                                    <th>Màu sắc</th>
+                                    <th>Số lượng</th>
+                                    <th>Đơn giá</th>
+                                    <th>Tác vụ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section scripts{
+    <script src="~/lib/ckeditor/ckeditor.js"></script>
+    <script src="~/js/AdminCommon.js"></script>
+    <script>
+        $(document).ready(function () {
+            ConvertToSlug();
+            $('.select2').select2();
+        })
+        function Add() {
+            if (ValidationInput()) {  // kiểm tra dữ liệu đầu vào
+                // read data in form
+                let formArray = $('form.form-input').serializeArray();
+                var object = {};
+                jQuery.map(formArray, function (n, i) {
+                    object[n.name] = n.value;
+                });
+                $('.form-input textarea').each(function (index, item) {
+                    if ($(this).hasClass('ckeditor') || $(this).hasClass('p-ckeditor')) {
+                        let id = $(this).attr('id');
+                        object[$(this).attr('name')] = CKEDITOR.instances[id].getData();
+                    }
+                })
+
+                let orderDetails = [];
+                $('.table-config tbody tr').each(function (i, e) {
+                    let Id = $(e).attr('data-id');
+                    let stock = $(e).attr('data-stock');
+                    let price = $(e).attr('data-price');
+                    let obj = {
+                        Id: 0,
+                        OrderId: 0,
+                        ConfigProductId: Id,
+                        Stock: stock,
+                        Price: price
+                    }
+                    orderDetails.push(obj)
+                })
+
+                console.log(object);
+                console.log(orderDetails);
+                swal({
+                    title: $('#Id').val() == 0 ? "Bạn có chắc chắn muốn thêm" : "Bạn có chắc muốn sửa dữ liệu này?",
+                    text: $('#Id').val() == 0 ? "" : "Sau khi sửa thì không thể quay lại!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                }).then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                            url: '/Admin/Order/AddOrUpdate',
+                            type: 'post',
+                            dataType: 'json',
+                            data: {
+                                obj: object,
+                                orderDetails: orderDetails
+                            },
+
+                            beforeSend: function () {
+                            },
+                            success: function (res) {
+                                if (res) {
+                                    swal('Bạn đã thêm dữ liệu thành công !!');
+                                }
+                            },
+                            error: function (error) {
+
+                            },
+                            complete: function () {
+                            }
+                        })
+                    }
+                })
+            }
+        }
+
+        function RemoveConfig(el) {
+            swal({
+                title: "Xóa dữ liệu này?",
+                text: "Dữ liệu xóa sẽ không thể khôi phục!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    $(el).parent().parent().remove();
+                }
+            })
+        }
+
+        function LoadConfig(el) {
+            let select = $(el).find(':selected');
+            let Id = $(select).attr('value');
+            $.ajax({
+                url: '/Admin/Order/GetConfigProduct',
+                type: 'post',
+                dataType: 'json',
+                //contentType: 'application/json',
+                data: {
+                    Id: Id
+                },
+
+                beforeSend: function () {
+                },
+                success: function (res) {
+                    console.log(res)
+                    let row = `<option value="0">Chọn cấu hình</option>`;
+                    $(res).each(function (i, e) {
+                        row += `<option  data-stock = "${e.config.stock}" data-price="${e.config.price}" value="${e.config.id}">${e.size.name + ' ' + e.color.name}</option>`;
+                    })
+                    $('.select-config').html('');
+                    $('.select-config').append(row);
+
+                },
+                error: function (error) {
+
+                },
+                complete: function () {
+                }
+            })
+        }
+
+        function PickConfig(el) {
+            let product = $('.product option:selected').text();
+            let option = $(el).children('option:selected');
+            let sizeName = $(option).text().split(' ')[0];
+            let colorName = $(option).text().split(' ')[1];
+            let stock = $(option).attr('data-stock');
+            let price = $(option).attr('data-price');
+            let id = $(option).attr('value');
+            let check = true;
+            $('.table-config tbody tr').each(function (i, e) {
+                if ($(e).attr('data-id') == id) {
+                    check = false;
+                }
+            })
+            if (check) {
+                let row = `     <tr data-stock = "${stock}" data-price="${price}" data-id="${id}">
+                                        <td>${product}</td>
+                                        <td>${sizeName}</td>
+                                        <td style="background:${colorName}"></td>
+                                        <td><input type="number" min="1" value="1" class="form-control" onchange="LimitStock(this)" /></td>
+                                        <td>${price}</td>
+                                        <td style="text-align:center"><button class=" btn btn-sm btn-square btn-danger" onclick="RemoveConfig(this)" type="button"><i class="bi bi-trash"></i></button></td>
+                                    </tr>`;
+                $('.table-config tbody').append(row);
+            }
+            else {
+                swal("Cấu hình này bạn đã chọn!");
+            }
+
+        }
+
+        function LimitStock(el) {
+            let value = $(el).val();
+            let stock = $(el).parent().parent().attr('data-stock');
+            if (value > stock) {
+                $(el).val(1);
+            }
+        }
+    </script>
+}

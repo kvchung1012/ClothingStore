@@ -19,14 +19,18 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
         IOrderService _orderService;
         ICustomerService _customerService;
         IProductService _productService;
-        public OrderController(IOrderService orderService, ICustomerService customerService, IProductService productService)
+        IEmployeeService _employeeService;
+        public OrderController(IOrderService orderService, ICustomerService customerService, IProductService productService,IEmployeeService employeeService)
         {
             _orderService = orderService;
             _customerService = customerService;
             _productService = productService;
+            _employeeService = employeeService;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            ViewBag.customer = await _customerService.GetAll();
+            ViewBag.employee = await _employeeService.GetAll();
             return View();
         }
 

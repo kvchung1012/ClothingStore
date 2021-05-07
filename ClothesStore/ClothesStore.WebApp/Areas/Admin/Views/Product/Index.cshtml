@@ -35,6 +35,10 @@
                         <div>Nhãn hàng</div>
                         <select class="form-control" name="BrandId">
                             <option value="0">Chọn loại nhãn hàng</option>
+                            @foreach (var item in ViewBag.brand as IEnumerable<ClothesStore.Model.Model.EF.Brand>)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
                         </select>
                     </div>
 
@@ -42,6 +46,10 @@
                         <div>Danh mục</div>
                         <select class="form-control" name="CategoryId">
                             <option value="0">Chọn danh mục sản phẩm</option>
+                            @foreach (var item in ViewBag.category as IEnumerable<ClothesStore.Model.Model.EF.Category>)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
                         </select>
                     </div>
                 </div>

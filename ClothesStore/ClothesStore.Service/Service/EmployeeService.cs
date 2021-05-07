@@ -31,14 +31,12 @@ namespace ClothesStore.Service.Service
                 else 
                 {
                     var emp = await db.Employees.FindAsync(Employee.Id);
-                    emp.Id = Employee.Id;
+
                     emp.IdCard = Employee.IdCard;
-                    emp.IsAdmin = Employee.IsAdmin;
                     emp.Name = Employee.Name;
                     emp.Note = Employee.Note;
-                    emp.Password = Employee.Password;
                     emp.Status = Employee.Status;
-                    emp.UpdatedBy = Employee.UpdatedBy;
+                    emp.UpdatedBy = 1;
                     emp.UpdatedDate = DateTime.Now;
                     emp.Address = Employee.Address;
                     emp.BirthDay = Employee.BirthDay;

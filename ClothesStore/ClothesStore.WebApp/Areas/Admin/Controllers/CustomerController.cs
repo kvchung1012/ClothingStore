@@ -1,10 +1,13 @@
 ﻿using ClothesStore.Model.Model.EF;
 using ClothesStore.Model.ModelView;
 using ClothesStore.Service.IService;
+using ClothesStore.WebApp.Common;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace ClothesStore.WebApp.Areas.Admin.Controllers
@@ -13,9 +16,13 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
     public class CustomerController : Controller
     {
         ICustomerService _customerService;
-        public CustomerController (ICustomerService brandService)
+        IEmployeeService _employeeService;
+        IHttpContextAccessor _HttpContextAccessor;
+        public CustomerController (ICustomerService brandService, IEmployeeService employeeService, IHttpContextAccessor HttpContextAccessor)
         {
             _customerService = brandService;
+            _employeeService = employeeService;
+            _HttpContextAccessor = HttpContextAccessor;
         }
         public IActionResult Index()
         {
@@ -35,11 +42,14 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
         public async Task<PartialViewResult> ViewDetail(int Id)
         {
             var obj = await _customerService.GetObjectById(Id);
+            var empUpdated = obj.UpdatedBy != null ? await _employeeService.GetObjectById((int)obj.UpdatedBy) : new Employee();
+            var empCreated = obj.CreatedBy != null ? await _employeeService.GetObjectById((int)obj.CreatedBy) : new Employee();
+
             var data = new ViewDetailObject<Customer>()
             {
                 obj = obj,
-                CreatedBy = "",
-                UpdatedBy = ""
+                CreatedBy = empCreated.Name,
+                UpdatedBy = empUpdated.Name
             };
             return PartialView(data);
         }
@@ -61,6 +71,18 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
         [HttpPost]
         public async Task<JsonResult> AddOrUpdate(Customer obj)
         {
+            string jsonUser = _HttpContextAccessor.HttpContext.Session.GetString(Constant.USER);
+            var emp = new Employee();
+            if (jsonUser != null)
+            {
+                emp = JsonSerializer.Deserialize<Employee>(jsonUser) as Employee;
+                if (obj.Id == 0)
+                    obj.CreatedBy = emp.Id;
+                else
+                {
+                    obj.UpdatedBy = emp.Id;
+                }
+            }
             var response = await _customerService.AddOrUpdate(obj);
             return Json(new ResponseStatus() { success = response, error = null });
         }

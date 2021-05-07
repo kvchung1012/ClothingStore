@@ -38,6 +38,7 @@ namespace ClothesStore.Service.Service
                     pro.CustomerId = order.CustomerId;
                     pro.EmployeeId = order.EmployeeId;
                     pro.Note = order.Note;
+                    pro.UpdatedBy = order.UpdatedBy;
                     pro.Address = order.Address;
                     pro.Status = order.Status;
                     pro.UpdatedDate = DateTime.Now;
@@ -79,7 +80,7 @@ namespace ClothesStore.Service.Service
             {
                 foreach (var filter in requestData.ListFilter)
                 {
-                    data = data.Where(x => x.GetType().GetProperty(filter.Key).PropertyType.Name == "String" ? x.GetType().GetProperty(filter.Key).GetValue(x).ToString().Contains(filter.Value) : x.GetType().GetProperty(filter.Key).GetValue(x).Equals(filter.Value)).ToList();
+                    data = data.Where(x => x.GetType().GetProperty(filter.Key).PropertyType.Name == "String" ? x.GetType().GetProperty(filter.Key).GetValue(x).ToString().Contains(filter.Value) : x.GetType().GetProperty(filter.Key).GetValue(x).ToString().Equals(filter.Value)).ToList();
                 }
                 totalRecords = data.Count();
             }

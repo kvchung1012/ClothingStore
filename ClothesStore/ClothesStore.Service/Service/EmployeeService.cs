@@ -41,7 +41,7 @@ namespace ClothesStore.Service.Service
                     emp.Address = Employee.Address;
                     emp.BirthDay = Employee.BirthDay;
                     emp.Avatar = Employee.Avatar;
-
+                    emp.IsAdmin = Employee.IsAdmin;
                     await db.SaveChangesAsync();
                 }
                 return true;

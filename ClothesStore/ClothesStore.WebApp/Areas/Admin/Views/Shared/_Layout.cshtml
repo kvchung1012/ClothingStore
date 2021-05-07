@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http;
+@using ClothesStore.WebApp.Common;
+@using System.Text.Json;
+@using ClothesStore.Model.Model.EF;
+@inject IHttpContextAccessor HttpContextAccessor
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <base href="./">
@@ -24,6 +29,15 @@
 
 </head>
 <body class="c-app">
+    @{
+        var user = HttpContextAccessor.HttpContext.Session.GetString(Constant.USER);
+        if (user == null)
+        {
+            <script>
+                location.href = '/Admin/Admin/Login'
+            </script>
+        }
+    }
     @await Html.PartialAsync("_SideBar")
     <div class="c-wrapper c-fixed-components">
         @await Html.PartialAsync("_Header")

@@ -6,7 +6,7 @@
             <div class="col-md-9 row">
 
                 <div class="form-group col-md-4">
-                    <input type="hidden" name="Id" id="Name" value="@Model.Id">
+                    <input type="hidden" name="Id" id="Name" value="0">
                     <label class="col-form-label">Họ tên</label>
                     <div>
                         <input class="form-control validation" type="text" id="Name" name="Name" placeholder="Nhập họ và tên">
@@ -73,18 +73,28 @@
                 </div>
 
                 <div class="form-group col-md-12">
+                    <label class="col-form-label" for="text-input">Là người quản trị</label>
+                    <div>
+                        <input id="Admin" type="radio" name="IsAdmin" value="True"  />
+                        <label class="col-form-label" for="Admin">Hoạt động</label>
+                        <input class="ml-2" id="NotAdmin" type="radio" name="IsAdmin" value="False" checked />
+                        <label class="col-form-label" for="NotAdmin">Khóa</label>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-12">
                     <label class="col-form-label" for="text-input">Trạng thái</label>
                     <div>
                         <input id="Active" type="radio" name="Status" value="True" checked />
-                        <label class="col-form-label" for="Active">Hoạt động</label>
+                        <label class="col-form-label" for="Active">Quản trị</label>
                         <input class="ml-2" id="Lock" type="radio" name="Status" value="False" />
-                        <label class="col-form-label" for="Lock">Khóa</label>
+                        <label class="col-form-label" for="Lock">Nhân viên</label>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
-                <img src="/Image/Static/avatar.jpg" alt="Alternate Text" class="w-100 show-image" style="object-fit:contain" onclick="OpenFolderImage()" />
-                <input type="text" name="Avatar" value="/Image/Static/avatar.jpg" hidden id="Image" />
+                <img src="/Image/Static/no-image.jpg" alt="Alternate Text" class="w-100 show-image" style="object-fit:contain" onclick="OpenFolderImage()" />
+                <input type="text" name="Avatar" value="/Image/Static/no-image.jpg" hidden id="Image" />
             </div>
         </div>
     </form>
@@ -114,7 +124,7 @@ else
                 <div class="form-group col-md-4">
                     <label class="col-form-label">Ngày sinh</label>
                     <div>
-                        <input class="form-control validation" id="BirthDay"  type="date"  name="BirthDay" value="@Model.BirthDay" placeholder="Ngày sinh">
+                        <input class="form-control validation" id="BirthDay" type="date" name="BirthDay" value="@Model.BirthDay.Value.ToString("yyyy-MM-dd")" placeholder="Ngày sinh">
                         <span class="help-block"></span>
                     </div>
                 </div>
@@ -144,12 +154,22 @@ else
                 </div>
 
                 <div class="form-group col-md-12">
+                    <label class="col-form-label" for="text-input">Là người quản trị</label>
+                    <div>
+                        <input id="Admin" type="radio" name="IsAdmin" value="True" @if (Model.IsAdmin == true) { <text> checked</text> } />
+                        <label class="col-form-label" for="Admin">Hoạt động</label>
+                        <input class="ml-2" id="NotAdmin" type="radio" name="IsAdmin" value="False" @if (Model.IsAdmin != true) { <text> checked</text> } />
+                        <label class="col-form-label" for="NotAdmin">Khóa</label>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-12">
                     <label class="col-form-label" for="text-input">Trạng thái</label>
                     <div>
                         <input id="Active" type="radio" name="Status" value="True" @if (Model.Status == true) { <text> checked</text> } />
-                        <label class="col-form-label" for="Active">Hoạt động</label>
+                        <label class="col-form-label" for="Active">Quản trị</label>
                         <input class="ml-2" id="Lock" type="radio" name="Status" value="False" @if (Model.Status != true) { <text> checked</text> } />
-                        <label class="col-form-label" for="Lock">Khóa</label>
+                        <label class="col-form-label" for="Lock">Nhân viên</label>
                     </div>
                 </div>
             </div>

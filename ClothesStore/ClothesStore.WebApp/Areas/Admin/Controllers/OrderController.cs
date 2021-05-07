@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using ClothesStore.Model.Model.EF;
 using ClothesStore.Model.ModelView;
 using ClothesStore.Service.IService;
+using ClothesStore.WebApp.Common;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace ClothesStore.WebApp.Areas.Admin.Controllers
 {
@@ -15,7 +19,7 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
         IOrderService _orderService;
         ICustomerService _customerService;
         IProductService _productService;
-        public OrderController(IOrderService orderService, ICustomerService customerService,IProductService productService)
+        public OrderController(IOrderService orderService, ICustomerService customerService, IProductService productService)
         {
             _orderService = orderService;
             _customerService = customerService;
@@ -35,7 +39,11 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
 
         public async Task<ActionResult> Edit(int Id)
         {
-            return View();
+            ViewBag.customer = await _customerService.GetAll();
+            ViewBag.product = await _productService.GetAll();
+
+            var order = await _orderService.GetOrderById(Id);
+            return View(order);
         }
 
         [HttpPost]
@@ -75,6 +83,11 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
         [HttpPost]
         public async Task<JsonResult> AddOrUpdate(Order obj, List<OrderDetail> orderDetails)
         {
+            var session = HttpContext.Session.GetString(Constant.USER);
+            var userId = JsonConvert.DeserializeObject<Employee>(session).Id;
+            obj.EmployeeId = userId;
+            obj.CreatedBy = userId;
+            obj.UpdatedBy = userId;
             var response = await _orderService.AddOrUpdate(obj, orderDetails);
             return Json(new ResponseStatus() { success = response, error = null });
         }

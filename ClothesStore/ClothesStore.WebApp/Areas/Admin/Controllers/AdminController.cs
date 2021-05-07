@@ -2,6 +2,7 @@
 using ClothesStore.Model.ModelView;
 using ClothesStore.Service.IService;
 using ClothesStore.WebApp.Common;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -44,13 +45,8 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
             //this emp is not available
             if (emp == null)
                 return Json(false);
-
             string jsonData = JsonSerializer.Serialize(emp);
-
-            Byte[] byteArrData = Encoding.UTF8.GetBytes(jsonData);
-
-            HttpContext.Session.Set(Common.Constant.USER, byteArrData);
-
+            HttpContext.Session.SetString(Common.Constant.USER,jsonData);
             return Json(true);
         }
 

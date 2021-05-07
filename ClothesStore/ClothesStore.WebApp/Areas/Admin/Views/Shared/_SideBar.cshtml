@@ -1,4 +1,15 @@
-﻿<div class="c-sidebar c-sidebar-dark c-sidebar-fixed c-sidebar-lg-show" id="sidebar">
+﻿@using Microsoft.AspNetCore.Http;
+@using ClothesStore.WebApp.Common;
+@using System.Text.Json;
+@using ClothesStore.Model.Model.EF;
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    var user = HttpContextAccessor.HttpContext.Session.GetString(Constant.USER);
+    var emp = new Employee();
+    if (user != null)
+       emp = JsonSerializer.Deserialize<Employee>(user) as Employee;
+}
+<div class="c-sidebar c-sidebar-dark c-sidebar-fixed c-sidebar-lg-show" id="sidebar">
     <div class="c-sidebar-brand d-lg-down-none">
         <svg class="c-sidebar-brand-full" width="118" height="46" alt="CoreUI Logo">
             <use xlink:href="/lib/assets/brand/coreui.svg#full"></use>
@@ -16,13 +27,17 @@
             </a>
         </li>
         <li class="c-sidebar-nav-title">Tài khoản</li>
-        <li class="c-sidebar-nav-item">
-            <a class="c-sidebar-nav-link" href="/Admin/Admin">
-                <svg class="c-sidebar-nav-icon">
-                    <use xlink:href="/lib/icon/sprites/free.svg#cil-user"></use>
-                </svg> Quản trị nhân viên
-            </a>
-        </li>
+        @if (emp.IsAdmin == true)
+        {
+            <li class="c-sidebar-nav-item">
+                <a class="c-sidebar-nav-link" href="/Admin/Admin">
+                    <svg class="c-sidebar-nav-icon">
+                        <use xlink:href="/lib/icon/sprites/free.svg#cil-user"></use>
+                    </svg> Quản trị nhân viên
+                </a>
+            </li>
+        }
+
 
         <li class="c-sidebar-nav-item">
             <a class="c-sidebar-nav-link" href="/Admin/Customer/Index">
@@ -83,13 +98,13 @@
             </a>
         </li>
 
-        <li class="c-sidebar-nav-item">
+        @*<li class="c-sidebar-nav-item">
             <a class="c-sidebar-nav-link" href="/Admin/ItemInRoom">
                 <svg class="c-sidebar-nav-icon">
                     <use xlink:href="/lib/icon/sprites/free.svg#cil-laptop"></use>
                 </svg> Hóa đơn nhập
             </a>
-        </li>
+        </li>*@
     </ul>
     <button class="c-sidebar-minimizer c-class-toggler" type="button" data-target="_parent" data-class="c-sidebar-minimized"></button>
 </div>

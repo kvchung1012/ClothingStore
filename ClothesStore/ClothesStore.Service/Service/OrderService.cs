@@ -127,9 +127,32 @@ namespace ClothesStore.Service.Service
             {
                 order = obj,
                 customer = (await db.Customers.FindAsync(obj.CustomerId)),
-                employee = (await db.Employees.FindAsync(obj.EmployeeId))
+                employee = (await db.Employees.FindAsync(obj.EmployeeId)),
             };
             return p;
+        }
+
+        public async Task<OrderFullModelView> GetOrderById(int Id)
+        {
+            var obj = await db.Orders.FindAsync(Id);
+            OrderFullModelView data = new OrderFullModelView();
+            List<OrderDetailModelView> details = new List<OrderDetailModelView>();
+            var orderDetails = await db.OrderDetails.Where(x => x.OrderId == Id).ToListAsync();
+            foreach(var item in orderDetails)
+            {
+                var config =  db.ConfigProducts.Where(x => x.Id == item.ConfigProductId).First();
+                OrderDetailModelView detail = new OrderDetailModelView()
+                {
+                    orderDetail = item,
+                    color = db.Colors.Find(config.ColorId).Value,
+                    size = db.Sizes.Find(config.SizeId).Name,
+                    product = db.Products.Find(config.ProductId),
+                };
+                details.Add(detail);
+            }
+            data.order = obj;
+            data.orderDetails = details;
+            return data;
         }
     }
 }

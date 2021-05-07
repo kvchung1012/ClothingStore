@@ -18,6 +18,7 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
         {
             _hostingEnvironment = hostingEnvironment;
         }
+
         public IActionResult Index()
         {
             return View();

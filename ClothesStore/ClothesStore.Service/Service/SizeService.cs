@@ -9,31 +9,28 @@ using System.Threading.Tasks;
 
 namespace ClothesStore.Service.Service
 {
-    public class CategoryService : ICategoryService
+    public class SizeService : ISizeService
     {
         ClothingStoreContext db = new ClothingStoreContext();
-        public async Task<bool> AddOrUpdate(Category category)
+        public async Task<bool> AddOrUpdate(Size size)
         {
             try
             {
-                if (category.Id == 0)
+                if (size.Id == 0)
                 {
-                    category.CreatedDate = DateTime.Now;
-                    category.IsDeleted = false;
-                    await db.Categories.AddAsync(category);
+                    size.CreatedDate = DateTime.Now;
+                    size.IsDeleted = false;
+                    await db.Sizes.AddAsync(size);
                     await db.SaveChangesAsync();
                     return true;
                 }
                 else
                 {
-                    var pro = await db.Categories.FindAsync(category.Id);
-                    pro.Name = category.Name;
-                    pro.Slug = category.Slug;
-                    pro.Image = category.Image;
-                    pro.Description = category.Description;
-                    pro.OrderBy = category.OrderBy;
-                    pro.Status = category.Status;
-                    pro.UpdatedDate = DateTime.Now;
+                    var pro = await db.Sizes.FindAsync(size.Id);
+                    pro.Name = size.Name;
+                    pro.OrderBy = size.OrderBy;
+                    pro.UpdatedDate = size.UpdatedDate;
+                    pro.Status = size.Status;
                     db.SaveChanges();
                     return true;
                 }
@@ -47,7 +44,7 @@ namespace ClothesStore.Service.Service
 
         public async Task<bool> DeleteById(int Id)
         {
-            var obj = await db.Categories.FindAsync(Id);
+            var obj = await db.Sizes.FindAsync(Id);
             if (obj != null)
             {
                 obj.IsDeleted = true;
@@ -57,14 +54,14 @@ namespace ClothesStore.Service.Service
             return false;
         }
 
-        public async Task<List<Category>> GetAll()
+        public async Task<List<Size>> GetAll()
         {
-            return await db.Categories.Where(x => x.IsDeleted == false).ToListAsync();
+            return await db.Sizes.Where(x => x.IsDeleted == false).ToListAsync();
         }
 
-        public async Task<ResponseData<Category>> GetListData(RequestData requestData)
+        public async Task<ResponseData<Size>> GetListData(RequestData requestData)
         {
-            var data = await db.Categories.Where(x => x.IsDeleted == false).ToListAsync();
+            var data = await db.Sizes.Where(x => x.IsDeleted == false).ToListAsync();
             // get total records
             var totalRecords = data.Count();
             // filter
@@ -91,7 +88,7 @@ namespace ClothesStore.Service.Service
                 data = data.Skip(requestData.PageSize * (requestData.PageNumber - 1)).Take(requestData.PageSize).ToList();
             }
 
-            ResponseData<Category> responseData = new ResponseData<Category>()
+            ResponseData<Size> responseData = new ResponseData<Size>()
             {
                 Data = data,
                 PageCount = totalRecords % requestData.PageSize == 0 ? totalRecords / requestData.PageSize : totalRecords / requestData.PageSize + 1,
@@ -103,9 +100,9 @@ namespace ClothesStore.Service.Service
             return responseData;
         }
 
-        public async Task<Category> GetObjectById(int Id)
+        public async Task<Size> GetObjectById(int Id)
         {
-            return await db.Categories.FindAsync(Id);
+            return await db.Sizes.FindAsync(Id);
         }
     }
 }

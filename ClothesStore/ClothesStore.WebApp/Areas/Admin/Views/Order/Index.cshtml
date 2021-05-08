@@ -27,22 +27,32 @@
         <div class="collapse" id="FormSearch">
             <div class="row align-items-end">
                 <div class="col-md-10 row justify-content-end">
+
                     <div class="col-md-4">
-                        <div>Tên sản phẩm</div>
-                        <input type="text" name="Name" class="form-control" />
-                    </div>
-                    <div class="col-md-4">
-                        <div>Nhãn hàng</div>
-                        <select class="form-control" name="BrandId">
-                            <option value="0">Chọn loại nhãn hàng</option>
+                        <div>Nhân viên</div>
+                        <select class="form-control" name="EmployeeId">
+                            <option value="0">Chọn nhân viên</option>
+                            @foreach (var item in ViewBag.employee as IEnumerable<ClothesStore.Model.Model.EF.Employee>)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
                         </select>
                     </div>
 
                     <div class="col-md-4">
-                        <div>Danh mục</div>
-                        <select class="form-control" name="CategoryId">
-                            <option value="0">Chọn danh mục sản phẩm</option>
+                        <div>Khách hàng</div>
+                        <select class="form-control" name="CustomerId">
+                            <option value="0">Chọn khách hàng</option>
+                            @foreach (var item in ViewBag.customer as IEnumerable<ClothesStore.Model.Model.EF.Customer>)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
                         </select>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div>Địa chỉ giao</div>
+                        <input type="text" name="Address" class="form-control" />
                     </div>
                 </div>
                 <div class="col-md-2 d-flex p-0 justify-content-end" style="margin-left:15px">

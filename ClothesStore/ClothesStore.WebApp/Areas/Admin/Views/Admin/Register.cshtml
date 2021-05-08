@@ -1,0 +1,133 @@
+﻿
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_LoginLayout.cshtml";
+}
+
+<form class="register">
+    <div class="card-body">
+        <h1>Register</h1>
+        <p class="text-medium-emphasis">Register your account</p>
+        <div class="input-group mb-3">
+            <span class="input-group-text">
+                <svg class="c-icon">
+                    @*<use xlink:href="~/lib/icon/sprites/free.svg#cil-user"></use>*@
+                </svg>
+            </span>
+            <input class="form-control" type="text" name="Name" placeholder="Fullname">
+        </div>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text">
+                <svg class="c-icon">
+                    @*<use xlink:href="~/lib/icon/sprites/free.svg#cil-user"></use>*@
+                </svg>
+            </span>
+            <input class="form-control" type="number" name="Phone" placeholder="Phone">
+        </div>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text">
+                <svg class="c-icon">
+                    @*<use xlink:href="~/lib/icon/sprites/free.svg#cil-user"></use>*@
+                </svg>
+            </span>
+            <input class="form-control" type="date" name="BirthDay" placeholder="BirthDay">
+        </div>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text">
+                <svg class="c-icon">
+                    @*<use xlink:href="~/lib/icon/sprites/free.svg#cil-user"></use>*@
+                </svg>
+            </span>
+            <input class="form-control" type="text" name="Email" placeholder="Email">
+        </div>
+
+        <div class="input-group mb-4">
+            <span class="input-group-text">
+                <svg class="c-icon">
+                    @*<use xlink:href="~/lib/icon/sprites/free.svg#cil-lock-locked"></use>*@
+                </svg>
+            </span>
+            <input class="form-control" type="password" name="Password" placeholder="Password">
+        </div>
+
+        <div class="input-group mb-4">
+            <span class="input-group-text">
+                <svg class="c-icon">
+                    @*<use xlink:href="~/lib/icon/sprites/free.svg#cil-lock-locked"></use>*@
+                </svg>
+            </span>
+            <input class="form-control" type="password" name="ConfirmedPassword" placeholder="ConfirmedPassword">
+        </div>
+
+
+        <div class="row">
+            <div class="col-6">
+                <button class="btn btn-primary px-4" onclick="Register()" type="button">Register</button>
+            </div>
+            <div class="col-6 text-end">
+                <button class="btn btn-link px-0" type="button" onclick="GetView('/Admin/Admin/ForgotPassword')">Forgot password?</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        function Register(url) {
+            debugger
+            let data = $('.register .form-control').serializeArray();
+            var registerObj = {};
+
+            jQuery.map(data, function (value, index) {
+                registerObj[value.name] = [value.value];
+            });
+
+
+            //chua validate
+            if (JSON.stringify(registerObj.Password) !== JSON.stringify(registerObj.ConfirmedPassword)) {
+                swal("Lỗi", "Mật khẩu phải giống nhau!", "warning");
+            } else {
+                swal({
+                    title: "Are you sure with above infomation?",
+                    text: "",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: false,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        $.ajax({
+                                url: '/Admin/Admin/Register',
+                                type: 'post',
+                                dataType: 'json',
+                                data: registerObj,
+                                beforeSend: function () {
+                                    @* swal("Oops!", "Are you sure with your infomation?", "question", {
+                                        button: "Yes",
+                                    });*@
+                                },
+                                success: function (res) {
+                                    if (res) {
+                                        swal(`Hello ${registerObj.Name}! Your account is registered!`, {
+                                            icon: "success",
+                                        }).then((value)=>{
+                                            location.href = '/Admin/Admin/Login';
+                                        });
+
+                                    } else {
+                                        swal("OOps", "Something went wrong", "error");
+                                    }
+                                }
+                         })
+
+                    } else {
+                        swal("Failed!");
+                    }
+                    });
+            }
+        }
+    </script>
+
+}

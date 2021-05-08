@@ -13,16 +13,15 @@ namespace ClothesStore.Service.Service
     {
         private readonly ClothingStoreContext db = new ClothingStoreContext();
 
-        public async Task<bool> ForgotPassword(string Email)
+        public async Task<Employee> HasUser(string Email, string phone)
         {
-            var list = await db.Employees.Where(x => x.Email == Email).ToListAsync();
-            return list.Count() > 0;
+            return await db.Employees.FirstOrDefaultAsync(x => x.Email == Email && x.Phone == phone);
         }
 
         public async Task<Employee> Login(string Email, string Password)
         {
             var list = await db.Employees.ToListAsync();
-            var target = list.FirstOrDefault(x => x.Email == Email && x.Password == Password && x.Status == true && x.IsDeleted == false);
+            var target = list.FirstOrDefault(x => x.Email == Email && x.Password == Password && x.IsDeleted == false);
             return target;
         }
     }

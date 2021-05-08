@@ -30,8 +30,10 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
             _employeeService = employeeService;
             _HttpContextAccessor = HttpContextAccessor;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            ViewBag.brand = await _brandService.GetAll();
+            ViewBag.category = await _categoryService.GetAll();
             return View();
         }
 

@@ -9,6 +9,6 @@ namespace ClothesStore.Service.IService
     public interface ILoginService
     {
         public  Task<Employee> Login(string Email, string Password);
-        public  Task<bool> ForgotPassword(string Email);
+        public  Task<Employee> HasUser(string Email, string Phone);
     }
 }

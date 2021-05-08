@@ -41,13 +41,74 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
         public async Task<JsonResult> Login(string Email, string Password)
         {
             var emp = await _loginService.Login(Email, Utilities.ComputeSha256Hash(Password));
-            
+
             //this emp is not available
             if (emp == null)
                 return Json(false);
             string jsonData = JsonSerializer.Serialize(emp);
-            HttpContext.Session.SetString(Common.Constant.USER,jsonData);
+            HttpContext.Session.SetString(Common.Constant.USER, jsonData);
             return Json(true);
+        }
+
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> Register(RegisterModelView model)
+        {
+            Employee emp = new Employee()
+            {
+                Id = 0,
+                Name = model.Name,
+                Phone = model.Phone,
+                BirthDay = model.BirthDay,
+                Email = model.Email,
+                Password = Utilities.ComputeSha256Hash(model.Password)
+
+            };
+
+            await _employeeService.AddOrUpdate(emp);
+
+            return Json(true);
+        }
+
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> ForgotPassword(string Email, string Phone)
+        {
+            var hasUser = await _loginService.HasUser(Email, Phone); // if exists, return user
+            
+            //user not available
+            if (hasUser == null)
+                return Json(false);
+
+            //cretae new password
+            string newPass = Utilities.GenerateRandomString(8);
+            hasUser.Password = Utilities.ComputeSha256Hash(newPass);
+            bool canUpdate = await _employeeService.AddOrUpdate(hasUser);
+
+            if (canUpdate)
+            {
+                MailService.SendEmail(hasUser.Email, newPass);
+                return Json(true);
+            }
+            else
+                return Json(false);
         }
 
 

@@ -74,7 +74,6 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
                 BirthDay = model.BirthDay,
                 Email = model.Email,
                 Password = Utilities.ComputeSha256Hash(model.Password)
-
             };
 
             await _employeeService.AddOrUpdate(emp);

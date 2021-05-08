@@ -41,13 +41,20 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
         public async Task<JsonResult> Login(string Email, string Password)
         {
             var emp = await _loginService.Login(Email, Utilities.ComputeSha256Hash(Password));
-            
+
             //this emp is not available
             if (emp == null)
                 return Json(false);
             string jsonData = JsonSerializer.Serialize(emp);
-            HttpContext.Session.SetString(Common.Constant.USER,jsonData);
+            HttpContext.Session.SetString(Common.Constant.USER, jsonData);
             return Json(true);
+        }
+
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index");
         }
 
 

@@ -20,6 +20,7 @@ namespace ClothesStore.Service.Service
             {
                 if (color.Id == 0)
                 {
+                   
                     color.CreatedDate = DateTime.Now;
                     color.IsDeleted = false;
                     await db.Colors.AddAsync(color);
@@ -29,11 +30,11 @@ namespace ClothesStore.Service.Service
                 else
                 {
                     var pro = await db.Colors.FindAsync(color.Id);
+                    pro.UpdatedBy = color.UpdatedBy;
                     pro.Name = color.Name;
                     pro.Value = color.Value;
                     pro.OrderBy = color.OrderBy;
                     pro.Status = color.Status;
-                    //pro.IsDeleted = color.IsDeleted;
                     pro.UpdatedDate = DateTime.Now;
                     db.SaveChanges();
                     return true;
@@ -73,7 +74,7 @@ namespace ClothesStore.Service.Service
             {
                 foreach (var filter in requestData.ListFilter)
                 {
-                    data = data.Where(x => x.GetType().GetProperty(filter.Key).PropertyType.Name == "String" ? x.GetType().GetProperty(filter.Key).GetValue(x).ToString().ToLower().Contains(filter.Value.ToLower()) : x.GetType().GetProperty(filter.Key).GetValue(x).Equals(filter.Value)).ToList();
+                    data = data.Where(x => x.GetType().GetProperty(filter.Key).PropertyType.Name == "String" ? x.GetType().GetProperty(filter.Key).GetValue(x).ToString().ToLower().Contains(filter.Value.ToLower()) : x.GetType().GetProperty(filter.Key).GetValue(x).ToString().Equals(filter.Value)).ToList();
                 }
                 totalRecords = data.Count();
             }

@@ -37,7 +37,7 @@ namespace ClothesStore.Service.Service
                     emp.Password = Employee.Password;
                     emp.Note = Employee.Note;
                     emp.Status = Employee.Status;
-                    emp.UpdatedBy = 1;
+                    emp.UpdatedBy = Employee.UpdatedBy;
                     emp.UpdatedDate = DateTime.Now;
                     emp.Address = Employee.Address;
                     emp.BirthDay = Employee.BirthDay;
@@ -88,7 +88,7 @@ namespace ClothesStore.Service.Service
                 {
                     list = list.Where(x => x.GetType().GetProperty(item.Key).PropertyType.Name == "String"
                     ? x.GetType().GetProperty(item.Key).GetValue(x).ToString().ToLower().Contains(item.Value)
-                    : x.GetType().GetProperty(item.Key).GetValue(x).Equals(item.Value)).ToList();
+                    : x.GetType().GetProperty(item.Key).GetValue(x).ToString().Equals(item.Value)).ToList();
                 }
 
                 totalCount = list.Count();

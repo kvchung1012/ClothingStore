@@ -349,10 +349,9 @@ function RefreshForm() {
         }
         else if ($(this).attr('type') == 'radio') {
             let name = $(this).attr('name');
-            $("#" + name + "").prop('checked', true)
+            $("#" + name + "").prop('checked', true);
         }
     })
-
     $('.form-input select').each(function () {
         $(this).val(0);
         if ($(this).hasClass('select2')) {

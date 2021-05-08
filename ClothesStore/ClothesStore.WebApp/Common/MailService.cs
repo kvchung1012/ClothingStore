@@ -11,21 +11,21 @@ namespace ClothesStore.WebApp.Common
     {
         public static void SendEmail(string email, string pass)
         {
-            /*var smtp = new SmtpClient
+            var smtp = new SmtpClient
             {
                 Host = "smtp.gmail.com",
                 Port = 587,
                 EnableSsl = true,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 UseDefaultCredentials = true,
-                Credentials = new NetworkCredential("khuatchung1012@gmail.com", "Chung1012@tx"),
+                Credentials = new NetworkCredential("haidv2801@gmail.com", ""),
             };
-            var mes = new MailMessage("khuatchung1012@gmail.com", email)
+            var mes = new MailMessage("haidv2801@gmail.com", email)
             {
                 Subject = "Send to you password of ClothingStore",
                 Body = "Mật khẩu mới của bạn là : " + pass,
             };
-            smtp.Send(mes);*/
+            smtp.Send(mes);
         }
     }
 }

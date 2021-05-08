@@ -28,7 +28,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <div class="wrap-box"></div>
     <div class="header_bottom">
         <div class="container">
-            @Html.RenderPartialAsync("_Navigation")
+            @await Component.InvokeAsync("Category")
             @Html.Partial("_Cart")
             <div class="clearfix"></div>
         </div>

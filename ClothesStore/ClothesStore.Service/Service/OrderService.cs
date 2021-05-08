@@ -38,6 +38,7 @@ namespace ClothesStore.Service.Service
                     pro.CustomerId = order.CustomerId;
                     pro.EmployeeId = order.EmployeeId;
                     pro.Note = order.Note;
+                    pro.UpdatedBy = order.UpdatedBy;
                     pro.Address = order.Address;
                     pro.Status = order.Status;
                     pro.UpdatedDate = DateTime.Now;

@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using ClothesStore.Model.Model.EF;
 using ClothesStore.Model.ModelView;
 using ClothesStore.Service.IService;
+using ClothesStore.WebApp.Common;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClothesStore.WebApp.Areas.Admin.Controllers
@@ -15,12 +18,17 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
         private readonly IProductService _productService;
         private readonly IBrandService _brandService;
         private readonly ICategoryService _categoryService;
+        IEmployeeService _employeeService;
+        IHttpContextAccessor _HttpContextAccessor;
 
-        public ProductController(IProductService productService,IBrandService brandService,ICategoryService categoryService)
+        public ProductController(IProductService productService,IBrandService brandService,ICategoryService categoryService,
+            IEmployeeService employeeService, IHttpContextAccessor HttpContextAccessor)
         {
             _productService = productService;
             _brandService = brandService;
             _categoryService = categoryService;
+            _employeeService = employeeService;
+            _HttpContextAccessor = HttpContextAccessor;
         }
         public async Task<IActionResult> Index()
         {
@@ -60,6 +68,18 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
         [HttpPost]
         public async Task<JsonResult> AddOrUpdate(Product obj, List<ProductImage> images, List<ConfigProduct> config)
         {
+            string jsonUser = _HttpContextAccessor.HttpContext.Session.GetString(Constant.USER);
+            var emp = new Employee();
+            if (jsonUser != null)
+            {
+                emp = JsonSerializer.Deserialize<Employee>(jsonUser) as Employee;
+                if (obj.Id == 0)
+                    obj.CreatedBy = emp.Id;
+                else
+                {
+                    obj.UpdatedBy = emp.Id;
+                }
+            }
             var res = await _productService.AddOrUpdate(obj, config, images);
             return Json(res);
         }

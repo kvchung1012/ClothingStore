@@ -19,7 +19,7 @@ namespace ClothesStore.WebApp.Controllers
         }
 
         public IActionResult Index()
-        {
+        { 
             return View();
         }
 

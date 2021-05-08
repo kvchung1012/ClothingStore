@@ -1,4 +1,15 @@
-﻿<div class="header_top">
+﻿@using Microsoft.AspNetCore.Http;
+@using ClothesStore.WebApp.Common;
+@using System.Text.Json;
+@using ClothesStore.Model.Model.EF;
+@inject IHttpContextAccessor HttpContextAccessor
+@{ 
+    string jsonUser = HttpContextAccessor.HttpContext.Session.GetString(Constant.USER);
+    var emp = new Employee();
+    if (jsonUser != null)
+        emp = JsonSerializer.Deserialize<Employee>(jsonUser) as Employee;
+}
+<div class="header_top">
     <div class="container">
         <div class="one-fifth column row_1">
             <span class="selection-box">
@@ -10,9 +21,20 @@
             </span>
         </div>
         <div class="cssmenu">
-            <ul>
-                <li class="active"><a href="login.html">My Account</a></li>
-            </ul>
+            @if (emp.Id != 0) // user is not avalable
+            {
+                <ul>
+                    <li class="active"><a href="/">Xin chào @emp.Name</a></li>
+                    <li class="active"><a href="/">Đăng xuất</a></li>
+                </ul>
+            }
+            else
+            {
+                <ul>
+                    <li class="active"><a href="/">My Account</a></li>
+                </ul>
+            }
+
         </div>
     </div>
 </div>

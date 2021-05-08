@@ -34,6 +34,7 @@ namespace ClothesStore.Service.Service
 
                     emp.IdCard = Employee.IdCard;
                     emp.Name = Employee.Name;
+                    emp.Password = Employee.Password;
                     emp.Note = Employee.Note;
                     emp.Status = Employee.Status;
                     emp.UpdatedBy = 1;

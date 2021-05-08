@@ -57,6 +57,60 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> Register(RegisterModelView model)
+        {
+            Employee emp = new Employee()
+            {
+                Id = 0,
+                Name = model.Name,
+                Phone = model.Phone,
+                BirthDay = model.BirthDay,
+                Email = model.Email,
+                Password = Utilities.ComputeSha256Hash(model.Password)
+
+            };
+
+            await _employeeService.AddOrUpdate(emp);
+
+            return Json(true);
+        }
+
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> ForgotPassword(string Email, string Phone)
+        {
+            var hasUser = await _loginService.HasUser(Email, Phone); // if exists, return user
+            
+            //user not available
+            if (hasUser == null)
+                return Json(false);
+
+            //cretae new password
+            string newPass = Utilities.GenerateRandomString(8);
+            hasUser.Password = Utilities.ComputeSha256Hash(newPass);
+            bool canUpdate = await _employeeService.AddOrUpdate(hasUser);
+
+            if (canUpdate)
+            {
+                MailService.SendEmail(hasUser.Email, newPass);
+                return Json(true);
+            }
+            else
+                return Json(false);
+        }
+
 
         public async Task<PartialViewResult> GetListData(RequestData requestData)
         {

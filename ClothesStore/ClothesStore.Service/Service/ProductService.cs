@@ -218,6 +218,39 @@ namespace ClothesStore.Service.Service
             return listproducts;
         }
 
+        public async Task<ProductAndProductConfigModelView> GetProductDetailById(int id)
+        {
+            var product = await db.Products.FindAsync(id);
+            ProductAndProductConfigModelView p = new ProductAndProductConfigModelView()
+            {
+                product = product,
+                configs = await GetListConfigProductByProductId(product.Id),
+                images = await GetListProductImageByProductId(product.Id)
+            };
+            return p;
+        }
+
+        public async Task<List<ProductAndProductConfigModelView>> GetRelatedProduct(int id,int qty)
+        {
+            List<ProductAndProductConfigModelView> listproducts = new List<ProductAndProductConfigModelView>();
+            var product = await db.Products.FindAsync(id);
+            foreach (var item in await db.Products.ToListAsync())
+            {
+                if(product.CategoryId==item.CategoryId && product.Id != item.Id)
+                {
+                    ProductAndProductConfigModelView p = new ProductAndProductConfigModelView()
+                    {
+                        product = item,
+                        configs = await GetListConfigProductByProductId(item.Id),
+                        images = await GetListProductImageByProductId(item.Id)
+                    };
+                    listproducts.Add(p);
+                }
+               
+            };
+            return listproducts.Take(qty).ToList();
+
+        }
 
         //public List<ConfigProduct> Client_GetListConfigProductByProductId(int Id)
         //{

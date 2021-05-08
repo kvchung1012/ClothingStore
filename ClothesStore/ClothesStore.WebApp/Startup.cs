@@ -47,8 +47,8 @@ namespace ClothesStore.WebApp
             services.AddSingleton<ICustomerService, CustomerService>();
             services.AddSingleton<ICategoryService, CategoryService>();
             services.AddSingleton<ISizeService, SizeService>();
-			services.AddSingleton<ILoginService, LoginService>();
-			services.AddSingleton<IOrderService, OrderService>();
+            services.AddSingleton<ILoginService, LoginService>();
+            services.AddSingleton<IOrderService, OrderService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -77,6 +77,11 @@ namespace ClothesStore.WebApp
                 routes.MapRoute(
                   name: "areas",
                   template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
+                routes.MapRoute(
+                    "Detail",
+                    "/",
+                     new { Controller = "Home", Action = "Index" }
                 );
             });
 

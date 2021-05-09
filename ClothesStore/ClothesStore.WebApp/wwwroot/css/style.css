@@ -14177,7 +14177,7 @@ button.bg-dark:focus {
 }
 
 [class^="bg-"] {
-    color: #fff;
+    color: black;
 }
 
 .bg-facebook {

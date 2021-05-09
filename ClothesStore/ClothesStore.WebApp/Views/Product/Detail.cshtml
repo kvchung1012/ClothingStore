@@ -6,6 +6,7 @@
 <div class="single_top">
     <div class="container">
         <div class="single_grid">
+            <input type="hidden" id="Id" name="Id" value="@Model.product.Id" />
             <!--load product detail here-->
             <div class="grid images_3_of_2">
                 <ul id="etalage">
@@ -35,18 +36,21 @@
                 <ul class="back">
                     <li><i class="back_arrow"> </i>Back to <a href="index.html">Men's Clothing</a></li>
                 </ul>
-                <h1>nibh euismod</h1>
-                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum</p>
+                <h1>@Model.product.Name</h1>
+                <p>@Model.product.Description</p>
                 <div class="dropdown_top">
                     <div id="product_size" class="dropdown_left">
-                        <select class="dropdown" tabindex="10" data-settings='{"wrapperClass":"metro1"}'>
+                        <select class="dropdown" tabindex="10" data-settings='{"wrapperClass":"metro1"}' onchange="ChooseSize(this)">
                             <option value="0">Select size</option>
-
+                            @foreach(var item in ViewBag.Size as IEnumerable<ClothesStore.Model.Model.EF.Size>)
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
                         </select>
                     </div>
 
                     <div id="product_color" class="dropdown_left">
-                        <select class="dropdown" tabindex="10" data-settings='{"wrapperClass":"metro1"}'>
+                        <select class="dropdown choose-color" tabindex="10" data-settings='{"wrapperClass":"metro1"}' onchange="SetPrice(this)">
                             <option value="0">Select color</option>
                             <li><a href="#"> <span class="color1"> </span></a></li>
                         </select>
@@ -55,15 +59,13 @@
                 </div>
                 <div class="simpleCart_shelfItem">
                     <div class="price_single">
-                        <div class="head"><h2><span class="amount item_price">$45.00</span></h2></div>
+                        <div class="head"><h2><span class="amount item_price">@(Model.configs.First() != null? Model.configs.First().Price:0)</span></h2></div>
                         <div class="head_desc"><a href="#">12 reviews</a><img src="images/review.png" alt="" /></div>
                         <div class="clearfix"></div>
                     </div>
                     <!--<div class="single_but"><a href="" class="item_add btn_3" value=""></a></div>-->
                     <div class="size_2-right"><a href="/Product/AddToCart?@Model.product.Id" class="item_add item_add1 btn_5" value="">Add to Cart </a></div>
                 </div>
-
-
             </div>
             <div class="clearfix"></div>
         </div>
@@ -75,7 +77,10 @@
                 <li class="last"><a href="#"> <i class="s_email"> </i><div class="social_desc">Email<br> a Friend</div><div class="clearfix"> </div></a></li>
             </ul>
         </div>
-        <ul class="menu_drop">
+        <div class="content">
+            @Html.Raw(Model.product.Content)
+        </div>
+        @*<ul class="menu_drop">
             <li class="item1">
                 <a href="#"><img src="/client/images/product_arrow.png">Description</a>
                 <ul>
@@ -83,7 +88,7 @@
                 </ul>
             </li>
 
-        </ul>
+        </ul>*@
     </div>
 
 
@@ -118,8 +123,35 @@
 
     <!--my script-->
     <script>
-        function getSingleProduct() {
+        function ChooseSize(el) {
+            let sizeId = $(el).val();
+            let productId = $('#Id').val();
+            if (sizeId > 0) {
+                $.ajax({
+                    url: '/Product/GetColor',
+                    dataType: 'json',
+                    type: 'post',
+                    data: {
+                        productId: productId,
+                        sizeId: sizeId
+                    },
+                    success: function (res) {
+                        console.log(res);
+                        let row = `<option value="0" data-price="0">Chọn màu sản phẩm</option>`;
+                        $(res).each(function (index, item) {
+                            row += `<option value="${item.color.id}" data-price="${item.price}">${item.color.name}</option>`
+                        })
+                        $('.choose-color').html('');
+                        $('.choose-color').append(row);
+                    }
+                })
+            }
+        }
 
+        function SetPrice(el) {
+            let price = $(el).children('option:selected').attr('data-price');
+            $('.item_price').html('');
+            $('.item_price').append(price);
         }
     </script>
 

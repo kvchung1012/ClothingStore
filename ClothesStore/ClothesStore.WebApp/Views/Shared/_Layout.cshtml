@@ -21,6 +21,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <link href="~/client/css/megamenu.css" rel="stylesheet" type="text/css" media="all" />
     <script type="text/javascript" src="~/client/js/megamenu.js"></script>
     <script>$(document).ready(function () { $(".megamenu").megamenu(); });</script>
+   
 </head>
 <body>
     @Html.Partial("_HeaderTop")
@@ -48,5 +49,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     @RenderBody()
 
     @Html.Partial("_Footer")
+    @RenderSection("script",required:false)
 </body>
 </html>		

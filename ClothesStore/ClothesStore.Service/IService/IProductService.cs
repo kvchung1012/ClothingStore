@@ -20,7 +20,11 @@ namespace ClothesStore.Service.IService
         public Task<List<ConfigProduct>> GetListConfigProductByProductId(int Id);
 
         public Task<List<ConfigProductModelView>> GetConfigProductDetail(int Id);
+
+        //client
         public Task<List<ProductAndProductConfigModelView>> GetListProductByQtyAndPosition(int pos, int qty);
+        public Task<ProductAndProductConfigModelView> GetProductDetailById(int id);
+        public Task<List<ProductAndProductConfigModelView>> GetRelatedProduct(int id,int qty);
 
 
         // define 

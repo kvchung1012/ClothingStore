@@ -1,0 +1,172 @@
+﻿@model ClothesStore.Model.ModelView.ProductAndProductConfigModelView
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section script{
+    <link rel="stylesheet" href="~/client/css/etalage.css">
+    <script src="~/client/js/jquery.etalage.min.js"></script>
+    <script>
+        jQuery(document).ready(function ($) {
+
+            $('#etalage').etalage({
+                thumb_image_width: 300,
+                thumb_image_height: 400,
+                source_image_width: 900,
+                source_image_height: 1200,
+                show_hint: true,
+                click_callback: function (image_anchor, instance_id) {
+                    alert('Callback example:\nYou clicked on an image with the anchor: "' + image_anchor + '"\n(in Etalage instance: "' + instance_id + '")');
+                }
+            });
+
+        });
+    </script>
+    <!--initiate accordion-->
+    <script type="text/javascript">
+        $(function () {
+
+            var menu_ul = $('.menu_drop > li > ul'),
+                menu_a = $('.menu_drop > li > a');
+
+            menu_ul.hide();
+
+            menu_a.click(function (e) {
+                e.preventDefault();
+                if (!$(this).hasClass('active')) {
+                    menu_a.removeClass('active');
+                    menu_ul.filter(':visible').slideUp('normal');
+                    $(this).addClass('active').next().stop(true, true).slideDown('normal');
+                } else {
+                    $(this).removeClass('active');
+                    $(this).next().stop(true, true).slideUp('normal');
+                }
+            });
+
+        });
+    </script>
+}
+<div class="single_top">
+    <div class="container">
+        <div class="single_grid">
+            <div class="grid images_3_of_2">
+                <ul id="etalage">
+                    <li>
+                        <a href="optionallink.html">
+                            <img class="etalage_thumb_image" src="@Model.images[0].Image" class="img-responsive" />
+                            <img class="etalage_source_image" src="@Model.images[0].Image" class="img-responsive" title="" />
+                        </a>
+                    </li>
+                    @foreach (var item in Model.images as List<ClothesStore.Model.Model.EF.ProductImage>)
+                    {
+                        <li>
+                            <img class="etalage_thumb_image" src="@item.Image" class="img-responsive" />
+                            <img class="etalage_source_image" src="@item.Image" class="img-responsive" title="" />
+                        </li>
+                    }
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+            <div class="desc1 span_3_of_2">
+                <ul class="back">
+                    <li><i class="back_arrow"> </i>Back to <a href="index.html">Men's Clothing</a></li>
+                </ul>
+                <h1>@Model.product.Name</h1>
+                <p> @Html.Raw(Model.product.Content)</p>
+                <div class="dropdown_top">
+                    <div class="dropdown_left">
+                        <select class="dropdown" tabindex="10" data-settings='{"wrapperClass":"metro1"}'>
+                            <option value="0">Select size</option>
+                            @{
+                                var val = 1;
+                            }
+                            @foreach (var item in ViewBag.Size as List<ClothesStore.Model.Model.EF.Size>)
+                            {
+                                <option value="@val">@item.Name</option>
+                                val++;
+                            }
+                        </select>
+                    </div>
+                    <div class="dropdown_left">
+                        <select class="dropdown" tabindex="10" data-settings='{"wrapperClass":"metro1"}'>
+                            <option value="0">Select Color</option>
+                            @{
+                                var valColor = 1;
+                            }
+                            @foreach (var item in ViewBag.Color as List<ClothesStore.Model.Model.EF.Color>)
+                            {
+                                <option value="@valColor">@item.Name</option>
+                                valColor++;
+                            }
+                        </select>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+
+                <div class="simpleCart_shelfItem">
+                    <div class="price_single">
+                        @foreach (var item in Model.configs.OrderByDescending(x => x.Id))
+                        {
+                            <div class="head"><h2><span class="amount item_price">@item.Price</span></h2></div>
+                            break;
+                        }
+
+
+                        <div class="clearfix"></div>
+                    </div>
+                    <!--<div class="single_but"><a href="" class="item_add btn_3" value=""></a></div>-->
+                    <div class="size_2-right"><a href="#" class="item_add item_add1 btn_5" value="" />Add to Cart </a></div>
+
+                </div>
+
+            </div>
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="single_social_top">
+            <ul class="single_social">
+                <li><a href="#"> <i class="s_fb"> </i> <div class="social_desc">Share<br> on facebook</div><div class="clearfix"> </div></a></li>
+                <li><a href="#"> <i class="s_twt"> </i> <div class="social_desc">Tweet<br> this product</div><div class="clearfix"> </div></a></li>
+                <li><a href="#"> <i class="s_google"> </i><div class="social_desc">Google+<br> this product</div><div class="clearfix"> </div></a></li>
+                <li class="last"><a href="#"> <i class="s_email"> </i><div class="social_desc">Email<br> a Friend</div><div class="clearfix"> </div></a></li>
+            </ul>
+        </div>
+        <ul class="menu_drop">
+            <li class="item1">
+                <a href="#"><img src="/client/images/product_arrow.png">Description</a>
+                <ul>
+                    <li class="subitem1"><a href="#">@Model.product.Description</a></li>
+                </ul>
+            </li>
+
+        </ul>
+    </div>
+
+
+    <h3 class="m_2">Related Products</h3>
+    <div class="container">
+        <div class="box_3">
+            @foreach (var item in ViewBag.RelatedPro as List<ClothesStore.Model.ModelView.ProductAndProductConfigModelView>)
+            {
+                <div class="col-md-3">
+                    <div class="content_box">
+                        <a href="single.html">
+                            <img src="@item.product.Image" class="img-responsive" alt="@item.product.Name">
+                        </a>
+                    </div>
+                    <h4><a href="single.html">@item.product.Name</a></h4>
+                    @foreach (var configPro in item.configs.OrderByDescending(x => x.Id))
+                    {
+                        <p>@configPro.Price</p>
+                    }
+
+                </div>
+            }
+
+
+            <div class="clearfix"> </div>
+        </div>
+    </div>
+</div>
+
+

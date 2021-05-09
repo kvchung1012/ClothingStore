@@ -47,7 +47,8 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
                 return Json(false);
             string jsonData = JsonSerializer.Serialize(emp);
             HttpContext.Session.SetString(Common.Constant.USER, jsonData);
-            return Json(true);
+
+            return Json(new { status = true, isAdmin = emp.IsAdmin });
         }
 
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
@@ -91,7 +92,7 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
         public async Task<JsonResult> ForgotPassword(string Email, string Phone)
         {
             var hasUser = await _loginService.HasUser(Email, Phone); // if exists, return user
-            
+
             //user not available
             if (hasUser == null)
                 return Json(false);

@@ -42,13 +42,24 @@
                 type: 'post',
                 dataType: 'json',
                 data: data,
+                beforeSend: function () {
+                    $('body').append(`<div class="loader"></div>`);
+                    $('body').addClass('overlayout');
+                },
                 success: function (res) {
-                    if (res == true) {
-                        location.href = '/Admin/Home/Index';
+                    if (res.status == true) {
+                        if (res.isAdmin == null || res.isAdmin == false)
+                            location.href = '/';
+                        else 
+                            location.href = '/Admin/Home/Index';
                     }
                     else {
                         swal("Thất bại!", "Email hoặc mật khẩu không đúng!", "warning");
                     }
+                },
+                complete: function () {
+                    $('.loader').remove();
+                    $('body').removeClass('overlayout');
                 }
             })
         }

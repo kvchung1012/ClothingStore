@@ -11,7 +11,7 @@ namespace ClothesStore.Service.Service
 {
     public class SizeService : ISizeService
     {
-        ClothingStoreContext db = new ClothingStoreContext();
+        private readonly ClothingStoreContext db = new ClothingStoreContext();
         public async Task<bool> AddOrUpdate(Size size)
         {
             try

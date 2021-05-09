@@ -9,23 +9,18 @@ namespace ClothesStore.WebApp.Controllers
 {
     public class CategoryController : Controller
     {
-        ICategoryService _categoryService;
-        IBrandService _brandService;
-        public CategoryController(ICategoryService categoryService,IBrandService brandService)
+        private readonly ICategoryService _categoryService;
+
+        public CategoryController(ICategoryService categoryService)
         {
             _categoryService = categoryService;
-            _brandService = brandService;
+   
         }
         public IActionResult Index()
         {
             return View();
         }
 
-        public async Task<IActionResult> _Navigation()
-        {
-            var categories = await _categoryService.GetAll();
-            ViewBag.Brand = await _brandService.GetAll();
-            return PartialView(categories);
-        }
+      
     }
 }

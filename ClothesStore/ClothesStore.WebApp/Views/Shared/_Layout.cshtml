@@ -21,14 +21,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <link href="~/client/css/megamenu.css" rel="stylesheet" type="text/css" media="all" />
     <script type="text/javascript" src="~/client/js/megamenu.js"></script>
     <script>$(document).ready(function () { $(".megamenu").megamenu(); });</script>
+   
 </head>
 <body>
     @Html.Partial("_HeaderTop")
-
     <div class="wrap-box"></div>
     <div class="header_bottom">
         <div class="container">
-            @Html.Partial("_Navigation")
+            @await Component.InvokeAsync("Category")
             @Html.Partial("_Cart")
             <div class="clearfix"></div>
         </div>
@@ -40,7 +40,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <h1>New Season Arrivals.</h1>
                 <h2>Check out all the new trends</h2>
                 <div class="button">
-                    <a href="#" class="hvr-shutter-out-horizontal">Shop Now</a>
+                    <a href="/" class="hvr-shutter-out-horizontal">Shop Now</a>
                 </div>
             </div>
         </div>
@@ -49,5 +49,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     @RenderBody()
 
     @Html.Partial("_Footer")
+    @RenderSection("script",required:false)
 </body>
 </html>		

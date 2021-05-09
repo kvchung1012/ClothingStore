@@ -112,9 +112,9 @@ namespace ClothesStore.Service.Service
         {
             List<ConfigProductModelView> data = new List<ConfigProductModelView>();
             var con = await db.ConfigProducts.Where(x => x.ProductId == Id && x.IsDeleted == false).ToListAsync();
-            foreach(var item in con)
+            foreach (var item in con)
             {
-                if(item.Stock > 0)
+                if (item.Stock > 0)
                 {
                     ConfigProductModelView c = new ConfigProductModelView()
                     {
@@ -133,7 +133,7 @@ namespace ClothesStore.Service.Service
             return await db.ConfigProducts.Where(x => x.ProductId == Id && x.IsDeleted == false).ToListAsync();
         }
 
-      
+
 
         public async Task<ResponseData<ProductModelView>> GetListData(RequestData requestData)
         {
@@ -196,5 +196,69 @@ namespace ClothesStore.Service.Service
         {
             return await db.Products.FindAsync(Id);
         }
+
+
+
+
+        //Test Client
+        public async Task<List<ProductAndProductConfigModelView>> GetListProductByQtyAndPosition(int pos, int qty)
+        {
+            List<ProductAndProductConfigModelView> listproducts = new List<ProductAndProductConfigModelView>();
+            var products = await db.Products.OrderByDescending(x => x.Id).Skip(pos).Take(qty).ToListAsync();
+            foreach (var item in products)
+            {
+                ProductAndProductConfigModelView p = new ProductAndProductConfigModelView()
+                {
+                    product = item,
+                    configs = await GetListConfigProductByProductId(item.Id),
+                    images = await GetListProductImageByProductId(item.Id)
+                };
+                listproducts.Add(p);
+            };
+            return listproducts;
+        }
+
+        public async Task<ProductAndProductConfigModelView> GetProductDetailById(int id)
+        {
+            var product = await db.Products.FindAsync(id);
+            ProductAndProductConfigModelView p = new ProductAndProductConfigModelView()
+            {
+                product = product,
+                configs = await GetListConfigProductByProductId(product.Id),
+                images = await GetListProductImageByProductId(product.Id)
+            };
+            return p;
+        }
+
+        public async Task<List<ProductAndProductConfigModelView>> GetRelatedProduct(int id, int qty)
+        {
+            List<ProductAndProductConfigModelView> listproducts = new List<ProductAndProductConfigModelView>();
+            var product = await db.Products.FindAsync(id);
+            foreach (var item in await db.Products.ToListAsync())
+            {
+                if (product.CategoryId == item.CategoryId && product.Id != item.Id)
+                {
+                    ProductAndProductConfigModelView p = new ProductAndProductConfigModelView()
+                    {
+                        product = item,
+                        configs = await GetListConfigProductByProductId(item.Id),
+                        images = await GetListProductImageByProductId(item.Id)
+                    };
+                    listproducts.Add(p);
+                }
+            };
+            return listproducts.Take(qty).ToList();
+
+        }
+
+        //public List<ConfigProduct> Client_GetListConfigProductByProductId(int Id)
+        //{
+        //    return db.ConfigProducts.Where(x => x.ProductId == Id && x.IsDeleted == false).ToList();
+        //}
+        //public List<ProductImage>Client_GetListProductImageByProductId(int Id)
+        //{
+        //    return  db.ProductImages.Where(x => x.ProductId == Id).ToList();
+        //}
     }
 }
+

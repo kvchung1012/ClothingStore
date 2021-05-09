@@ -1,5 +1,7 @@
+﻿using ClothesStore.Model.ModelView;
 using ClothesStore.Service.IService;
 using ClothesStore.Service.Service;
+using ClothesStore.WebApp.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -36,6 +38,10 @@ namespace ClothesStore.WebApp
                 options.Cookie.IsEssential = true;
             });
 
+            services.AddOptions();                                         // Kích hoạt Options
+            var mailsettings = Configuration.GetSection("MailSettings");  // đọc config
+            services.Configure<MailSettings>(mailsettings);                // đăng ký để Inject
+
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             // register service
@@ -47,8 +53,9 @@ namespace ClothesStore.WebApp
             services.AddSingleton<ICustomerService, CustomerService>();
             services.AddSingleton<ICategoryService, CategoryService>();
             services.AddSingleton<ISizeService, SizeService>();
-			services.AddSingleton<ILoginService, LoginService>();
-			services.AddSingleton<IOrderService, OrderService>();
+            services.AddSingleton<ILoginService, LoginService>();
+            services.AddSingleton<IOrderService, OrderService>();
+            services.AddTransient<ISendMailService, SendMailService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -75,13 +82,20 @@ namespace ClothesStore.WebApp
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                  name: "areas",
-                  template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                    "Detail",
+                    "/",
+                     new { Controller = "Home", Action = "Index" }
                 );
+               
             });
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                    name: "admin default",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                    );
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

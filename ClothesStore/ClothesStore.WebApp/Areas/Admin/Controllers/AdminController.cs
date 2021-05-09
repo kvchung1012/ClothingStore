@@ -19,11 +19,13 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
 
         private readonly IEmployeeService _employeeService;
         private readonly ILoginService _loginService;
+        private readonly ISendMailService _sendMailService;
 
-        public AdminController(IEmployeeService employeeService, ILoginService loginService)
+        public AdminController(IEmployeeService employeeService, ILoginService loginService,ISendMailService sendMailService)
         {
             _employeeService = employeeService;
             _loginService = loginService;
+            _sendMailService = sendMailService;
         }
 
         public IActionResult Index()
@@ -47,7 +49,8 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
                 return Json(false);
             string jsonData = JsonSerializer.Serialize(emp);
             HttpContext.Session.SetString(Common.Constant.USER, jsonData);
-            return Json(true);
+
+            return Json(new { status = true, isAdmin = emp.IsAdmin });
         }
 
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
@@ -74,7 +77,6 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
                 BirthDay = model.BirthDay,
                 Email = model.Email,
                 Password = Utilities.ComputeSha256Hash(model.Password)
-
             };
 
             await _employeeService.AddOrUpdate(emp);
@@ -92,7 +94,7 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
         public async Task<JsonResult> ForgotPassword(string Email, string Phone)
         {
             var hasUser = await _loginService.HasUser(Email, Phone); // if exists, return user
-            
+
             //user not available
             if (hasUser == null)
                 return Json(false);
@@ -104,7 +106,11 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
 
             if (canUpdate)
             {
-                MailService.SendEmail(hasUser.Email, newPass);
+                MailContent mail = new MailContent();
+                mail.To = "nguyenkhanh21102000@gmail.com";
+                mail.Subject = "ForgotPassword";
+                mail.Body ="Mật khẩu mới của bạn là :"+newPass;
+                await _sendMailService.SendMail(mail);
                 return Json(true);
             }
             else

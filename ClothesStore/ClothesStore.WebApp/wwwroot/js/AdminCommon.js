@@ -135,9 +135,11 @@ function GetFormAddOrEdit(url, Id) {
             $('.btn-save').removeClass('d-none');
             if (Id == 0) {
                 $('.btn-save').append('<i class="fa fa-spinner fa-spin d-none"></i><i class="bi bi-check2 d-none"></i >Thêm mới');
+                $('.modal-title').text('Thêm mới');
             }
             else {
                 $('.btn-save').append('<i class="fa fa-spinner fa-spin d-none"></i><i class="bi bi-check2 d-none"></i >Cập nhật');
+                $('.modal-title').text('Cập nhật');
             }
             $('.modal-add').modal('show');
         },

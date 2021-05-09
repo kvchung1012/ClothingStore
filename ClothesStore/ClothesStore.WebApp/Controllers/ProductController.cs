@@ -23,7 +23,7 @@ namespace ClothesStore.WebApp.Controllers
         {
             return View();
         }
-
+        //[Route("chi-tiet/{slug}-{id}")]
         public async Task<IActionResult> Detail(int id=1)
         {
             var product = await _productService.GetProductDetailById(id);

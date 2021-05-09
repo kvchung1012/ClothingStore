@@ -79,10 +79,11 @@ namespace ClothesStore.WebApp
                   template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
                 );
                 routes.MapRoute(
-                    "Detail",
+                    "Home",
                     "/",
                      new { Controller = "Home", Action = "Index" }
                 );
+               
             });
 
             app.UseEndpoints(endpoints =>

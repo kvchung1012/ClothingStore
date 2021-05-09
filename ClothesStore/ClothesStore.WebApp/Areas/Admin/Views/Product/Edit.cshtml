@@ -161,7 +161,7 @@
 
 
                 <div class="col-md-12 d-flex justify-content-end mt-3">
-                    <button type="button" class="btn btn-square btn-danger">Quay lại</button>
+                    <button type="button" class="btn btn-square btn-danger" onclick="Cancel()">Quay lại</button>
                     <button type="button" class="btn btn-square btn-success ml-2" onclick="Add()">Cập nhật</button>
                 </div>
             </div>
@@ -328,6 +328,9 @@
                     $(el).parent().parent().remove();
                 }
             })
+        }
+        function Cancel() {
+            window.location.href = "/Admin/Product/Index";
         }
     </script>
 }

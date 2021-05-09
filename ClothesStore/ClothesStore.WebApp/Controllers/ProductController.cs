@@ -44,6 +44,13 @@ namespace ClothesStore.WebApp.Controllers
             return View(product);
         }
 
+        [HttpPost]
+        public async Task<JsonResult> GetColor(int productId,int sizeId)
+        {
+            var data = await _productService.GetColorConfig(productId, sizeId); 
+            return Json(data);
+        }
+
         public async Task<IActionResult> SingleProduct(int Id)
         {
             var productViewModel = await _productService.GetProductDetailById(Id);

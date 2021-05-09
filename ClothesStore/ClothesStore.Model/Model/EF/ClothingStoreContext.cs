@@ -39,7 +39,7 @@ namespace ClothesStore.Model.Model.EF
             {
 
 
-                optionsBuilder.UseSqlServer("Server=HAIDV\\SQLEXPRESS;Database=ClothingStore;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=KHUATCHUNG\\KHUATCHUNG;Database=ClothingStore;Trusted_Connection=True;");
 
 
             }

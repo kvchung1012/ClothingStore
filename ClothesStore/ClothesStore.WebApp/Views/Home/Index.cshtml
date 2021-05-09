@@ -12,6 +12,7 @@
                 <div class="section group">
                     @foreach (var item in Model)
                     {
+                        //var url = "chi-tiet/" + item.product.Slug + "-" + item.product.Id;
                         <div class="col_1_of_3 span_1_of_3 simpleCart_shelfItem">
                             <div class="shop-holder">
                                 <div class="product-img">
@@ -23,6 +24,7 @@
                             </div>
                             <div class="shop-content" style="height: 80px;">
                                 @*<div><a href="single.html" rel="tag">humour</a></div>*@
+
                                 <h3><a href="/Product/SingleProduct?id=@item.product.Id">@item.product.Name</a></h3>
                                 @foreach (var configPro in item.configs.OrderByDescending(x => x.Id))
                                 {

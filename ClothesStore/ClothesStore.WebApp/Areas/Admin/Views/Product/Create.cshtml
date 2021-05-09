@@ -155,7 +155,7 @@
 
 
                 <div class="col-md-12 d-flex justify-content-end mt-3">
-                    <button type="button" class="btn btn-square btn-danger">Quay lại</button>
+                    <button type="button" class="btn btn-square btn-danger" onclick="Cancel()">Quay lại</button>
                     <button type="button" class="btn btn-square btn-success ml-2" onclick="Add()">Thêm mới</button>
                 </div>
             </div>
@@ -242,12 +242,12 @@
                             type: 'post',
                             dataType: 'json',
                             //contentType: 'application/json',
-                            data:{
+                            data: {
                                 obj: object,
                                 images: images,
                                 config: config
                             },
-                           
+
                             beforeSend: function () {
                             },
                             success: function (res) {
@@ -285,12 +285,12 @@
                 })
                 if (check) {
                     let row = `<tr>
-        <td data-size = "${sizeId}">${sizeName}</td>
-        <td data-color = "${colorId}" style="background:${colorName}"></td>
-        <td><input type="number" min="0" value="1" class="form-control" /></td>
-        <td><input type="number" min="0" value="1" class="form-control" /></td>
-        <td style="text-align:center"><button class=" btn btn-sm btn-square btn-danger" onclick="RemoveConfig(this)" type="button"><i class="bi bi-trash"></i></button></td>
-    </tr>`;
+            <td data-size = "${sizeId}">${sizeName}</td>
+            <td data-color = "${colorId}" style="background:${colorName}"></td>
+            <td><input type="number" min="0" value="1" class="form-control" /></td>
+            <td><input type="number" min="0" value="1" class="form-control" /></td>
+            <td style="text-align:center"><button class=" btn btn-sm btn-square btn-danger" onclick="RemoveConfig(this)" type="button"><i class="bi bi-trash"></i></button></td>
+        </tr>`;
                     $('.table-config tbody').append(row);
                 }
                 else {
@@ -315,6 +315,10 @@
                     $(el).parent().parent().remove();
                 }
             })
+        }
+
+        function Cancel() {
+            window.location.href = "/Admin/Product/Index";
         }
     </script>
 }

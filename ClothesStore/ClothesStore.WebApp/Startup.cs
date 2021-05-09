@@ -82,11 +82,7 @@ namespace ClothesStore.WebApp
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                  name: "areas",
-                  template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
-                );
-                routes.MapRoute(
-                    "Home",
+                    "Detail",
                     "/",
                      new { Controller = "Home", Action = "Index" }
                 );
@@ -95,6 +91,11 @@ namespace ClothesStore.WebApp
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                    name: "admin default",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                    );
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

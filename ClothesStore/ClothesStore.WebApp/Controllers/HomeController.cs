@@ -9,12 +9,10 @@ namespace ClothesStore.WebApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        IProductService _productService;
+        private readonly IProductService _productService;
 
-        public HomeController(ILogger<HomeController> logger,IProductService productService)
+        public HomeController(IProductService productService)
         {
-            _logger = logger;
             _productService = productService;
         }
 
@@ -23,6 +21,12 @@ namespace ClothesStore.WebApp.Controllers
             var product = await _productService.GetListProductByQtyAndPosition(0, 3);
             ViewBag.Product = await _productService.GetListProductByQtyAndPosition(3, 3);
             return View(product);
+        }
+
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index");
         }
 
     

@@ -9,8 +9,8 @@ namespace ClothesStore.WebApp.Controllers.Components
 {
     public class CategoryViewComponent : ViewComponent
     {
-        ICategoryService _categoryService;
-        IBrandService _brandService;
+        private readonly ICategoryService _categoryService;
+        private readonly IBrandService _brandService;
         public CategoryViewComponent(ICategoryService categoryService, IBrandService brandService)
         {
             _categoryService = categoryService;

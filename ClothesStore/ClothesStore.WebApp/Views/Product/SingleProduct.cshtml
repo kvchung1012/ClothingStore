@@ -1,6 +1,8 @@
 ﻿@model ClothesStore.Model.ModelView.ProductAndProductConfigModelView
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var listSize = (ViewBag.allSize as List<ClothesStore.Model.Model.EF.Size>);
+    var listColor = (ViewBag.allColor as List<ClothesStore.Model.Model.EF.Color>);
 }
 
 <div class="single_top">
@@ -41,14 +43,20 @@
                     <div id="product_size" class="dropdown_left">
                         <select class="dropdown" tabindex="10" data-settings='{"wrapperClass":"metro1"}'>
                             <option value="0">Select size</option>
-
+                            @foreach (var item in listSize)
+                            {
+                                <option value="@item.OrderBy">@item.Name</option>
+                            }
                         </select>
                     </div>
 
                     <div id="product_color" class="dropdown_left">
                         <select class="dropdown" tabindex="10" data-settings='{"wrapperClass":"metro1"}'>
                             <option value="0">Select color</option>
-                            <li><a href="#"> <span class="color1"> </span></a></li>
+                            @foreach (var item in listColor)
+                            {
+                                <option value="@item.Value">@item.Name</option>
+                            }
                         </select>
                     </div>
                     <div class="clearfix"></div>
@@ -106,6 +114,8 @@
 
                 </div>
             }
+
+
             <div class="clearfix"> </div>
         </div>
     </div>
@@ -118,8 +128,13 @@
 
     <!--my script-->
     <script>
-        function getSingleProduct() {
-
+        $(function () {
+            $('#product_size select').on('change', function () {
+                alert($(this).val());
+            })
+        })
+        function changeConfigProduct() {
+            
         }
     </script>
 
@@ -133,7 +148,7 @@
                 source_image_height: 1200,
                 show_hint: true,
                 click_callback: function (image_anchor, instance_id) {
-                    @*alert('Callback example:\nYou clicked on an image with the anchor: "' + image_anchor + '"\n(in Etalage instance: "' + instance_id + '")');*@
+                   @* alert('Callback example:\nYou clicked on an image with the anchor: "' + image_anchor + '"\n(in Etalage instance: "' + instance_id + '")');*@
                 }
             });
 

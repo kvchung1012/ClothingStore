@@ -9,9 +9,9 @@ namespace ClothesStore.WebApp.Controllers
 {
     public class CategoryController : Controller
     {
-        ICategoryService _categoryService;
+        private readonly ICategoryService _categoryService;
 
-        public CategoryController(ICategoryService categoryService,IBrandService brandService)
+        public CategoryController(ICategoryService categoryService)
         {
             _categoryService = categoryService;
    

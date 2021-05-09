@@ -3,7 +3,7 @@
 @using System.Text.Json;
 @using ClothesStore.Model.Model.EF;
 @inject IHttpContextAccessor HttpContextAccessor
-@{ 
+@{
     string jsonUser = HttpContextAccessor.HttpContext.Session.GetString(Constant.USER);
     var emp = new Employee();
     if (jsonUser != null)
@@ -24,17 +24,16 @@
             @if (emp.Id != 0) // user is not avalable
             {
                 <ul>
-                    <li class="active"><a href="/">Xin chào @emp.Name</a></li>
-                    <li class="active"><a href="/">Đăng xuất</a></li>
+                    <li class="active mr-3"><a href="/">Xin chào @emp.Name</a></li>
+                    <li class="active"><a href="/Home/Logout">Đăng xuất</a></li>
                 </ul>
             }
             else
             {
                 <ul>
-                    <li class="active"><a href="/">My Account</a></li>
+                    <li class="active"><a href="/Admin/Admin/Login">Đăng nhập</a></li>
                 </ul>
             }
-
         </div>
     </div>
 </div>

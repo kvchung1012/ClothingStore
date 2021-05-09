@@ -10,12 +10,12 @@
         <div class="box_1">
             <div class="col-md-7">
                 <div class="section group">
-                    @foreach (var item in products)
+                    @foreach (var item in Model)
                     {
                         <div class="col_1_of_3 span_1_of_3 simpleCart_shelfItem">
                             <div class="shop-holder">
                                 <div class="product-img">
-                                    <a href="single.html">
+                                    <a href="/Product/SingleProduct?id=@item.product.Id">
                                         <img width="225" height="265" src="@item.product.Image" class="img-responsive" alt="@item.product.Name">
                                     </a>
                                     <a href="" class="button item_add"></a>
@@ -23,7 +23,7 @@
                             </div>
                             <div class="shop-content" style="height: 80px;">
                                 @*<div><a href="single.html" rel="tag">humour</a></div>*@
-                                <h3><a href="single.html">@item.product.Name</a></h3>
+                                <h3><a href="/Product/SingleProduct?id=@item.product.Id">@item.product.Name</a></h3>
                                 @foreach (var configPro in item.configs.OrderByDescending(x => x.Id))
                                 {
                                     <span class="amount item_price">@configPro.Price </span>
@@ -62,7 +62,7 @@
                 <div class="col_1_of_3 span_1_of_3 simpleCart_shelfItem">
                     <div class="shop-holder">
                         <div class="product-img">
-                            <a href="single.html">
+                            <a href="/Product/SingleProduct?id=@item.product.Id">
                                 <img width="225" height="265" src="@item.product.Image" class="img-responsive" alt="@item.product.Name">
                             </a>
                             <a href="" class="button item_add"></a>
@@ -70,7 +70,7 @@
                     </div>
                     <div class="shop-content" style="height: 80px;">
                         @*<div><a href="single.html" rel="tag">humour</a></div>*@
-                        <h3><a href="single.html">@item.product.Name</a></h3>
+                        <h3><a href="/Product/SingleProduct?id=@item.product.Id">@item.product.Name</a></h3>
                         @foreach (var configPro in item.configs.OrderByDescending(x => x.Id))
                         {
                             <span class="amount item_price">@configPro.Price </span>

@@ -204,7 +204,7 @@ namespace ClothesStore.Service.Service
         public async Task<List<ProductAndProductConfigModelView>> GetListProductByQtyAndPosition(int pos, int qty)
         {
             List<ProductAndProductConfigModelView> listproducts = new List<ProductAndProductConfigModelView>();
-            var products = await db.Products.OrderByDescending(x=>x.Id).Skip(pos).Take(qty).ToListAsync();
+            var products = await db.Products.OrderByDescending(x => x.Id).Skip(pos).Take(qty).ToListAsync();
             foreach (var item in products)
             {
                 ProductAndProductConfigModelView p = new ProductAndProductConfigModelView()
@@ -230,13 +230,13 @@ namespace ClothesStore.Service.Service
             return p;
         }
 
-        public async Task<List<ProductAndProductConfigModelView>> GetRelatedProduct(int id,int qty)
+        public async Task<List<ProductAndProductConfigModelView>> GetRelatedProduct(int id, int qty)
         {
             List<ProductAndProductConfigModelView> listproducts = new List<ProductAndProductConfigModelView>();
             var product = await db.Products.FindAsync(id);
             foreach (var item in await db.Products.ToListAsync())
             {
-                if(product.CategoryId==item.CategoryId && product.Id != item.Id)
+                if (product.CategoryId == item.CategoryId && product.Id != item.Id)
                 {
                     ProductAndProductConfigModelView p = new ProductAndProductConfigModelView()
                     {
@@ -246,7 +246,6 @@ namespace ClothesStore.Service.Service
                     };
                     listproducts.Add(p);
                 }
-               
             };
             return listproducts.Take(qty).ToList();
 

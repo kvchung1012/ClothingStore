@@ -19,11 +19,13 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
 
         private readonly IEmployeeService _employeeService;
         private readonly ILoginService _loginService;
+        private readonly ISendMailService _sendMailService;
 
-        public AdminController(IEmployeeService employeeService, ILoginService loginService)
+        public AdminController(IEmployeeService employeeService, ILoginService loginService,ISendMailService sendMailService)
         {
             _employeeService = employeeService;
             _loginService = loginService;
+            _sendMailService = sendMailService;
         }
 
         public IActionResult Index()
@@ -103,7 +105,11 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
 
             if (canUpdate)
             {
-                MailService.SendEmail(hasUser.Email, newPass);
+                MailContent mail = new MailContent();
+                mail.To = "nguyenkhanh21102000@gmail.com";
+                mail.Subject = "ForgotPassword";
+                mail.Body ="Mật khẩu mới của bạn là :"+newPass;
+                await _sendMailService.SendMail(mail);
                 return Json(true);
             }
             else

@@ -1,0 +1,24 @@
+﻿@model ClothesStore.Model.ModelView.ProductAndProductConfigModelView
+<div class="col_1_of_3 span_1_of_3 simpleCart_shelfModel">
+    <div class="shop-holder">
+        <div class="product-img">
+            <a href="/Product/SingleProduct?id=@Model.product.Id">
+                <img width="225" height="265" src="@Model.product.Image" class="img-responsive" alt="@Model.product.Name">
+            </a>
+            <a href="/Product/SingleProduct?id=@Model.product.Id" class="button Model_add"></a>
+        </div>
+    </div>
+    <div class="shop-content" style="height: 80px;">
+        <div><a href="/Product/SingleProduct?id=@Model.product.Id" rel="tag">humour</a></div>
+
+        <h3><a href="/Product/SingleProduct?id=@Model.product.Id">@Model.product.Name</a></h3>
+        @{
+            var originalPrice = "Liên hệ";
+            if (Model.configs.Min(x => x.Price).HasValue)
+            {
+                originalPrice = Model.configs.Min(x => x.Price).ToString();
+            }
+        }
+        <span class="amount Model_price">@originalPrice</span>
+    </div>
+</div>

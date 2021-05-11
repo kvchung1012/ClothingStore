@@ -14,5 +14,6 @@ namespace ClothesStore.Service.IService
         public Task<OrderFullModelView> GetOrderById(int Id);
         public Task<bool> AddOrUpdate(Order order,List<OrderDetail> orderDetails);
         public Task<bool> DeleteById(int Id);
+        public Task<List<NotificationModelView>> GetPendingOrder();
     }
 }

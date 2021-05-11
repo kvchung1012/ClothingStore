@@ -1,0 +1,17 @@
+﻿@model List<ClothesStore.Model.ModelView.NotificationModelView>
+
+@foreach (var item in Model)
+{
+    var timeSince = "";
+    TimeSpan ts = DateTime.Now.Subtract(item.Time);
+    if (ts.TotalHours < 1)
+        timeSince = ((int)ts.TotalMinutes).ToString() + "{0} minutes ago";
+    else if (ts.TotalDays < 1)
+        timeSince = ((int)ts.TotalHours).ToString() + "{0} hours ago";
+
+    <div class="dropdown-item d-flex justify-content-between">
+        <div>@item.Name</div>
+        <div>@timeSince</div>
+    </div>
+}
+

@@ -102,5 +102,11 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
             var response = await _orderService.DeleteById(Id);
             return Json(response);
         }
+
+        [HttpGet]
+        public async Task<PartialViewResult> GetPendingOrder()
+        {
+            return PartialView(await _orderService.GetPendingOrder());
+        }
     }
 }

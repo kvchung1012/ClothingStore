@@ -19,14 +19,14 @@
                                     <a href="/Product/SingleProduct?id=@item.product.Id">
                                         <img width="225" height="265" src="@item.product.Image" class="img-responsive" alt="@item.product.Name">
                                     </a>
-                                    <a href="" class="button item_add"></a>
+                                    <a href="/Product/SingleProduct?id=@item.product.Id" class="button item_add"></a>
                                 </div>
                             </div>
                             <div class="shop-content" style="height: 80px;">
-                                @*<div><a href="single.html" rel="tag">humour</a></div>*@
+                                <div><a href="/Product/SingleProduct?id=@item.product.Id" rel="tag">humour</a></div>
 
                                 <h3><a href="/Product/SingleProduct?id=@item.product.Id">@item.product.Name</a></h3>
-                                @foreach (var configPro in item.configs.OrderByDescending(x => x.Id))
+                                @foreach (var configPro in item.configs.OrderBy(x => x.Price))
                                 {
                                     <span class="amount item_price">@configPro.Price </span>
                                     break;
@@ -39,6 +39,8 @@
                     <div class="clearfix"></div>
                 </div>
             </div>
+
+
             <div class="col-md-5 row_3">
                 <div class="about-block-content">
                     <div class="border-add"></div>
@@ -49,6 +51,8 @@
                 </div>
                 <img src="/client/images/pic9.jpg" class="img-responsive" alt="" />
             </div>
+
+
             <div class="clearfix"></div>
         </div>
     </div>
@@ -67,13 +71,13 @@
                             <a href="/Product/SingleProduct?id=@item.product.Id">
                                 <img width="225" height="265" src="@item.product.Image" class="img-responsive" alt="@item.product.Name">
                             </a>
-                            <a href="" class="button item_add"></a>
+                            <a href="/Product/SingleProduct?id=@item.product.Id" class="button item_add"></a>
                         </div>
                     </div>
                     <div class="shop-content" style="height: 80px;">
-                        @*<div><a href="single.html" rel="tag">humour</a></div>*@
+                        <div><a href="/Product/SingleProduct?id=@item.product.Id" rel="tag">humour</a></div>
                         <h3><a href="/Product/SingleProduct?id=@item.product.Id">@item.product.Name</a></h3>
-                        @foreach (var configPro in item.configs.OrderByDescending(x => x.Id))
+                        @foreach (var configPro in item.configs.OrderBy(x => x.Price))
                         {
                             <span class="amount item_price">@configPro.Price </span>
                             break;

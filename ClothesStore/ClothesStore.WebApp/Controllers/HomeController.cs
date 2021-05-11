@@ -14,30 +14,33 @@ namespace ClothesStore.WebApp.Controllers
         private readonly IProductService _productService;
         private readonly IBrandService _brandService;
         private readonly ICategoryService _categoryService;
+		private readonly IColorService _colorService;
         private readonly ISliderService _sliderService;
-
-        public HomeController(IProductService productService,IBrandService brandService,ICategoryService categoryService,ISliderService sliderService)
+        public HomeController(IProductService productService,IBrandService brandService,ICategoryService categoryService,IColorService colorService, ISliderService sliderService)
         {
             _productService = productService;
             _brandService = brandService;
             _categoryService = categoryService;
+            _colorService = colorService;
             _sliderService = sliderService;
         }
 
+        // trang chủ
         public async Task<IActionResult> Index()
         {
-            var product = await _productService.GetListProductByQtyAndPosition(0, 3);
-            ViewBag.Product = await _productService.GetListProductByQtyAndPosition(3, 3);
-            //new
-            ViewBag.brand = (await _brandService.GetAll()).Take(6);
+            ViewBag.brand = (await _brandService.GetAll());
             ViewBag.category = (await _categoryService.GetAll());
-            ViewBag.Slider = (await _sliderService.GetAll());
-            return View(product);
-        }
+			ViewBag.color = (await _colorService.GetAll());
+            ViewBag.slider = (await _sliderService.GetAll()).OrderBy(x => x.OrderBy).Take(6).ToList();
+            return View();
+                    }
+        
 
-        public async Task<PartialViewResult> GetProduct(int Id)
-        {
-            var data = (await _productService.GetListProduct(Id,16));
+        // get product by filter
+        [HttpPost]
+        public async Task<PartialViewResult> GetProduct(FilterProduct filter)
+         {
+            var data = (await _productService.GetListProduct(filter, 16));
             return PartialView(data);
         }
 

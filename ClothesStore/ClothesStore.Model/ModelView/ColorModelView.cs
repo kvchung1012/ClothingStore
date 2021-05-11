@@ -8,6 +8,6 @@ namespace ClothesStore.Model.ModelView
     public class ColorModelView
     {
         public Color color { get; set; }
-        public string Price { get; set; }
+        public ConfigProduct config { get; set; }
     }
 }

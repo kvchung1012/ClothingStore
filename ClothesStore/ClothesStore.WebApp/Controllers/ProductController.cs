@@ -68,7 +68,7 @@ namespace ClothesStore.WebApp.Controllers
 
             return View(productViewModel);
         }
-
+        [HttpPost]
         public async Task<JsonResult> GetConfig(RequestConfig requestConfig)
         {
             ResponseConfig res = await _configProductService.GetPriceAndStock(requestConfig);

@@ -34,10 +34,26 @@
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="~/client/css/util.css">
     <link rel="stylesheet" type="text/css" href="~/client/css/main.css">
+    <style>
+        #overlay {
+            position: fixed;
+            background: rgba(0,0,0,0.8);
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .hide {
+            display: none;
+        }
+    </style>
     <!--===============================================================================================-->
 </head>
 
 <body class="animsition">
+    <div id="overlay" class="hide"></div>
+    
     <!-- ==================================HOME================================================ -->
     @await Html.PartialAsync("_HeaderTop")
     @await Html.PartialAsync("_Cart")

@@ -159,12 +159,12 @@ namespace ClothesStore.Service.Service
 
         public async Task<List<NotificationModelView>> GetPendingOrder()
         {
-            var data = (from o in db.Orders
+            var  data = await (from o in db.Orders
                         where o.Status == false && o.IsDeleted == false
                         join e in db.Employees on o.EmployeeId equals e.Id
                         select new NotificationModelView { Name = e.Name, Time = (DateTime)o.CreatedDate }
-                        );
-            return (List<NotificationModelView>)data;
+                        ).ToListAsync();
+            return data;
         }
     }
 }

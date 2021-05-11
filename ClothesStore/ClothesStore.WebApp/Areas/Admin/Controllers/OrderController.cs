@@ -103,10 +103,10 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
             return Json(response);
         }
 
-        [HttpGet]
-        public async Task<PartialViewResult> GetPendingOrder()
-        {
-            return PartialView(await _orderService.GetPendingOrder());
+        [HttpPost]
+        public async Task<JsonResult> GetPendingOrder()
+        {       
+           return Json(await _orderService.GetPendingOrder());
         }
     }
 }

@@ -39,6 +39,9 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
 /*//////////////////////////////////////////////////////////////////
 [ FONT ]*/
 
+a {
+    display:block;
+}
 @font-face {
   font-family: Poppins-Regular;
   src: url('../fonts/Poppins/Poppins-Regular.ttf'); 
@@ -638,7 +641,8 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
 
 /*---------------------------------------------*/
 .main-menu > li.active-menu > a {
-  color: #6c7ae0;
+   display:block;
+    color: #6c7ae0;
 }
 
 
@@ -736,6 +740,7 @@ Input, textarea : 14px/1.6 '', Arial, sans-serif;
 }
 
 .main-menu-m > li > a {
+
   font-family: Poppins-Medium;
   font-size: 14px;
   color: white;

@@ -31,11 +31,24 @@
     </ul>
     <ul class="c-header-nav ml-auto mr-4">
         <li class="c-header-nav-item d-md-down-none mx-2">
-            <a class="c-header-nav-link" href="#">
+            <a class="c-header-nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                 <svg class="c-icon">
                     <use xlink:href="/lib/icon/sprites/free.svg#cil-bell"></use>
                 </svg>
             </a>
+
+            <div id="notification" class="dropdown-menu dropdown-menu-right pt-0">
+                <div class="dropdown-header bg-light py-2"><strong>Notifications</strong></div>
+                <div class="dropdown-item d-flex justify-content-between">
+                    <div>Profile</div>
+                    <div>
+                     <svg class="c-icon mr-2">
+                         <use xlink:href="/lib/icon/sprites/free.svg#cil-user"></use>
+                     </svg>
+                    </div>
+                </div>
+            </div>
+
         </li>
         <li class="c-header-nav-item d-md-down-none mx-2">
             <a class="c-header-nav-link" href="#">
@@ -65,29 +78,31 @@
                 </div>
             </a>
             <div class="dropdown-menu dropdown-menu-right pt-0">
+
                 @*<div class="dropdown-header bg-light py-2"><strong>Account</strong></div>*@
                 @*<a class="dropdown-item" href="#">
-                        <svg class="c-icon mr-2">
-                            <use xlink:href="/lib/icon/sprites/free.svg#cil-bell"></use>
-                        </svg> Updates<span class="badge badge-info ml-auto">42</span>
-                    </a>
-                    <a class="dropdown-item" href="#">
-                        <svg class="c-icon mr-2">
-                            <use xlink:href="/lib/icon/sprites/free.svg#cil-envelope-open"></use>
-                        </svg> Messages<span class="badge badge-success ml-auto">42</span>
-                    </a>
-                    <a class="dropdown-item" href="#">
-                        <svg class="c-icon mr-2">
-                            <use xlink:href="/lib/icon/sprites/free.svg#cil-task"></use>
-                        </svg> Tasks<span class="badge badge-danger ml-auto">42</span>
-                    </a>
-                    <a class="dropdown-item" href="#">
-                        <svg class="c-icon mr-2">
-                            <use xlink:href="/lib/icon/sprites/free.svg#cil-comment-square"></use>
-                        </svg> Comments<span class="badge badge-warning ml-auto">42</span>
-                    </a>*@
+            <svg class="c-icon mr-2">
+                <use xlink:href="/lib/icon/sprites/free.svg#cil-bell"></use>
+            </svg> Updates<span class="badge badge-info ml-auto">42</span>
+        </a>
+        <a class="dropdown-item" href="#">
+            <svg class="c-icon mr-2">
+                <use xlink:href="/lib/icon/sprites/free.svg#cil-envelope-open"></use>
+            </svg> Messages<span class="badge badge-success ml-auto">42</span>
+        </a>
+        <a class="dropdown-item" href="#">
+            <svg class="c-icon mr-2">
+                <use xlink:href="/lib/icon/sprites/free.svg#cil-task"></use>
+            </svg> Tasks<span class="badge badge-danger ml-auto">42</span>
+        </a>
+        <a class="dropdown-item" href="#">
+            <svg class="c-icon mr-2">
+                <use xlink:href="/lib/icon/sprites/free.svg#cil-comment-square"></use>
+            </svg> Comments<span class="badge badge-warning ml-auto">42</span>
+        </a>*@
+
                 <div class="dropdown-header bg-light py-2"><strong>Settings</strong></div>
-                <a class="dropdown-item" href="/Admin/Admin/ProfileUser">
+                <a class="dropdown-item"  href="/Admin/Admin/ProfileUser?Id=@emp.Id">
                     <svg class="c-icon mr-2">
                         <use xlink:href="/lib/icon/sprites/free.svg#cil-user"></use>
                     </svg> Profile
@@ -112,6 +127,11 @@
                     <svg class="c-icon mr-2">
                         <use xlink:href="/lib/icon/sprites/free.svg#cil-lock-locked"></use>
                     </svg> Lock Account
+                </a>
+                <a class="dropdown-item" href="/Admin/Admin/ChangePassword">
+                    <svg class="c-icon mr-2">
+                        <use xlink:href="/lib/icon/sprites/free.svg#cil-lock-locked"></use>
+                    </svg> Change Password
                 </a>
                 <a class="dropdown-item" href="/Admin/Admin/Logout">
                     <svg class="c-icon mr-2">

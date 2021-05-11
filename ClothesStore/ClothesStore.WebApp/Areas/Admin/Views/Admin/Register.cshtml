@@ -1,6 +1,7 @@
 ﻿
 @{
     Layout = "/Areas/Admin/Views/Shared/_LoginLayout.cshtml";
+
 }
 
 <form class="register">
@@ -86,8 +87,9 @@
 
 
             //chua validate
+           
             if (JSON.stringify(registerObj.Password) !== JSON.stringify(registerObj.ConfirmedPassword)) {
-                swal("Lỗi", "Mật khẩu phải giống nhau!", "warning");
+                swal("Fail", "Password must be the same!", "warning");
             } else {
                 swal({
                     title: "Are you sure with above infomation?",
@@ -115,7 +117,6 @@
                                         }).then((value)=>{
                                             location.href = '/Admin/Admin/Login';
                                         });
-
                                     } else {
                                         swal("OOps", "Something went wrong", "error");
                                     }

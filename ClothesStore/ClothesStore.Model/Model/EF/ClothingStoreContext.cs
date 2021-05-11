@@ -32,16 +32,14 @@ namespace ClothesStore.Model.Model.EF
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductImage> ProductImages { get; set; }
         public virtual DbSet<Size> Sizes { get; set; }
+        public virtual DbSet<Slider> Sliders { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
-            {
 
-
-                optionsBuilder.UseSqlServer("Server=KHUATCHUNG\\KHUATCHUNG;Database=ClothingStore;Trusted_Connection=True;");
-
-
+            { 
+                optionsBuilder.UseSqlServer("Server=HAIDV\\SQLEXPRESS;Database=ClothingStore;Trusted_Connection=True;");
             }
         }
 
@@ -262,7 +260,20 @@ namespace ClothesStore.Model.Model.EF
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
             });
+            modelBuilder.Entity<Slider>(entity =>
+            {
+                entity.ToTable("Slider");
 
+                entity.Property(e => e.Image).HasMaxLength(500);
+
+                entity.Property(e => e.Link).HasMaxLength(500);
+
+                entity.Property(e => e.Name).HasMaxLength(250);
+
+                entity.Property(e => e.SubName).HasMaxLength(250);
+
+              
+            });
             OnModelCreatingPartial(modelBuilder);
         }
 

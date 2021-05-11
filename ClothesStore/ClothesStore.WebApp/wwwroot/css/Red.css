@@ -1,0 +1,15 @@
+﻿.btn-primary-red {
+    color: #fff !important;
+    background-color: #f54d56 !important;
+    border-color: #f54d56 !important;
+}
+
+.btn-link-red {
+    font-weight: 400 !important;
+    color: #f54d56 !important;
+    text-decoration: none !important;
+}
+
+.bg-primary-red {
+    background-color: #f54d56 !important;
+}

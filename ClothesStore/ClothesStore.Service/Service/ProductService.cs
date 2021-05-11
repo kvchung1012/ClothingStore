@@ -246,6 +246,21 @@ namespace ClothesStore.Service.Service
 
         }
 
+        public async Task<List<ColorModelView>> GetColorConfig(int productId, int sizeId)
+        {
+            List<ColorModelView> data = new List<ColorModelView>();
+            var colors =await db.ConfigProducts.Where(x => x.ProductId == productId && x.SizeId == sizeId).ToListAsync();
+            foreach (var c in colors)
+            {
+                var obj = new ColorModelView()
+                {
+                    color = db.Colors.Find(c.ColorId),
+                    Price = c.Price.ToString()
+                };
+                data.Add(obj);
+            }
+            return data;
+        }
 
         //public List<ConfigProduct> Client_GetListConfigProductByProductId(int Id)
         //{

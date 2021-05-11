@@ -15,13 +15,14 @@ namespace ClothesStore.WebApp.Controllers
         private readonly IBrandService _brandService;
         private readonly ICategoryService _categoryService;
         private readonly IColorService _colorService;
-
-        public HomeController(IProductService productService,IBrandService brandService,ICategoryService categoryService,IColorService colorService)
+        private readonly ISliderService _sliderService;
+        public HomeController(IProductService productService,IBrandService brandService,ICategoryService categoryService,IColorService colorService, ISliderService sliderService)
         {
             _productService = productService;
             _brandService = brandService;
             _categoryService = categoryService;
             _colorService = colorService;
+            _sliderService = sliderService;
         }
 
         // trang chủ
@@ -30,6 +31,7 @@ namespace ClothesStore.WebApp.Controllers
             ViewBag.brand = (await _brandService.GetAll());
             ViewBag.category = (await _categoryService.GetAll());
             ViewBag.color = (await _colorService.GetAll());
+            ViewBag.slider = (await _sliderService.GetAll()).OrderBy(x => x.OrderBy).Take(6).ToList();
             return View();
         }
         

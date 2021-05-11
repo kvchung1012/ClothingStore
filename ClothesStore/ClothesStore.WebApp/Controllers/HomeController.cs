@@ -14,27 +14,31 @@ namespace ClothesStore.WebApp.Controllers
         private readonly IProductService _productService;
         private readonly IBrandService _brandService;
         private readonly ICategoryService _categoryService;
+        private readonly IColorService _colorService;
 
-        public HomeController(IProductService productService,IBrandService brandService,ICategoryService categoryService)
+        public HomeController(IProductService productService,IBrandService brandService,ICategoryService categoryService,IColorService colorService)
         {
             _productService = productService;
             _brandService = brandService;
             _categoryService = categoryService;
+            _colorService = colorService;
         }
 
+        // trang chủ
         public async Task<IActionResult> Index()
         {
-            var product = await _productService.GetListProductByQtyAndPosition(0, 3);
-            ViewBag.Product = await _productService.GetListProductByQtyAndPosition(3, 3);
-            //new
-            ViewBag.brand = (await _brandService.GetAll()).Take(6);
+            ViewBag.brand = (await _brandService.GetAll());
             ViewBag.category = (await _categoryService.GetAll());
-            return View(product);
+            ViewBag.color = (await _colorService.GetAll());
+            return View();
         }
+        
 
-        public async Task<PartialViewResult> GetProduct(int Id)
-        {
-            var data = (await _productService.GetListProduct(Id,16));
+        // get product by filter
+        [HttpPost]
+        public async Task<PartialViewResult> GetProduct(FilterProduct filter)
+         {
+            var data = (await _productService.GetListProduct(filter, 16));
             return PartialView(data);
         }
 

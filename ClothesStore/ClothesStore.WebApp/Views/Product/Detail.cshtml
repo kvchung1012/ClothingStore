@@ -1,251 +1,300 @@
-﻿@model ClothesStore.Model.ModelView.ProductAndProductConfigModelView
-@using System.Globalization;
-@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
-<div class="single_top">
+﻿@model ClothesStore.Model.ModelView.ProductOverView
+<section class="sec-product-detail bg0 p-t-65 p-b-60">
     <div class="container">
-        <div class="single_grid">
-            <input type="hidden" id="Id" name="Id" value="@Model.product.Id" />
-            <!--load product detail here-->
-            <div class="grid images_3_of_2">
-                <ul id="etalage">
-                    <li>
-                        <a href="#">
-                            <img class="etalage_thumb_image img-responsive main-image" src="@Model.product.Image" />
-                            <img class="etalage_source_image" src="@Model.product.Image" title="@Model.product.Slug" />
-                        </a>
-                    </li>
-                    @foreach (var item in Model.images)
-                    {
-                        <li>
-                            <a href="#">
-                                <img class="etalage_thumb_image img-responsive" src="@item.Image" />
-                                <img class="etalage_source_image" src="@item.Image" title="anh-san-pham" />
-                            </a>
-                        </li>
-                    }
-                </ul>
-                <div class="clearfix"></div>
-            </div>
-            <div class="desc1 span_3_of_2 product_config">
-                <!--load product config here-->
-                <ul class="back">
-                    <li><i class="back_arrow"> </i>Back to <a href="index.html">Men's Clothing</a></li>
-                </ul>
-                <h1 class="product-name">@Model.product.Name</h1>
-                <p>@Model.product.Description</p>
-                <div class="row">
-                    <div id="product_size" class="col-lg-4">
-                        <select class="dropdown form-control" tabindex="10" data-settings='{"wrapperClass":"metro1"}' onchange="ChooseSize(this)">
-                            <option value="0">Chọn kích cỡ</option>
-                            @foreach (var item in ViewBag.Size as IEnumerable<ClothesStore.Model.Model.EF.Size>)
+        <div class="row">
+            <div class="col-md-6 col-lg-7 p-b-30">
+                <div class="p-l-25 p-r-30 p-lr-0-lg">
+                    <div class="wrap-slick3 flex-sb flex-w">
+                        <div class="wrap-slick3-dots">
+                        </div>
+                        <div class="wrap-slick3-arrows flex-sb-m flex-w">
+                        </div>
+
+                        <div class="slick3 gallery-lb">
+                            <div class="item-slick3" data-thumb="@Model.product.Image">
+                                <div class="wrap-pic-w pos-relative">
+                                    <img src="@Model.product.Image" alt="IMG-PRODUCT">
+
+                                    <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
+                                       href="@Model.product.Image">
+                                        <i class="fa fa-expand"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                            @foreach (var item in Model.images)
                             {
-                                <option value="@item.Id">@item.Name</option>
+                                <div class="item-slick3" data-thumb="@item.Image">
+                                    <div class="wrap-pic-w pos-relative">
+                                        <img src="@item.Image" alt="IMG-PRODUCT">
+
+                                        <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04"
+                                           href="@item.Image">
+                                            <i class="fa fa-expand"></i>
+                                        </a>
+                                    </div>
+                                </div>
                             }
-                        </select>
-                    </div>
-
-                    <div id="product_color" class="col-lg-4">
-                        <select class="dropdown choose-color form-control" tabindex="10" data-settings='{"wrapperClass":"metro1"}' onchange="SetPrice(this)">
-                            <option value="0">Chọn màu sản phẩm</option>
-                            @*<li><a href="#"> <span class="color1"> </span></a></li>*@
-                        </select>
-                    </div>
-                    <div class="col-lg-4">
-                        <input type="number" class="form-control" name="Stock" value="1" min="1" />
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="simpleCart_shelfItem">
-                    <div class="price_single">
-                        @{
-                            CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");   // try with "en-US"
-                            string price = double.Parse((Model.configs.First() != null ? Model.configs.First().Price : 0).ToString()).ToString("#,###", cul.NumberFormat);
-                        }
-                        <div class=""><h2><span class="amount item_price">@price VNĐ</span></h2></div>
-                        <div class="clearfix"></div>
-                    </div>
-
-                    <div class="input-stock mb-3">
-                    </div>
-                    <div class="size_2-right">
-                        <a onclick="AddCart()" class="item_add item_add1 btn_5" value="">Add to Cart </a>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="clearfix"></div>
-        </div>
-        <div class="single_social_top">
-            <ul class="single_social">
-                <li><a href="#"> <i class="s_fb"> </i> <div class="social_desc">Share<br> on facebook</div><div class="clearfix"> </div></a></li>
-                <li><a href="#"> <i class="s_twt"> </i> <div class="social_desc">Tweet<br> this product</div><div class="clearfix"> </div></a></li>
-                <li><a href="#"> <i class="s_google"> </i><div class="social_desc">Google+<br> this product</div><div class="clearfix"> </div></a></li>
-                <li class="last"><a href="#"> <i class="s_email"> </i><div class="social_desc">Email<br> a Friend</div><div class="clearfix"> </div></a></li>
-            </ul>
-        </div>
-        <div class="content">
-            @Html.Raw(Model.product.Content)
-        </div>
-        @*<ul class="menu_drop">
-                <li class="item1">
-                    <a href="#"><img src="/client/images/product_arrow.png">Description</a>
-                    <ul>
-                        <li class="subitem1"><a href="#">@Model.product.Description</a></li>
-                    </ul>
-                </li>
 
-            </ul>*@
-    </div>
+            <div class="col-md-6 col-lg-5 p-b-30">
+                <div class="p-r-50 p-t-5 p-lr-0-lg">
+                    <input type="hidden" id="Id" name="" value="@Model.product.Id" />
+                    <input type="hidden" id="Image" name="" value="@Model.product.Image" />
+                    <h4 class="mtext-105 cl2 js-name-detail p-b-14">@Model.product.Name</h4>
 
+                    <span class="mtext-106 cl2 item_price">
+                        @Model.price
+                    </span>
 
-    <h3 class="m_2">Related Products</h3>
-    <div class="container">
-        <div class="box_3">
-            @foreach (var item in ViewBag.RelatedPro as List<ClothesStore.Model.ModelView.ProductAndProductConfigModelView>)
-            {
-                <div class="col-md-3">
-                    <div class="content_box">
-                        <a href="single.html">
-                            <img src="@item.product.Image" class="img-responsive" alt="@item.product.Name">
-                        </a>
+                    <p class="stext-102 cl3 p-t-23">
+                        @Model.product.Description
+                    </p>
+
+                    <!--  -->
+                    <div class="p-t-33">
+                        <div class="flex-w flex-r-m p-b-10">
+                            <div class="size-203 flex-c-m respon6">
+                                Size
+                            </div>
+
+                            <div class="size-204 respon6-next">
+                                <div class="rs1-select2 bg0">
+                                    <select class="js-select2 form-control product-size" name="time" onchange="ChooseSize(this)">
+                                        <option value="0">Choose an option</option>
+                                        @foreach (var item in Model.size)
+                                        {
+                                            <option value="@item.Id">Size @item.Name</option>
+                                        }
+                                    </select>
+                                    <div class="dropDownSelect2"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex-w flex-r-m p-b-10">
+                            <div class="size-203 flex-c-m respon6">
+                                Color
+                            </div>
+
+                            <div class="size-204 respon6-next">
+                                <div class="rs1-select2 bg0">
+                                    <select class="js-select2 form-control choose-color" name="time" onchange="SetPrice(this)">
+                                        <option value="0">Choose an option</option>
+                                    </select>
+                                    <div class="dropDownSelect2"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex-w flex-r-m p-b-10">
+                            <div class="size-204 flex-w flex-m respon6-next">
+                                <div class="wrap-num-product flex-w m-r-20 m-tb-10">
+                                    <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m" onclick="SubStock()">
+                                        <i class="fs-16 zmdi zmdi-minus"></i>
+                                    </div>
+
+                                    <input class="mtext-104 cl3 txt-center num-product" type="number"
+                                           name="num-product" value="1">
+
+                                    <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m" onclick="AddStock()">
+                                        <i class="fs-16 zmdi zmdi-plus"></i>
+                                    </div>
+                                </div>
+
+                                <button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04" onclick="AddCart()">
+                                    Add to cart
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                    <h4><a href="/Product/">@item.product.Name</a></h4>
-                    @foreach (var configPro in item.configs.OrderByDescending(x => x.Id))
-                    {
-                        <p>@configPro.Price</p>
-                    }
-
                 </div>
-            }
-            <div class="clearfix"> </div>
+            </div>
+        </div>
+
+        <div class="bor10 m-t-50 p-t-43 p-b-40">
+            <!-- Tab01 -->
+            <div class="tab01">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item p-b-10">
+                        <a class="nav-link active" data-toggle="tab" href="#description" role="tab">Description</a>
+                    </li>
+
+                    <li class="nav-item p-b-10">
+                        <a class="nav-link" data-toggle="tab" href="#information" role="tab">Additional information</a>
+                    </li>
+
+                    <li class="nav-item p-b-10">
+                        <a class="nav-link" data-toggle="tab" href="#reviews" role="tab">Reviews (1)</a>
+                    </li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content p-t-43">
+                    <!-- - -->
+                    <div class="tab-pane fade show active" id="description" role="tabpanel">
+                        <div class="how-pos2 p-lr-15-md">
+                            @Html.Raw(Model.product.Content)
+                        </div>
+                    </div>
+
+                    <!-- - -->
+                    <div class="tab-pane fade" id="information" role="tabpanel">
+                        <div class="row">
+                            <div class="col-sm-10 col-md-8 col-lg-6 m-lr-auto">
+                                <ul class="p-lr-28 p-lr-15-sm">
+                                    <li class="flex-w flex-t p-b-7">
+                                        <span class="stext-102 cl3 size-205">
+                                            Weight
+                                        </span>
+
+                                        <span class="stext-102 cl6 size-206">
+                                            0.79 kg
+                                        </span>
+                                    </li>
+
+                                    <li class="flex-w flex-t p-b-7">
+                                        <span class="stext-102 cl3 size-205">
+                                            Dimensions
+                                        </span>
+
+                                        <span class="stext-102 cl6 size-206">
+                                            110 x 33 x 100 cm
+                                        </span>
+                                    </li>
+
+                                    <li class="flex-w flex-t p-b-7">
+                                        <span class="stext-102 cl3 size-205">
+                                            Materials
+                                        </span>
+
+                                        <span class="stext-102 cl6 size-206">
+                                            60% cotton
+                                        </span>
+                                    </li>
+
+                                    <li class="flex-w flex-t p-b-7">
+                                        <span class="stext-102 cl3 size-205">
+                                            Color
+                                        </span>
+
+                                        <span class="stext-102 cl6 size-206">
+                                            Black, Blue, Grey, Green, Red, White
+                                        </span>
+                                    </li>
+
+                                    <li class="flex-w flex-t p-b-7">
+                                        <span class="stext-102 cl3 size-205">
+                                            Size
+                                        </span>
+
+                                        <span class="stext-102 cl6 size-206">
+                                            XL, L, M, S
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- - -->
+                    <div class="tab-pane fade" id="reviews" role="tabpanel">
+                        <div class="row">
+                            <div class="col-sm-10 col-md-8 col-lg-6 m-lr-auto">
+                                <div class="p-b-30 m-lr-15-sm">
+                                    <!-- Review -->
+                                    <div class="flex-w flex-t p-b-68">
+                                        <div class="wrap-pic-s size-109 bor0 of-hidden m-r-18 m-t-6">
+                                            <img src="/client/images/avatar-01.jpg" alt="AVATAR">
+                                        </div>
+
+                                        <div class="size-207">
+                                            <div class="flex-w flex-sb-m p-b-17">
+                                                <span class="mtext-107 cl2 p-r-20">
+                                                    Ariana Grande
+                                                </span>
+
+                                                <span class="fs-18 cl11">
+                                                    <i class="zmdi zmdi-star"></i>
+                                                    <i class="zmdi zmdi-star"></i>
+                                                    <i class="zmdi zmdi-star"></i>
+                                                    <i class="zmdi zmdi-star"></i>
+                                                    <i class="zmdi zmdi-star-half"></i>
+                                                </span>
+                                            </div>
+
+                                            <p class="stext-102 cl6">
+                                                Quod autem in homine praestantissimum atque optimum est, id deseruit. Apud ceteros autem philosophos
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Add review -->
+                                    <form class="w-full">
+                                        <h5 class="mtext-108 cl2 p-b-7">
+                                            Add a review
+                                        </h5>
+
+                                        <p class="stext-102 cl6">
+                                            Your email address will not be published. Required fields are marked *
+                                        </p>
+
+                                        <div class="flex-w flex-m p-t-50 p-b-23">
+                                            <span class="stext-102 cl3 m-r-16">
+                                                Your Rating
+                                            </span>
+
+                                            <span class="wrap-rating fs-18 cl11 pointer">
+                                                <i class="item-rating pointer zmdi zmdi-star-outline"></i>
+                                                <i class="item-rating pointer zmdi zmdi-star-outline"></i>
+                                                <i class="item-rating pointer zmdi zmdi-star-outline"></i>
+                                                <i class="item-rating pointer zmdi zmdi-star-outline"></i>
+                                                <i class="item-rating pointer zmdi zmdi-star-outline"></i>
+                                                <input class="dis-none" type="number" name="rating">
+                                            </span>
+                                        </div>
+
+                                        <div class="row p-b-25">
+                                            <div class="col-12 p-b-5">
+                                                <label class="stext-102 cl3" for="review">Your review</label>
+                                                <textarea class="size-110 bor8 stext-102 cl2 p-lr-20 p-tb-10" id="review" name="review"></textarea>
+                                            </div>
+
+                                            <div class="col-sm-6 p-b-5">
+                                                <label class="stext-102 cl3" for="name">Name</label>
+                                                <input class="size-111 bor8 stext-102 cl2 p-lr-20" id="name" type="text" name="name">
+                                            </div>
+
+                                            <div class="col-sm-6 p-b-5">
+                                                <label class="stext-102 cl3" for="email">Email</label>
+                                                <input class="size-111 bor8 stext-102 cl2 p-lr-20" id="email" type="text" name="email">
+                                            </div>
+                                        </div>
+
+                                        <button class="flex-c-m stext-101 cl0 size-112 bg7 bor11 hov-btn3 p-lr-15 trans-04 m-b-10">
+                                            Submit
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
 
+    <div class="bg6 flex-c-m flex-w size-302 m-t-73 p-tb-15">
+        <span class="stext-107 cl6 p-lr-25">
+            SKU: JAK-01
+        </span>
 
-@section script{
-    <link rel="stylesheet" href="~/client/css/etalage.css">
-    <script src="~/client/js/jquery.etalage.min.js"></script>
-
-    <!--my script-->
-    <script>
-        function ChooseSize(el) {
-            let sizeId = $(el).val();
-            let productId = $('#Id').val();
-            if (sizeId > 0) {
-                $.ajax({
-                    url: '/Product/GetColor',
-                    dataType: 'json',
-                    type: 'post',
-                    data: {
-                        productId: productId,
-                        sizeId: sizeId
-                    },
-                    success: function (res) {
-                        console.log(res);
-                        let row = `<option value="0" data-price="0">Chọn màu sản phẩm</option>`;
-                        $(res).each(function (index, item) {
-                            row += `<option value="${item.color.id}" data-id="${item.config.id}" data-price="${item.config.price}" data-color="${item.color.name}">${item.color.name} (Số lượng : ${item.config.stock})</option>`
-                        })
-                        $('.choose-color').html('');
-                        $('.choose-color').append(row);
-                    }
-                })
-            }
-        }
-
-        function SetPrice(el) {
-            let price = $(el).children('option:selected').attr('data-price');
-            $('.item_price').html('');
-            //const formatter = new Intl.NumberFormat('en-US', {
-            //    style: 'currency',
-            //    currency: '',
-            //    minimumFractionDigits: 0
-            //})
-            $('.item_price').append(price);
-        }
-
-        function AddCart() {
-            // order detail
-            // img, name,price,size,color,
-            if ($('.choose-color').val() > 0 && $('input[name=Stock]').val() > 0) {
-                let img = $('.main-image').attr('src');
-                let productName = $('.product-name').text();
-                let price = $('.choose-color').children('option:selected').attr('data-price');
-                let size = $('#product_size').children('select').children('option:selected').text();
-                let color = $('.choose-color').children('option:selected').attr('data-color');
-                let configId = $('.choose-color').children('option:selected').attr('data-id');
-                let stock = $('input[name=Stock]').val();
-                let obj = {
-                    img: img,
-                    productName: productName,
-                    price: price,
-                    size: size,
-                    color: color,
-                    configId: configId,
-                    stock: stock
-                };
-                let cartStr = localStorage.getItem("Cart");
-                if (cartStr == null)
-                    cartStr = JSON.stringify([]);
-                let cartJson = JSON.parse(cartStr);
-                let check = cartJson.filter(x => x.configId == obj.configId).length > 0;
-                if (!check) {
-                    cartJson.push(obj);
-                    localStorage.setItem("Cart", JSON.stringify(cartJson));
-                    alert("Thêm giỏ hàng thành công !!!");
-                }
-                else {
-                    alert("Đã có trong giỏ hàng !!!");
-                }
-            }
-            else {
-                alert("Vui lòng chọn size, màu sản phẩm và số lượng")
-            }
-        }
-    </script>
-
-    <script>
-        jQuery(document).ready(function ($) {
-
-            $('#etalage').etalage({
-                thumb_image_width: 300,
-                thumb_image_height: 400,
-                source_image_width: 900,
-                source_image_height: 1200,
-                show_hint: true,
-                click_callback: function (image_anchor, instance_id) {
-                    @*alert('Callback example:\nYou clicked on an image with the anchor: "' + image_anchor + '"\n(in Etalage instance: "' + instance_id + '")');*@
-                }
-            });
-
-        });
-    </script>
-    <!--initiate accordion-->
-    <script type="text/javascript">
-
-        $(function () {
-
-            var menu_ul = $('.menu_drop > li > ul'),
-                menu_a = $('.menu_drop > li > a');
-
-            menu_ul.hide();
-
-            menu_a.click(function (e) {
-                e.preventDefault();
-                if (!$(this).hasClass('active')) {
-                    menu_a.removeClass('active');
-                    menu_ul.filter(':visible').slideUp('normal');
-                    $(this).addClass('active').next().stop(true, true).slideDown('normal');
-                } else {
-                    $(this).removeClass('active');
-                    $(this).next().stop(true, true).slideUp('normal');
-                }
-            });
-
-        });
-    </script>
-}
-
+        <span class="stext-107 cl6 p-lr-25">
+            Categories: Jacket, Men
+        </span>
+    </div>
+</section>

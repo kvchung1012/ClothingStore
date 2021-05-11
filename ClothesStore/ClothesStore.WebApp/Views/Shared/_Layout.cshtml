@@ -143,6 +143,14 @@
     </script>
     <!--===============================================================================================-->
     <script src="~/client/js/main.js"></script>
+    <script src="~/client/js/product.js"></script>
+    <script>
+        let cartStr = localStorage.getItem("Cart");
+        if (cartStr != null) {
+            let cart = JSON.parse(cartStr);
+            $('.icon-header-item').attr('data-notify', cart.length);
+        }
+    </script>
     @RenderSection("script", required: false)
 </body>
 </html>		

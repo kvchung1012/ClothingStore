@@ -250,7 +250,7 @@ namespace ClothesStore.Service.Service
         public async Task<List<ColorModelView>> GetColorConfig(int productId, int sizeId)
         {
             List<ColorModelView> data = new List<ColorModelView>();
-            var colors =await db.ConfigProducts.Where(x => x.ProductId == productId && x.SizeId == sizeId).ToListAsync();
+            var colors = await db.ConfigProducts.Where(x => x.ProductId == productId && x.SizeId == sizeId).ToListAsync();
             foreach (var c in colors)
             {
                 var obj = new ColorModelView()
@@ -263,25 +263,87 @@ namespace ClothesStore.Service.Service
             return data;
         }
 
-        public async Task<List<ProductView>> GetListProduct(int CategoryId,int pageSize)
+        public async Task<List<ProductView>> GetListProduct(FilterProduct filterProduct, int pageSize)
         {
-            List<ProductView> products = new List<ProductView>();
-            var data = await db.Products.Take(pageSize).ToListAsync();
-            if (CategoryId != 0)
+            try
             {
-                data = await db.Products.Where(x => x.CategoryId == CategoryId).Take(pageSize).ToListAsync();
-            }
-            foreach (var item in data)
-            {
-                var config = db.ConfigProducts.Where(x => x.ProductId == item.Id).FirstOrDefault();
-                ProductView product = new ProductView()
+                List<ProductView> products = new List<ProductView>();
+                var data = await db.Products.Where(x=>x.IsDeleted == false).ToListAsync();
+                if (filterProduct.search != "" && filterProduct.search != null)
                 {
-                    product = item,
-                    price = (double)(config == null ? 0 : config.Price)
-                };
-                products.Add(product);
+                    data = data.Where(x => x.Name.Contains(filterProduct.search)).ToList();
+                }
+                if (filterProduct.categoryId != 0)
+                {
+                    data = await db.Products.Where(x => x.CategoryId == filterProduct.categoryId).ToListAsync();
+                }
+                if (filterProduct.brands != null)
+                {
+                    data = data.Where(x => filterProduct.brands.IndexOf((int)x.BrandId) >= 0).ToList();
+                }
+                if (filterProduct.colors != null)
+                {
+                    foreach (var item in data)
+                    {
+                        var configs = db.ConfigProducts.Where(x => x.ProductId == item.Id).ToList();
+                        var check = configs.Where(x => filterProduct.colors.IndexOf((int)x.ColorId) >= 0).FirstOrDefault();
+                        if (check != null)
+                            data = data.Where(x => x.Id != check.ProductId).ToList();
+                    }
+                }
+
+                foreach (var item in data)
+                {
+                    var config = db.ConfigProducts.Where(x => x.ProductId == item.Id).FirstOrDefault();
+                    ProductView product = new ProductView()
+                    {
+                        product = item,
+                        price = (double)(config == null ? 0 : config.Price)
+                    };
+                    products.Add(product);
+                }
+                if (pageSize != 0)
+                    products = products.Take(pageSize).ToList();
+                if (filterProduct.sort != 0)
+                {
+                    if (filterProduct.sort == 1)
+                        products = products.OrderByDescending(x => x.product.CreatedDate).ToList();
+                    else if (filterProduct.sort == 2)
+                        products = products.OrderBy(x => x.price).ToList();
+                    else
+                        products = products.OrderByDescending(x => x.price).ToList();
+                }
+                return products;
             }
-            return products;
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
+        public async Task<ProductOverView> GetInforProduct(int Id)
+        {
+            var product = db.Products.Find(Id);
+            if (product != null)
+            {
+                ProductOverView data = new ProductOverView();
+                List<Size> sizes = new List<Size>();
+                List<ProductImage> images = new List<ProductImage>();
+                images = await db.ProductImages.Where(x => x.ProductId == Id).ToListAsync();
+                var config = await db.ConfigProducts.Where(x => x.ProductId == Id).ToListAsync();
+                foreach (var item in config)
+                {
+                    Size size = db.Sizes.Find(item.SizeId);
+                    if (size != null && sizes.Where(x => x.Id == size.Id).Count() == 0)
+                        sizes.Add(size);
+                }
+                data.price = (double)(config.FirstOrDefault() == null ? 0 : config.FirstOrDefault().Price);
+                data.product = product;
+                data.size = sizes;
+                data.images = images;
+                return data;
+            }
+            return null;
         }
     }
 }

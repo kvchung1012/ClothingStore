@@ -16,7 +16,9 @@
                     });
                 });
             </script>
+            <div class="list-item">
 
+            </div>
             @foreach (var item in Model)
             {
                 <div class="cart-header" data-id="@item.ProductId">
@@ -76,3 +78,40 @@
         </div>
     </div>
 </div>
+
+@section script{
+    <script>
+        $(document).ready(function () {
+            let cartStr = localStorage.getItem("Cart");
+            if (cartStr != null) {
+                let cartJson = JSON.parse(cartStr);
+                $(cartJson).each(function (index, item) {
+                    let row = ` <div class="cart-header" data-id="${item.configId}">
+                                        <div class="close1"> </div>
+                                        <div class="cart-sec simpleCart_shelfItem">
+                                            <div class="cart-item cyc">
+                                                <img src="${item.img}" class="img-responsive" alt="" />
+                                            </div>
+                                            <div class="cart-item-info">
+                                                <h3><a>${item.productName}</a></h3>
+                                                <ul class="qty">
+                                                    <li><p>Size : ${item.size}</p></li>
+                                                    <li><p>Color : ${item.color}</p></li>
+                                                    <li><p>Qty : ${item.stock}</p></li>
+                                                </ul>
+                                                <div class="delivery">
+                                                    <p>Service Charges : Rs.100.00</p>
+                                                    <span>Delivered in 2-3 bussiness days</span>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </div>`;
+                    $('.list-item').append(row);
+                })
+            }
+        })
+    </script>
+
+}

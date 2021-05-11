@@ -31,7 +31,7 @@
     </ul>
     <ul class="c-header-nav ml-auto mr-4">
         <li class="c-header-nav-item d-md-down-none mx-2">
-            <a id="btn-notification" class="c-header-nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <a onclick="PostNotification()"  @*data-toggle="dropdown"*@ aria-haspopup="true" aria-expanded="false">
                 <svg class="c-icon">
                     <use xlink:href="/lib/icon/sprites/free.svg#cil-bell"></use>
                 </svg>
@@ -39,11 +39,11 @@
             <div id="notification" class="dropdown-menu dropdown-menu-right pt-0">
                 <div class="dropdown-header bg-light py-2"><strong>Notifications</strong></div>
                 <div class="dropdown-item d-flex justify-content-between">
-                    <div>Profile</div>
+                    <div>See notification</div>
                     <div>
-                     <svg class="c-icon mr-2">
-                         <use xlink:href="/lib/icon/sprites/free.svg#cil-user"></use>
-                     </svg>
+                        <svg class="c-icon mr-2">
+                            <use xlink:href="/lib/icon/sprites/free.svg#cil-bell"></use>
+                        </svg>
                     </div>
                 </div>
             </div>

@@ -1,56 +1,148 @@
-﻿
-<!DOCTYPE HTML>
-<html>
+﻿<!DOCTYPE html>
+<html lang="en">
+
 <head>
-    <title>Buy_shop an E-Commerce online Shopping Category Flat Bootstarp responsive Website Template| Home :: w3layouts</title>
+    <title>Home</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="keywords" content="Buy_shop Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template,
-Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
-    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
-    <link href="~/client/css/bootstrap.css" rel='stylesheet' type='text/css' />
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <!-- Custom Theme files -->
-    <link href="/client/css/style.css" rel='stylesheet' type='text/css' />
-    <script src="~/client/js/simpleCart.min.js"></script>
-    <!-- Custom Theme files -->
-    <!--webfont-->
-    <link href='https://fonts.googleapis.com/css?family=Lato:100,200,300,400,500,600,700,800,900' rel='stylesheet' type='text/css'>
-    <script src="~/client/js/jquery-1.11.1.min.js"></script>
-    @*<script src="/lib/jquery/dist/jquery.min.js"></script>*@
-    <!-- start menu -->
-    <link href="~/client/css/megamenu.css" rel="stylesheet" type="text/css" media="all" />
-    <script type="text/javascript" src="~/client/js/megamenu.js"></script>
-    <script>$(document).ready(function () { $(".megamenu").megamenu(); });</script>
-
+    <!--===============================================================================================-->
+    <link rel="icon" type="image/png" href="~/client/images/icons/favicon.png" />
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/client/vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/client/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/client/fonts/iconic/css/material-design-iconic-font.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/client/fonts/linearicons-v1.0.0/icon-font.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/client/vendor/animate/animate.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/client/vendor/css-hamburgers/hamburgers.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/client/vendor/animsition/css/animsition.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/client/vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/client/vendor/daterangepicker/daterangepicker.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/client/vendor/slick/slick.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/client/vendor/MagnificPopup/magnific-popup.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/client/vendor/perfect-scrollbar/perfect-scrollbar.css">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="~/client/css/util.css">
+    <link rel="stylesheet" type="text/css" href="~/client/css/main.css">
+    <!--===============================================================================================-->
 </head>
-<body>
-    @Html.Partial("_HeaderTop")
-    <div class="wrap-box"></div>
-    <div class="header_bottom">
-        <div class="container">
-            @await Component.InvokeAsync("Category")
-            @Html.Partial("_Cart")
-            <div class="clearfix"></div>
-        </div>
-    </div>
 
-    <div class="banner">
-        <div class="container">
-            <div class="banner_desc">
-                <h1>New Season Arrivals.</h1>
-                <h2>Check out all the new trends</h2>
-                <div class="button">
-                    <a href="/" class="hvr-shutter-out-horizontal">Shop Now</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
+<body class="animsition">
+    <!-- ==================================HOME================================================ -->
+    @await Html.PartialAsync("_HeaderTop")
+    @await Html.PartialAsync("_Cart")
     @RenderBody()
+    @await Html.PartialAsync("_Footer")
 
-    @Html.Partial("_Footer")
+    <script src="~/client/vendor/jquery/jquery-3.2.1.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/client/vendor/animsition/js/animsition.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/client/vendor/bootstrap/js/popper.js"></script>
+    <script src="~/client/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/client/vendor/select2/select2.min.js"></script>
+    <script>
+        $(".js-select2").each(function () {
+            $(this).select2({
+                minimumResultsForSearch: 20,
+                dropdownParent: $(this).next('.dropDownSelect2')
+            });
+        })
+    </script>
+    <!--===============================================================================================-->
+    <script src="~/client/vendor/daterangepicker/moment.min.js"></script>
+    <script src="~/client/vendor/daterangepicker/daterangepicker.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/client/vendor/slick/slick.min.js"></script>
+    <script src="~/client/js/slick-custom.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/client/vendor/parallax100/parallax100.js"></script>
+    <script>
+        $('.parallax100').parallax100();
+    </script>
+    <!--===============================================================================================-->
+    <script src="~/client/vendor/MagnificPopup/jquery.magnific-popup.min.js"></script>
+    <script>
+        $('.gallery-lb').each(function () { // the containers for all your galleries
+            $(this).magnificPopup({
+                delegate: 'a', // the selector for gallery item
+                type: 'image',
+                gallery: {
+                    enabled: true
+                },
+                mainClass: 'mfp-fade'
+            });
+        });
+    </script>
+    <!--===============================================================================================-->
+    <script src="~/client/vendor/isotope/isotope.pkgd.min.js"></script>
+    <!--===============================================================================================-->
+    <script src="~/client/vendor/sweetalert/sweetalert.min.js"></script>
+    <script>
+        $('.js-addwish-b2').on('click', function (e) {
+            e.preventDefault();
+        });
 
+        $('.js-addwish-b2').each(function () {
+            var nameProduct = $(this).parent().parent().find('.js-name-b2').html();
+            $(this).on('click', function () {
+                swal(nameProduct, "is added to wishlist !", "success");
+
+                $(this).addClass('js-addedwish-b2');
+                $(this).off('click');
+            });
+        });
+
+        $('.js-addwish-detail').each(function () {
+            var nameProduct = $(this).parent().parent().parent().find('.js-name-detail').html();
+
+            $(this).on('click', function () {
+                swal(nameProduct, "is added to wishlist !", "success");
+
+                $(this).addClass('js-addedwish-detail');
+                $(this).off('click');
+            });
+        });
+
+        /*---------------------------------------------*/
+
+        $('.js-addcart-detail').each(function () {
+            var nameProduct = $(this).parent().parent().parent().parent().find('.js-name-detail').html();
+            $(this).on('click', function () {
+                swal(nameProduct, "is added to cart !", "success");
+            });
+        });
+    </script>
+    <!--===============================================================================================-->
+    <script src="~/client/vendor/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script>
+        $('.js-pscroll').each(function () {
+            $(this).css('position', 'relative');
+            $(this).css('overflow', 'hidden');
+            var ps = new PerfectScrollbar(this, {
+                wheelSpeed: 1,
+                scrollingThreshold: 1000,
+                wheelPropagation: false,
+            });
+
+            $(window).on('resize', function () {
+                ps.update();
+            })
+        });
+    </script>
+    <!--===============================================================================================-->
+    <script src="~/client/js/main.js"></script>
     @RenderSection("script", required: false)
 </body>
 </html>		

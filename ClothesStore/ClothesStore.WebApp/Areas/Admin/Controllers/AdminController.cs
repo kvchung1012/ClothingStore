@@ -20,12 +20,15 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
         private readonly IEmployeeService _employeeService;
         private readonly ILoginService _loginService;
         private readonly ISendMailService _sendMailService;
+        private readonly IHttpContextAccessor _HttpContextAccessor;
 
-        public AdminController(IEmployeeService employeeService, ILoginService loginService,ISendMailService sendMailService)
+
+        public AdminController(IEmployeeService employeeService, ILoginService loginService,ISendMailService sendMailService, IHttpContextAccessor HttpContextAccessor)
         {
             _employeeService = employeeService;
             _loginService = loginService;
             _sendMailService = sendMailService;
+            _HttpContextAccessor = HttpContextAccessor;
         }
 
         public IActionResult Index()
@@ -37,6 +40,28 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
         public IActionResult Login()
         {
             return View();
+        }
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> ChangePassword(ChangePassViewModel change)
+        {
+            string jsonUser = _HttpContextAccessor.HttpContext.Session.GetString(Constant.USER);
+            var emp = new Employee();
+            emp = JsonSerializer.Deserialize<Employee>(jsonUser) as Employee;
+            if(emp.Password!= Utilities.ComputeSha256Hash(change.OldPassword)){
+                return Json(false);
+            }
+            emp.Password = Utilities.ComputeSha256Hash(change.NewPassword);           
+            await _employeeService.AddOrUpdate(emp);
+            return Json(true);
+
+
+
         }
 
         [HttpPost]
@@ -159,6 +184,19 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
                 UpdatedBy = ""
             };
             return PartialView(data);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ProfileUser(int Id)
+        {
+            var emp = await _employeeService.GetObjectById(Id);
+            var model = new ViewDetailObject<Employee>()
+            {
+                obj = emp,
+                CreatedBy = "",
+                UpdatedBy = ""
+            };
+            return View(model);
         }
     }
 }

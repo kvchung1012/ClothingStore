@@ -56,6 +56,7 @@ namespace ClothesStore.WebApp
             services.AddSingleton<ILoginService, LoginService>();
             services.AddSingleton<IOrderService, OrderService>();
             services.AddTransient<ISendMailService, SendMailService>();
+            services.AddSingleton<ISliderService, SliderService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

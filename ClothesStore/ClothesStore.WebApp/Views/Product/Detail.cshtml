@@ -1,4 +1,5 @@
 ﻿@model ClothesStore.Model.ModelView.ProductAndProductConfigModelView
+@using System.Globalization;
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -12,7 +13,7 @@
                 <ul id="etalage">
                     <li>
                         <a href="#">
-                            <img class="etalage_thumb_image img-responsive" src="@Model.product.Image" />
+                            <img class="etalage_thumb_image img-responsive main-image" src="@Model.product.Image" />
                             <img class="etalage_source_image" src="@Model.product.Image" title="@Model.product.Slug" />
                         </a>
                     </li>
@@ -29,42 +30,49 @@
                 <div class="clearfix"></div>
             </div>
             <div class="desc1 span_3_of_2 product_config">
-
                 <!--load product config here-->
-
-
                 <ul class="back">
                     <li><i class="back_arrow"> </i>Back to <a href="index.html">Men's Clothing</a></li>
                 </ul>
-                <h1>@Model.product.Name</h1>
+                <h1 class="product-name">@Model.product.Name</h1>
                 <p>@Model.product.Description</p>
-                <div class="dropdown_top">
-                    <div id="product_size" class="dropdown_left">
-                        <select class="dropdown" tabindex="10" data-settings='{"wrapperClass":"metro1"}' onchange="ChooseSize(this)">
+                <div class="row">
+                    <div id="product_size" class="col-lg-4">
+                        <select class="dropdown form-control" tabindex="10" data-settings='{"wrapperClass":"metro1"}' onchange="ChooseSize(this)">
                             <option value="0">Chọn kích cỡ</option>
-                            @foreach(var item in ViewBag.Size as IEnumerable<ClothesStore.Model.Model.EF.Size>)
+                            @foreach (var item in ViewBag.Size as IEnumerable<ClothesStore.Model.Model.EF.Size>)
                             {
                                 <option value="@item.Id">@item.Name</option>
                             }
                         </select>
                     </div>
 
-                    <div id="product_color" class="dropdown_left">
-                        <select class="dropdown choose-color" tabindex="10" data-settings='{"wrapperClass":"metro1"}' onchange="SetPrice(this)">
+                    <div id="product_color" class="col-lg-4">
+                        <select class="dropdown choose-color form-control" tabindex="10" data-settings='{"wrapperClass":"metro1"}' onchange="SetPrice(this)">
                             <option value="0">Chọn màu sản phẩm</option>
                             @*<li><a href="#"> <span class="color1"> </span></a></li>*@
                         </select>
+                    </div>
+                    <div class="col-lg-4">
+                        <input type="number" class="form-control" name="Stock" value="1" min="1" />
                     </div>
                     <div class="clearfix"></div>
                 </div>
                 <div class="simpleCart_shelfItem">
                     <div class="price_single">
-                        <div class="head"><h2><span class="amount item_price">@(Model.configs.First() != null? Model.configs.First().Price:0)</span></h2></div>
-                        @*<div class="head_desc"><a href="#">12 reviews</a><img src="images/review.png" alt="" /></div>*@
+                        @{
+                            CultureInfo cul = CultureInfo.GetCultureInfo("vi-VN");   // try with "en-US"
+                            string price = double.Parse((Model.configs.First() != null ? Model.configs.First().Price : 0).ToString()).ToString("#,###", cul.NumberFormat);
+                        }
+                        <div class=""><h2><span class="amount item_price">@price VNĐ</span></h2></div>
                         <div class="clearfix"></div>
                     </div>
-                    <!--<div class="single_but"><a href="" class="item_add btn_3" value=""></a></div>-->
-                    <div class="size_2-right"><a href="/Product/AddToCart?@Model.product.Id" class="item_add item_add1 btn_5" value="">Add to Cart </a></div>
+
+                    <div class="input-stock mb-3">
+                    </div>
+                    <div class="size_2-right">
+                        <a onclick="AddCart()" class="item_add item_add1 btn_5" value="">Add to Cart </a>
+                    </div>
                 </div>
             </div>
             <div class="clearfix"></div>
@@ -81,14 +89,14 @@
             @Html.Raw(Model.product.Content)
         </div>
         @*<ul class="menu_drop">
-            <li class="item1">
-                <a href="#"><img src="/client/images/product_arrow.png">Description</a>
-                <ul>
-                    <li class="subitem1"><a href="#">@Model.product.Description</a></li>
-                </ul>
-            </li>
+                <li class="item1">
+                    <a href="#"><img src="/client/images/product_arrow.png">Description</a>
+                    <ul>
+                        <li class="subitem1"><a href="#">@Model.product.Description</a></li>
+                    </ul>
+                </li>
 
-        </ul>*@
+            </ul>*@
     </div>
 
 
@@ -139,7 +147,7 @@
                         console.log(res);
                         let row = `<option value="0" data-price="0">Chọn màu sản phẩm</option>`;
                         $(res).each(function (index, item) {
-                            row += `<option value="${item.color.id}" data-price="${item.price}">${item.color.name}</option>`
+                            row += `<option value="${item.color.id}" data-id="${item.config.id}" data-price="${item.config.price}" data-color="${item.color.name}">${item.color.name} (Số lượng : ${item.config.stock})</option>`
                         })
                         $('.choose-color').html('');
                         $('.choose-color').append(row);
@@ -151,7 +159,51 @@
         function SetPrice(el) {
             let price = $(el).children('option:selected').attr('data-price');
             $('.item_price').html('');
+            //const formatter = new Intl.NumberFormat('en-US', {
+            //    style: 'currency',
+            //    currency: '',
+            //    minimumFractionDigits: 0
+            //})
             $('.item_price').append(price);
+        }
+
+        function AddCart() {
+            // order detail
+            // img, name,price,size,color,
+            if ($('.choose-color').val() > 0 && $('input[name=Stock]').val() > 0) {
+                let img = $('.main-image').attr('src');
+                let productName = $('.product-name').text();
+                let price = $('.choose-color').children('option:selected').attr('data-price');
+                let size = $('#product_size').children('select').children('option:selected').text();
+                let color = $('.choose-color').children('option:selected').attr('data-color');
+                let configId = $('.choose-color').children('option:selected').attr('data-id');
+                let stock = $('input[name=Stock]').val();
+                let obj = {
+                    img: img,
+                    productName: productName,
+                    price: price,
+                    size: size,
+                    color: color,
+                    configId: configId,
+                    stock: stock
+                };
+                let cartStr = localStorage.getItem("Cart");
+                if (cartStr == null)
+                    cartStr = JSON.stringify([]);
+                let cartJson = JSON.parse(cartStr);
+                let check = cartJson.filter(x => x.configId == obj.configId).length > 0;
+                if (!check) {
+                    cartJson.push(obj);
+                    localStorage.setItem("Cart", JSON.stringify(cartJson));
+                    alert("Thêm giỏ hàng thành công !!!");
+                }
+                else {
+                    alert("Đã có trong giỏ hàng !!!");
+                }
+            }
+            else {
+                alert("Vui lòng chọn size, màu sản phẩm và số lượng")
+            }
         }
     </script>
 

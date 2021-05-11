@@ -255,7 +255,7 @@ namespace ClothesStore.Service.Service
                 var obj = new ColorModelView()
                 {
                     color = db.Colors.Find(c.ColorId),
-                    Price = c.Price.ToString()
+                    config = c
                 };
                 data.Add(obj);
             }

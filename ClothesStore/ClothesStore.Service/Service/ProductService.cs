@@ -12,7 +12,7 @@ namespace ClothesStore.Service.Service
 {
     public class ProductService : IProductService
     {
-        ClothingStoreContext db = new ClothingStoreContext();
+        readonly ClothingStoreContext db = new ClothingStoreContext();
         public async Task<bool> AddOrUpdate(Product product, List<ConfigProduct> configProducts, List<ProductImage> productImage)
         {
             try

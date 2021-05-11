@@ -73,48 +73,54 @@
     <script src="~/lib/ckeditor/ckeditor.js"></script>
     <script src="~/js/sweetalert.min.js"></script>
     <script src="~/lib/select2/js/select2.min.js"></script>
+
+    <script> 
+
+        $(document).ready(function () {
+            $('#btn-notification').click(function () {
+                console.log("test");
+                $.ajax({
+                    url: '/Order/GetPendingOrder',
+                    type: 'get',
+                    dataType: 'html',
+                    success: function (res) {
+                        $('#notification').html('');
+                        $('#notification').append(res);
+                    }
+            })
+
+
+            function timeSince(date) {
+
+                var seconds = Math.floor((new Date() - date) / 1000);
+
+                var interval = seconds / 31536000;
+
+                if (interval > 1) {
+                    return Math.floor(interval) + " years";
+                }
+                interval = seconds / 2592000;
+                if (interval > 1) {
+                    return Math.floor(interval) + " months";
+                }
+                interval = seconds / 86400;
+                if (interval > 1) {
+                    return Math.floor(interval) + " days";
+                }
+                interval = seconds / 3600;
+                if (interval > 1) {
+                    return Math.floor(interval) + " hours";
+                }
+                interval = seconds / 60;
+                if (interval > 1) {
+                    return Math.floor(interval) + " minutes";
+                }
+                return Math.floor(seconds) + " seconds";
+            }
+        });
+       
+    </script>
+
     @RenderSection("scripts", false)
-
-<script>
-
-    function PostNotification(data) {
-        var time = timeSince(new Date().toDateString());
-        var row = `<div class="dropdown-item d-flex justify-content-between">
-                    <div>${data}</div>
-                   <div>${time}</div>
-                </div>`;
-        $('#notification').append(row);
-    }
-
-    function timeSince(date) {
-
-        var seconds = Math.floor((new Date() - date) / 1000);
-
-        var interval = seconds / 31536000;
-
-        if (interval > 1) {
-            return Math.floor(interval) + " years";
-        }
-        interval = seconds / 2592000;
-        if (interval > 1) {
-            return Math.floor(interval) + " months";
-        }
-        interval = seconds / 86400;
-        if (interval > 1) {
-            return Math.floor(interval) + " days";
-        }
-        interval = seconds / 3600;
-        if (interval > 1) {
-            return Math.floor(interval) + " hours";
-        }
-        interval = seconds / 60;
-        if (interval > 1) {
-            return Math.floor(interval) + " minutes";
-        }
-        return Math.floor(seconds) + " seconds";
-    }
-
-     
-</script>
 </body>
 </html>

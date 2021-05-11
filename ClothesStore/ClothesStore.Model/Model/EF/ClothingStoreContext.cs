@@ -39,8 +39,7 @@ namespace ClothesStore.Model.Model.EF
             if (!optionsBuilder.IsConfigured)
 
             { 
-                optionsBuilder.UseSqlServer("Server=KHUATCHUNG\\KHUATCHUNG;Database=ClothingStore;Trusted_Connection=True;");
-            }
+                     optionsBuilder.UseSqlServer("Server=KHUATCHUNG\\KHUATCHUNG;Database=ClothingStore;Trusted_Connection=True;");            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

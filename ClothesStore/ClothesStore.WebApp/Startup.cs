@@ -29,8 +29,8 @@ namespace ClothesStore.WebApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc(x => x.EnableEndpointRouting = false);
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddDistributedMemoryCache();
-
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromSeconds(3600);

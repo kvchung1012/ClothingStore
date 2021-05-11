@@ -31,5 +31,7 @@ namespace ClothesStore.Service.IService
         public Task<List<Color>> GetAllColor();
         public Task<List<Size>> GetAllSize();
 
+        public Task<List<ColorModelView>> GetColorConfig(int productId, int sizeId);
+
     }
 }

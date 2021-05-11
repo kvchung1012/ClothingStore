@@ -1,6 +1,7 @@
 ﻿
 @{
     Layout = "/Areas/Admin/Views/Shared/_LoginLayout.cshtml";
+
 }
 
 <form class="register">
@@ -86,6 +87,7 @@
 
 
             //chua validate
+           
             if (JSON.stringify(registerObj.Password) !== JSON.stringify(registerObj.ConfirmedPassword)) {
                 swal("Fail", "Password must be the same!", "warning");
             } else {

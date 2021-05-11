@@ -14,12 +14,14 @@ namespace ClothesStore.WebApp.Controllers
         private readonly IProductService _productService;
         private readonly IBrandService _brandService;
         private readonly ICategoryService _categoryService;
+        private readonly ISliderService _sliderService;
 
-        public HomeController(IProductService productService,IBrandService brandService,ICategoryService categoryService)
+        public HomeController(IProductService productService,IBrandService brandService,ICategoryService categoryService,ISliderService sliderService)
         {
             _productService = productService;
             _brandService = brandService;
             _categoryService = categoryService;
+            _sliderService = sliderService;
         }
 
         public async Task<IActionResult> Index()
@@ -29,6 +31,7 @@ namespace ClothesStore.WebApp.Controllers
             //new
             ViewBag.brand = (await _brandService.GetAll()).Take(6);
             ViewBag.category = (await _categoryService.GetAll());
+            ViewBag.Slider = (await _sliderService.GetAll());
             return View(product);
         }
 

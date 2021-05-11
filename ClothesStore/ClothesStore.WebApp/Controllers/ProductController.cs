@@ -29,6 +29,7 @@ namespace ClothesStore.WebApp.Controllers
         {
             return View();
         }
+
         public async Task<IActionResult> Detail(int id = 1)
         {
             var product = await _productService.GetProductDetailById(id);

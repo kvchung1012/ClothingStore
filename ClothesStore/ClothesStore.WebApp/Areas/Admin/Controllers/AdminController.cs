@@ -160,5 +160,18 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
             };
             return PartialView(data);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ProfileUser(int Id)
+        {
+            var emp = await _employeeService.GetObjectById(Id);
+            var model = new ViewDetailObject<Employee>()
+            {
+                obj = emp,
+                CreatedBy = "",
+                UpdatedBy = ""
+            };
+            return View(model);
+        }
     }
 }

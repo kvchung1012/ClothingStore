@@ -36,6 +36,7 @@ namespace ClothesStore.Model.Model.EF
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
+
             { 
                 optionsBuilder.UseSqlServer("Server=HAIDV\\SQLEXPRESS;Database=ClothingStore;Trusted_Connection=True;");
             }

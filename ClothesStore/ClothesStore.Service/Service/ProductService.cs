@@ -42,6 +42,7 @@ namespace ClothesStore.Service.Service
                 {
                     var pro = await db.Products.FindAsync(product.Id);
                     pro.BrandId = product.BrandId;
+                    pro.Slug = pro.Slug;
                     pro.UpdatedBy = product.UpdatedBy;
                     pro.CategoryId = product.CategoryId;
                     pro.Content = product.Content;
@@ -262,14 +263,26 @@ namespace ClothesStore.Service.Service
             return data;
         }
 
-        //public List<ConfigProduct> Client_GetListConfigProductByProductId(int Id)
-        //{
-        //    return db.ConfigProducts.Where(x => x.ProductId == Id && x.IsDeleted == false).ToList();
-        //}
-        //public List<ProductImage>Client_GetListProductImageByProductId(int Id)
-        //{
-        //    return  db.ProductImages.Where(x => x.ProductId == Id).ToList();
-        //}
+        public async Task<List<ProductView>> GetListProduct(int CategoryId,int pageSize)
+        {
+            List<ProductView> products = new List<ProductView>();
+            var data = await db.Products.Take(pageSize).ToListAsync();
+            if (CategoryId != 0)
+            {
+                data = await db.Products.Where(x => x.CategoryId == CategoryId).Take(pageSize).ToListAsync();
+            }
+            foreach (var item in data)
+            {
+                var config = db.ConfigProducts.Where(x => x.ProductId == item.Id).FirstOrDefault();
+                ProductView product = new ProductView()
+                {
+                    product = item,
+                    price = (double)(config == null ? 0 : config.Price)
+                };
+                products.Add(product);
+            }
+            return products;
+        }
     }
 }
 

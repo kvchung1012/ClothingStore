@@ -42,6 +42,7 @@ namespace ClothesStore.Service.Service
                 {
                     var pro = await db.Products.FindAsync(product.Id);
                     pro.BrandId = product.BrandId;
+                    pro.Slug = pro.Slug;
                     pro.UpdatedBy = product.UpdatedBy;
                     pro.CategoryId = product.CategoryId;
                     pro.Content = product.Content;
@@ -133,8 +134,6 @@ namespace ClothesStore.Service.Service
             return await db.ConfigProducts.Where(x => x.ProductId == Id && x.IsDeleted == false).ToListAsync();
         }
 
-
-
         public async Task<ResponseData<ProductModelView>> GetListData(RequestData requestData)
         {
             List<ProductModelView> list = new List<ProductModelView>();
@@ -197,9 +196,6 @@ namespace ClothesStore.Service.Service
             return await db.Products.FindAsync(Id);
         }
 
-
-
-
         //Test Client
         public async Task<List<ProductAndProductConfigModelView>> GetListProductByQtyAndPosition(int pos, int qty)
         {
@@ -260,21 +256,33 @@ namespace ClothesStore.Service.Service
                 var obj = new ColorModelView()
                 {
                     color = db.Colors.Find(c.ColorId),
-                    Price = c.Price.ToString()
+                    config = c
                 };
                 data.Add(obj);
             }
             return data;
         }
 
-        //public List<ConfigProduct> Client_GetListConfigProductByProductId(int Id)
-        //{
-        //    return db.ConfigProducts.Where(x => x.ProductId == Id && x.IsDeleted == false).ToList();
-        //}
-        //public List<ProductImage>Client_GetListProductImageByProductId(int Id)
-        //{
-        //    return  db.ProductImages.Where(x => x.ProductId == Id).ToList();
-        //}
+        public async Task<List<ProductView>> GetListProduct(int CategoryId,int pageSize)
+        {
+            List<ProductView> products = new List<ProductView>();
+            var data = await db.Products.Take(pageSize).ToListAsync();
+            if (CategoryId != 0)
+            {
+                data = await db.Products.Where(x => x.CategoryId == CategoryId).Take(pageSize).ToListAsync();
+            }
+            foreach (var item in data)
+            {
+                var config = db.ConfigProducts.Where(x => x.ProductId == item.Id).FirstOrDefault();
+                ProductView product = new ProductView()
+                {
+                    product = item,
+                    price = (double)(config == null ? 0 : config.Price)
+                };
+                products.Add(product);
+            }
+            return products;
+        }
     }
 }
 

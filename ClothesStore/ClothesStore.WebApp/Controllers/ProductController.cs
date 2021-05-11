@@ -1,4 +1,6 @@
 ﻿using ClothesStore.Model.Model.EF;
+using ClothesStore.Model.ModelView;
+using ClothesStore.Model.ModelView.ProductConfig;
 using ClothesStore.Service.IService;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,18 +15,21 @@ namespace ClothesStore.WebApp.Controllers
         private readonly IProductService _productService;
         private readonly ISizeService _sizeService;
         private readonly IColorService _colorService;
-        
-        public ProductController(IProductService productService, IColorService colorService, ISizeService sizeService)
+        private readonly IConfigProductService _configProductService;
+
+        public ProductController(IProductService productService, IColorService colorService, ISizeService sizeService, IConfigProductService configProductService)
         {
             _productService = productService;
             _colorService = colorService;
             _sizeService = sizeService;
+            _configProductService = configProductService;
         }
 
         public IActionResult Index()
         {
             return View();
         }
+
         public async Task<IActionResult> Detail(int id = 1)
         {
             var product = await _productService.GetProductDetailById(id);
@@ -57,7 +62,17 @@ namespace ClothesStore.WebApp.Controllers
             ViewBag.allSize = await _sizeService.GetAll();
             ViewBag.allColor = await _colorService.GetAll();
             ViewBag.RelatedPro = await _productService.GetRelatedProduct(Id, 4);
+
+            //default price with no config
+            ViewBag.originalPrice = await _configProductService.GetMinimumPrice(Id);
+
             return View(productViewModel);
+        }
+        [HttpPost]
+        public async Task<JsonResult> GetConfig(RequestConfig requestConfig)
+        {
+            ResponseConfig res = await _configProductService.GetPriceAndStock(requestConfig);
+            return Json(res);
         }
     }
 }

@@ -7,6 +7,7 @@ namespace ClothesStore.WebApp.Common
 {
     public static class Constant
     {
-        public static string USER = "USER";
+        public static readonly string USER = "USER";
+        public static readonly string CART = "CART";
     }
 }

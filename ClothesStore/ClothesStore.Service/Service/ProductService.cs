@@ -133,8 +133,6 @@ namespace ClothesStore.Service.Service
             return await db.ConfigProducts.Where(x => x.ProductId == Id && x.IsDeleted == false).ToListAsync();
         }
 
-
-
         public async Task<ResponseData<ProductModelView>> GetListData(RequestData requestData)
         {
             List<ProductModelView> list = new List<ProductModelView>();
@@ -196,9 +194,6 @@ namespace ClothesStore.Service.Service
         {
             return await db.Products.FindAsync(Id);
         }
-
-
-
 
         //Test Client
         public async Task<List<ProductAndProductConfigModelView>> GetListProductByQtyAndPosition(int pos, int qty)

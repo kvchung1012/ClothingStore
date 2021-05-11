@@ -103,7 +103,7 @@
                             <img src="@item.product.Image" class="img-responsive" alt="@item.product.Name">
                         </a>
                     </div>
-                    <h4><a href="single.html">@item.product.Name</a></h4>
+                    <h4><a href="/Product/">@item.product.Name</a></h4>
                     @foreach (var configPro in item.configs.OrderByDescending(x => x.Id))
                     {
                         <p>@configPro.Price</p>

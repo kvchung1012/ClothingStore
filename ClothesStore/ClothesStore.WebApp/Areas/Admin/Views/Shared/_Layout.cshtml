@@ -1,4 +1,4 @@
-﻿@using Microsoft.AspNetCore.Http;
+﻿ @using Microsoft.AspNetCore.Http;
 @using ClothesStore.WebApp.Common;
 @using System.Text.Json;
 @using ClothesStore.Model.Model.EF;
@@ -28,15 +28,29 @@
     @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>*@
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    
 </head>
 <body class="c-app">
     @{
         var user = HttpContextAccessor.HttpContext.Session.GetString(Constant.USER);
-        if (user == null)
+        var emp = new Employee();
+        if (user != null)
+            emp = JsonSerializer.Deserialize<Employee>(user) as Employee;
+
+        if (string.IsNullOrEmpty(user))
         {
             <script>
                 location.href = '/Admin/Admin/Login'
             </script>
+        }
+        else
+        {
+            if (emp.IsAdmin == null || emp.IsAdmin == false)
+            {
+                <script>
+                    location.href = '/'
+                </script>
+            }
         }
     }
     @await Html.PartialAsync("_SideBar")
@@ -45,7 +59,6 @@
         <div class="c-body">
             <main class="c-main">
                 <div class="container-fluid">
-
                     @*image in here*@
                     <div class="modal modal-image fade modal-second" id="myModal" role="dialog">
                         <div class="modal-dialog modal-xl">
@@ -78,41 +91,48 @@
     <script src="~/lib/select2/js/select2.min.js"></script>
 
     <script>
-        $(document).click(function () {
-            if ($('#notification').hasClass('show')) {
-                $('#notification').removeClass('show')
-            }
-        })
-
-        function PostNotification() {
-            if ($('#notification').hasClass('show')) {
-                $('#notification').removeClass('show')
-            }
-            else {
-                $.ajax({
-                    url: '/Admin/Order/GetPendingOrder',
-                    type: 'post',
-                    dataType: 'json',
-                    success: function (res) {
-                        let html = ``;
-                        $(res).each(function (i, item) {
-                            html += `<div class="dropdown-item d-flex justify-content-between">
-                                            <div class="mr-3">Đơn hàng mới từ : ${item.name}</div>
-                                            <div id="time-since-order">${item.time}</div>
-                                        </div>`;
-                        })
-                        $('#notification').html('');
-                        $('#notification').append(html);
-                        $('#notification').dropdown('show')
-                        //var timeSince = $('#time-since-order').html();
-                        //$('#time-since-order').html()
-                    }
-                })
-            }
-
-        }
         $(function () {
 
+            $('#btn-posnotification').click(function (e) {
+                e.preventDefault();
+                PostNotification();
+            })
+
+            $(document).click(function () {
+                if ($('#notification').hasClass('show')) {
+                    $('#notification').removeClass('show')
+                }
+            })
+
+            function PostNotification() {
+                if ($('#notification').hasClass('show')) {
+                    $('#notification').removeClass('show')
+                }
+                else {
+                    $.ajax({
+                        url: '/Admin/Order/GetPendingOrder',
+                        type: 'post',
+                        dataType: 'json',
+                        success: function (res) {
+                            let html = ``;
+                  
+                            $(res).each(function (i, item) {
+                                html += `<div class="dropdown-item d-flex justify-content-between">
+                                                            <div class="mr-3">Đơn hàng mới từ : ${item.name}</div>
+                                                            <div id="time-since-order">${item.time}</div>
+                                                        </div>`;
+                            })
+                            $('#notification').html('');
+                            $('#notification').append(html);
+                            $('#notification').dropdown('show')
+                        },
+                        complete: function () {
+                           
+                        }
+                    })
+                }
+
+            }
 
             function timeSince(date) {
 

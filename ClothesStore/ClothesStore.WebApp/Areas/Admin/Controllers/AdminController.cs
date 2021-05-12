@@ -23,7 +23,7 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
         private readonly IHttpContextAccessor _HttpContextAccessor;
 
 
-        public AdminController(IEmployeeService employeeService, ILoginService loginService,ISendMailService sendMailService, IHttpContextAccessor HttpContextAccessor)
+        public AdminController(IEmployeeService employeeService, ILoginService loginService, ISendMailService sendMailService, IHttpContextAccessor HttpContextAccessor)
         {
             _employeeService = employeeService;
             _loginService = loginService;
@@ -52,16 +52,19 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
         {
             string jsonUser = _HttpContextAccessor.HttpContext.Session.GetString(Constant.USER);
             var emp = new Employee();
+
+            if (string.IsNullOrEmpty(jsonUser))
+                return Json(false);
+
             emp = JsonSerializer.Deserialize<Employee>(jsonUser) as Employee;
-            if(emp.Password!= Utilities.ComputeSha256Hash(change.OldPassword)){
+            if (emp.Password != Utilities.ComputeSha256Hash(change.OldPassword))
+            {
                 return Json(false);
             }
-            emp.Password = Utilities.ComputeSha256Hash(change.NewPassword);           
+
+            emp.Password = Utilities.ComputeSha256Hash(change.NewPassword);
             await _employeeService.AddOrUpdate(emp);
             return Json(true);
-
-
-
         }
 
         [HttpPost]
@@ -134,7 +137,7 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
                 MailContent mail = new MailContent();
                 mail.To = "nguyenkhanh21102000@gmail.com";
                 mail.Subject = "ForgotPassword";
-                mail.Body ="Mật khẩu mới của bạn là :"+newPass;
+                mail.Body = "Mật khẩu mới của bạn là :" + newPass;
                 await _sendMailService.SendMail(mail);
                 return Json(true);
             }

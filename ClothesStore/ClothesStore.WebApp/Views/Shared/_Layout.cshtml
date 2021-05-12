@@ -47,6 +47,19 @@
         .hide {
             display: none;
         }
+
+        .dropdown-menu {
+            position: absolute;
+            transform: translate3d(-406px, 5px, 0px);
+            top: 60px;
+            left: 250px;
+            will-change: transform;
+        }
+
+        svg {
+            width: 20px !important;
+            height: 20px !important;
+        }
     </style>
     <!--===============================================================================================-->
 </head>
@@ -161,11 +174,29 @@
     <script src="~/client/js/main.js"></script>
     <script src="~/client/js/product.js"></script>
     <script>
+        //start my code
+        $(document).click(function () {
+            if ($('#notification').hasClass('show')) {
+                $('#notification').removeClass('show')
+            }
+        })
+
+        function ShowUserDropdown() {
+            console.log("test");
+            if ($('#notification').hasClass('show')) {
+                $('#notification').removeClass('show')
+            }
+            $('#notification').dropdown('show');
+        }
+
+     //end up my code
         let cartStr = localStorage.getItem("Cart");
         if (cartStr != null) {
             let cart = JSON.parse(cartStr);
             $('.icon-header-item').attr('data-notify', cart.length);
         }
+
+
     </script>
     @RenderSection("script", required: false)
 </body>

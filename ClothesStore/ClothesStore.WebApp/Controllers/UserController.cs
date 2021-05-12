@@ -36,6 +36,7 @@ namespace ClothesStore.WebApp.Controllers
         [HttpGet]
         public IActionResult Login()
         {
+            HttpContext.Session.Clear();
             return View();
         }
 
@@ -58,9 +59,6 @@ namespace ClothesStore.WebApp.Controllers
             emp.Password = Utilities.ComputeSha256Hash(change.NewPassword);
             await _employeeService.AddOrUpdate(emp);
             return Json(true);
-
-
-
         }
 
         [HttpPost]
@@ -81,7 +79,7 @@ namespace ClothesStore.WebApp.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
-            return RedirectToAction("Index");
+            return RedirectToAction("Login");
         }
 
         [HttpGet]

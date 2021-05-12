@@ -294,6 +294,7 @@ function GetViewDetail(url, id) {
             $('.modal-add .modal-body').append(res);
             $('.btn-save').addClass('d-none');
             $('.modal-add').modal('show');
+            $('.modal-title').text('Chi Tiết');
         },
         error: function (error) {
             console.log(error)

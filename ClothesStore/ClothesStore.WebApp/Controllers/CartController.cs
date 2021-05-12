@@ -8,6 +8,8 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using ClothesStore.Service.Service;
 using ClothesStore.Service.IService;
+using ClothesStore.Model.Model.EF;
+using Newtonsoft.Json;
 
 namespace ClothesStore.WebApp.Controllers
 {
@@ -23,65 +25,25 @@ namespace ClothesStore.WebApp.Controllers
 
         public IActionResult Index()
         {
-
-            var CartSession = HttpContext.Session.GetString(Common.Constant.CART);
-            var ListItem = new List<CartItemModelView>();
-
-            if (CartSession != null)
-            {
-                ListItem = JsonSerializer.Deserialize<List<CartItemModelView>>(CartSession);
-            }
-
-            return View(ListItem);
+            return View();
         }
 
         [HttpPost]
-        public async Task<JsonResult> AddToCart(CartItemModelView CartItem)
+        public async Task<JsonResult> AddToCart(Order order, List<OrderDetail> orderDetails)
         {
-            try
-            {
-                //get price by config
-                var hasPrice = await _productService.GetListConfigProductByProductId(CartItem.ProductId);
-               
-                if(hasPrice.Count > 0)
-                {
-                    
-                }
-                
-                var CartSession = HttpContext.Session.GetString(Common.Constant.CART);
-                var ListItem = new List<CartItemModelView>();
-                if (CartSession == null)
-                {
-                    ListItem.Add(CartItem);
-                    HttpContext.Session.SetString(Common.Constant.CART, JsonSerializer.Serialize(ListItem));
-                }
-                else
-                {
-                    ListItem = JsonSerializer.Deserialize<List<CartItemModelView>>(CartSession);
-
-                    CartItemModelView hasProduct = ListItem.FirstOrDefault(x => x.ProductId == CartItem.ProductId
-                    && x.Size == CartItem.Size && x.Color == CartItem.Color);
-
-                    //this item already exists in cart
-                    if (hasProduct != null)
-                    {
-                        hasProduct.Quantity += CartItem.Quantity;
-                    }
-                    else
-                    {
-                        ListItem.Add(CartItem);
-                    }
-
-                    //put cart to session
-                    HttpContext.Session.SetString(Common.Constant.CART, JsonSerializer.Serialize(ListItem));
-                }
-                return Json(new { status = true });
-            }
-            catch (Exception e)
-            {
-                return Json(new { status = false, message = e.Message });
-            }
-
+            var user = HttpContext.Request.Cookies[Common.Constant.USER];
+            if (user == null)
+                return Json(1);
+            order.EmployeeId = 0;
+            order.CustomerId = (JsonConvert.DeserializeObject<Customer>(user)).Id;
+            if (order.Address == null)
+                order.Address = (JsonConvert.DeserializeObject<Customer>(user)).Address;
+            order.Status = false;
+            order.IsDeleted = false;
+            var check = await _productService.Order(order, orderDetails);
+            if (check)
+                return Json(0);
+            return Json(2);
         }
     }
 }

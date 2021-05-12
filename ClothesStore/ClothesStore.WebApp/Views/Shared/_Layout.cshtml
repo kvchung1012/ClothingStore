@@ -66,7 +66,7 @@
 
 <body class="animsition">
     <div id="overlay" class="hide"></div>
-    
+
     <!-- ==================================HOME================================================ -->
     @await Html.PartialAsync("_HeaderTop")
     @await Html.PartialAsync("_Cart")
@@ -189,13 +189,51 @@
             $('#notification').dropdown('show');
         }
 
-     //end up my code
+        //end up my code
         let cartStr = localStorage.getItem("Cart");
         if (cartStr != null) {
             let cart = JSON.parse(cartStr);
             $('.icon-header-item').attr('data-notify', cart.length);
         }
+    </script>
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: '/Home/GetUser',
+                dataType: 'json',
+                type: 'post',
+                data: {
+                },
+                success: function (res) {
+                    let part = ``;
+                    if (res != null) {
+                        part = `
+                                    <div style="font-size:14px" data-toggle="dropdown" class="c-avatar icon-header-item cl2 hov-cl1 trans-04 p-lr-11" aria-haspopup="true" aria-expanded="false">
+                                            <i class="zmdi zmdi-account-circle"></i>
+                                            <span>${res.name}</span>
+                                    </div>
+                                    <div>
+                                        <div class="dropdown-menu dropdown-menu-right pt-0">
+                                            <a class="dropdown-item" href="/User/ChangePassword">
+                                                <svg class="c-icon mr-2 size-icon">
+                                                    <use xlink:href="/lib/icon/sprites/free.svg#cil-lock-locked"></use>
+                                                </svg> Change Password
+                                            </a>
+                                            <a class="dropdown-item" href="/User/Logout">
+                                                <svg class="c-icon mr-2 size-icon">
+                                                    <use xlink:href="/lib/icon/sprites/free.svg#cil-account-logout"></use>
+                                                </svg> Logout
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>`
+                        $('.infor-user').html('');
+                        $('.infor-user').append(part);
+                    }
 
+                }
+            })
+        })
 
     </script>
     @RenderSection("script", required: false)

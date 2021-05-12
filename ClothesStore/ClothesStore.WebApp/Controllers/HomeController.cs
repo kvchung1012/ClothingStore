@@ -1,8 +1,11 @@
-﻿using ClothesStore.Model.ModelView;
+﻿using ClothesStore.Model.Model.EF;
+using ClothesStore.Model.ModelView;
 using ClothesStore.Service.IService;
+using ClothesStore.WebApp.Common;
 using ClothesStore.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -48,6 +51,15 @@ namespace ClothesStore.WebApp.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [HttpPost]
+        public JsonResult GetUser()
+        {
+            var cookies = HttpContext.Request.Cookies[Constant.USER];
+            if (cookies == null)
+                return Json(null);
+            return Json(JsonConvert.DeserializeObject<Customer>(cookies));
         }
     }
 }

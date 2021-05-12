@@ -29,6 +29,7 @@ namespace ClothesStore.Service.Service
                 {
                     var pro = await db.Customers.FindAsync(customer.Id);
                     pro.Name = customer.Name;
+                    pro.Password = customer.Password;
                     pro.UpdatedBy = customer.UpdatedBy;
                     pro.Phone = customer.Phone;
                     pro.Email = customer.Email;

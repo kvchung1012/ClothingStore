@@ -16,7 +16,7 @@ namespace ClothesStore.Model.Model.EF
         public ClothingStoreContext(DbContextOptions<ClothingStoreContext> options)
             : base(options)
         {
-           
+
         }
 
         public virtual DbSet<Brand> Brands { get; set; }
@@ -37,9 +37,8 @@ namespace ClothesStore.Model.Model.EF
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
-
-            { 
-                optionsBuilder.UseSqlServer("Server=HAIDV\\SQLEXPRESS;Database=ClothingStore1;Trusted_Connection=True;");
+            {
+                optionsBuilder.UseSqlServer("Server=HAIDV\\SQLEXPRESS;Database=ClothingStore;Trusted_Connection=True;");
             }
         }
 
@@ -272,7 +271,7 @@ namespace ClothesStore.Model.Model.EF
 
                 entity.Property(e => e.SubName).HasMaxLength(250);
 
-              
+
             });
             OnModelCreatingPartial(modelBuilder);
         }

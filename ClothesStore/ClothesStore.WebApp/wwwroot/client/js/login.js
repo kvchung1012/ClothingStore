@@ -65,12 +65,15 @@ function ChangePass(url) {
                                 swal(`Your account is changed password!`, {
                                     icon: "success",
                                 }).then((value) => {
+                                    window.location.reload(true);
                                     location.href = '/User/Login';
                                 });
 
                             } else {
                                 swal("Faild", "OldPassword is incorrect!", "error");
                             }
+                        },
+                        complete: function () {
                         }
                     })
 

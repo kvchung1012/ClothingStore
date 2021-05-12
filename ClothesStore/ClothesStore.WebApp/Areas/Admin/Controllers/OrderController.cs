@@ -105,8 +105,9 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
 
         [HttpPost]
         public async Task<JsonResult> GetPendingOrder()
-        {       
-           return Json(await _orderService.GetPendingOrder());
+        {
+           var data = await _orderService.GetPendingOrder();
+           return Json(data);
         }
     }
 }

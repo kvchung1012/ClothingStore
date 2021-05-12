@@ -27,29 +27,25 @@
             @if (item.employee != null)
             {
                 <td> @item.employee.Name</td>
-            }
-            else
-            {
-                <td></td>
-            }
-            <td>@item.customer.Name - @item.customer.Phone</td>
-            <td>@item.order.Address</td>
-            <td>
-                @if (item.order.Status == true)
-                {
-                    <span class="badge badge-success">Hoạt động</span>
-                }
-                else
-                {
-                    <span class="badge badge-danger">Tạm khóa</span>
-                }
-            </td>
-            <td class="width-150">
-                <button class=" btn btn-sm btn-square btn-info"><i class="bi bi-info-circle"></i></button>
-                <button class=" btn btn-sm btn-square btn-warning text-white" onclick="location.href = '/Admin/Order/Edit/'+@item.order.Id"><i class="bi bi-calendar2-event"></i></button>
-                <button class=" btn btn-sm btn-square btn-danger" onclick="DeleteById('/Admin/Order/DeleteById',@item.order.Id)"><i class="bi bi-trash"></i></button>
-            </td>
-        </tr>
+
+                <td>@item.customer.Name - @item.customer.Phone</td>
+                <td>@item.order.Address</td>
+                <td>
+                    @if (item.order.Status == true)
+                    {
+                        <span class="badge badge-success">Đã duyệt</span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-danger">Chờ duyệt</span>
+                    }
+                </td>
+                <td class="width-150">
+                    <button class=" btn btn-sm btn-square btn-info"><i class="bi bi-info-circle"></i></button>
+                    <button class=" btn btn-sm btn-square btn-warning text-white" onclick="location.href = '/Admin/Order/Edit/'+@item.order.Id"><i class="bi bi-calendar2-event"></i></button>
+                    <button class=" btn btn-sm btn-square btn-danger" onclick="DeleteById('/Admin/Order/DeleteById',@item.order.Id)"><i class="bi bi-trash"></i></button>
+                </td>
+            </tr>
         }
     </tbody>
 </table>

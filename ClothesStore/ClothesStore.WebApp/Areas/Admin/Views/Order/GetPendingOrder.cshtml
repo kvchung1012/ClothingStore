@@ -4,7 +4,7 @@
 {
     <div class="dropdown-item d-flex justify-content-between">
         <div class="mr-3">Đơn hàng mới từ : @item.Name</div>
-        <div id="time-since-order">@item.Time</div>
+        <div id="time-since-order">@item.Time.ToShortDateString()</div>
     </div>
 }
 

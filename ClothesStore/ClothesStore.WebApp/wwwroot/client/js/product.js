@@ -376,7 +376,7 @@ function Order() {
                 alert("Đặt hàng thành công !! Chúng tôi sẽ liên hệ với bạn sớm nhất");
             }
             else if (res == 1) {
-                location.href = '/'
+                location.href = '/User/Login'
             }
             else
                 alert("Đã có lỗi xảy ra !!!");

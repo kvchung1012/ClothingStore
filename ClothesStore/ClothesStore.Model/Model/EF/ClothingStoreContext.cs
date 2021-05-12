@@ -1,7 +1,7 @@
 ﻿using System;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Configuration;
 
 #nullable disable
 
@@ -16,7 +16,6 @@ namespace ClothesStore.Model.Model.EF
         public ClothingStoreContext(DbContextOptions<ClothingStoreContext> options)
             : base(options)
         {
-
         }
 
         public virtual DbSet<Brand> Brands { get; set; }
@@ -38,7 +37,11 @@ namespace ClothesStore.Model.Model.EF
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=HAIDV\\SQLEXPRESS;Database=ClothingStore;Trusted_Connection=True;");
+                IConfigurationRoot configuration = new ConfigurationBuilder()
+                              .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                              .AddJsonFile("appsettings.json")
+                              .Build();
+                optionsBuilder.UseSqlServer(configuration.GetConnectionString("Key"));
             }
         }
 
@@ -259,9 +262,12 @@ namespace ClothesStore.Model.Model.EF
                     .HasColumnType("datetime")
                     .HasDefaultValueSql("(getdate())");
             });
+
             modelBuilder.Entity<Slider>(entity =>
             {
                 entity.ToTable("Slider");
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Image).HasMaxLength(500);
 
@@ -271,8 +277,9 @@ namespace ClothesStore.Model.Model.EF
 
                 entity.Property(e => e.SubName).HasMaxLength(250);
 
-
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });
+
             OnModelCreatingPartial(modelBuilder);
         }
 

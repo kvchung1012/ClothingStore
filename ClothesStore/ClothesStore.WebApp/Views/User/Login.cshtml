@@ -29,11 +29,6 @@
                         <img class="how-pos4 pointer-none" src="/client/images/icons/icon-email.png" alt="ICON">
                     </div>
 
-                    @*<div class="bor8 m-b-30">
-                            <textarea class="stext-111 cl2 plh3 size-120 p-lr-28 p-tb-25" name="msg"
-                                      placeholder="How Can We Help?"></textarea>
-                        </div>*@
-
                     <button onclick="Login()" type="button" class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer">
                         Login
                     </button>
@@ -72,22 +67,6 @@
                         </a>
                     </div>
                 </div>
-
-                <div class="flex-w w-full">
-                    <span class="fs-18 cl5 txt-center size-211">
-                        <span class="lnr lnr-envelope"></span>
-                    </span>
-
-                    <div class="size-212 p-t-2">
-                        <span class="mtext-110 cl2">
-                            Password should be change each month?
-                        </span>
-
-                        <a href="/User/ChangePassword" class="stext-115 cl6 size-213 p-t-18">
-                            Change password
-                        </a>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -95,6 +74,28 @@
 
 
 @section script {
-    <script src="~/client/js/login.js"></script>
+    <script>
+        function Login() {
+            let data = $('.login').serialize();
+            $.ajax({
+                url: '/User/Login',
+                type: 'post',
+                dataType: 'json',
+                cache: false,
+                data: data,
+                beforeSend: function () {
+                },
+                success: function (res) {
+                    if (res)
+                        location.href = '/';
+                    else {
+                        alert("Mật khẩu hoặc Email sai")
+                    }
+                },
+                complete: function () {
+                }
+            })
+        }
+    </script>
 }
 

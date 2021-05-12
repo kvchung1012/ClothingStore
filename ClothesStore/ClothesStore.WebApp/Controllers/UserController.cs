@@ -14,15 +14,15 @@ namespace ClothesStore.WebApp.Controllers
 {
     public class UserController : Controller
     {
-        private readonly IEmployeeService _employeeService;
+        private readonly ICustomerService _customerService;
         private readonly ILoginService _loginService;
         private readonly ISendMailService _sendMailService;
         private readonly IHttpContextAccessor _HttpContextAccessor;
 
 
-        public UserController(IEmployeeService employeeService, ILoginService loginService, ISendMailService sendMailService, IHttpContextAccessor HttpContextAccessor)
+        public UserController(ICustomerService customerService, ILoginService loginService, ISendMailService sendMailService, IHttpContextAccessor HttpContextAccessor)
         {
-            _employeeService = employeeService;
+            _customerService = customerService;
             _loginService = loginService;
             _sendMailService = sendMailService;
             _HttpContextAccessor = HttpContextAccessor;
@@ -36,7 +36,6 @@ namespace ClothesStore.WebApp.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-            HttpContext.Session.Clear();
             return View();
         }
 
@@ -49,37 +48,46 @@ namespace ClothesStore.WebApp.Controllers
         [HttpPost]
         public async Task<JsonResult> ChangePassword(ChangePassViewModel change)
         {
-            string jsonUser = _HttpContextAccessor.HttpContext.Session.GetString(Constant.USER);
-            var emp = new Employee();
-            emp = JsonSerializer.Deserialize<Employee>(jsonUser) as Employee;
-            if (emp.Password != Utilities.ComputeSha256Hash(change.OldPassword))
-            {
+            string jsonUser = HttpContext.Request.Cookies[Constant.USER];
+            if (jsonUser == null)
                 return Json(false);
+            var emp =  JsonSerializer.Deserialize<Customer>(jsonUser) as Customer;
+            if (String.IsNullOrEmpty(change.OldPassword) || Common.Utilities.ComputeSha256Hash(change.OldPassword) != emp.Password)
+            {
+                return Json(1);
+            }
+            if (String.IsNullOrEmpty(change.NewPassword) && change.NewPassword.Length < 8)
+            {
+                return Json(2);
+            }
+            if (change.NewPassword != change.ConfirmedPassword)
+            {
+                return Json(3);
             }
             emp.Password = Utilities.ComputeSha256Hash(change.NewPassword);
-            await _employeeService.AddOrUpdate(emp);
+            await _customerService.AddOrUpdate(emp);
+            HttpContext.Response.Cookies.Delete(Constant.USER);
             return Json(true);
         }
 
         [HttpPost]
         public async Task<JsonResult> Login(string Email, string Password)
         {
-            var emp = await _loginService.Login(Email, Utilities.ComputeSha256Hash(Password));
+            var emp = await _loginService.CustomerLogin(Email, Utilities.ComputeSha256Hash(Password));
 
             //this emp is not available
             if (emp == null)
                 return Json(false);
             string jsonData = JsonSerializer.Serialize(emp);
-            HttpContext.Session.SetString(Common.Constant.USER, jsonData);
-
-            return Json(new { status = true, isAdmin = emp.IsAdmin });
+            HttpContext.Response.Cookies.Append(Common.Constant.USER, jsonData);
+            return Json(true);
         }
 
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Logout()
         {
-            HttpContext.Session.Clear();
-            return RedirectToAction("Login");
+            Response.Cookies.Delete(Constant.USER);
+            return RedirectToAction("Index","Home");
         }
 
         [HttpGet]
@@ -91,17 +99,16 @@ namespace ClothesStore.WebApp.Controllers
         [HttpPost]
         public async Task<JsonResult> Register(RegisterModelView model)
         {
-            Employee emp = new Employee()
+            Customer emp = new Customer()
             {
                 Id = 0,
                 Name = model.Name,
                 Phone = model.Phone,
-                BirthDay = model.BirthDay,
                 Email = model.Email,
                 Password = Utilities.ComputeSha256Hash(model.Password)
             };
 
-            await _employeeService.AddOrUpdate(emp);
+            await _customerService.AddOrUpdate(emp);
 
             return Json(true);
         }
@@ -115,7 +122,7 @@ namespace ClothesStore.WebApp.Controllers
         [HttpPost]
         public async Task<JsonResult> ForgotPassword(string Email, string Phone)
         {
-            var hasUser = await _loginService.HasUser(Email, Phone); // if exists, return user
+            var hasUser = await _loginService.CustomerHasUser(Email, Phone); // if exists, return user
 
             //user not available
             if (hasUser == null)
@@ -124,7 +131,7 @@ namespace ClothesStore.WebApp.Controllers
             //cretae new password
             string newPass = Utilities.GenerateRandomString(8);
             hasUser.Password = Utilities.ComputeSha256Hash(newPass);
-            bool canUpdate = await _employeeService.AddOrUpdate(hasUser);
+            bool canUpdate = await _customerService.AddOrUpdate(hasUser);
 
             if (canUpdate)
             {
@@ -137,63 +144,6 @@ namespace ClothesStore.WebApp.Controllers
             }
             else
                 return Json(false);
-        }
-
-
-        public async Task<PartialViewResult> GetListData(RequestData requestData)
-        {
-            var data = await _employeeService.GetListData(requestData);
-            return PartialView(data);
-        }
-
-        public async Task<JsonResult> DeleteById(int id)
-        {
-            var result = await _employeeService.DeleteById(id);
-            return Json(result);
-        }
-
-        [HttpPost]
-        public async Task<PartialViewResult> GetFormAddOrEdit(int Id)
-        {
-            if (Id == 0)
-                return PartialView(null);
-            else
-                return PartialView(await _employeeService.GetObjectById(Id));
-        }
-
-        [HttpPost]
-        public async Task<JsonResult> AddOrUpdate(Employee obj)
-        {
-            if (obj.Id == 0)
-                obj.Password = Utilities.ComputeSha256Hash(obj.Password);
-            var response = await _employeeService.AddOrUpdate(obj);
-            return Json(new ResponseStatus() { success = response, error = null });
-        }
-
-        [HttpPost]
-        public async Task<PartialViewResult> ViewDetail(int id)
-        {
-            var obj = await _employeeService.GetObjectById(id);
-            var data = new ViewDetailObject<Employee>()
-            {
-                obj = obj,
-                CreatedBy = "",
-                UpdatedBy = ""
-            };
-            return PartialView(data);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> ProfileUser(int Id)
-        {
-            var emp = await _employeeService.GetObjectById(Id);
-            var model = new ViewDetailObject<Employee>()
-            {
-                obj = emp,
-                CreatedBy = "",
-                UpdatedBy = ""
-            };
-            return View(model);
         }
     }
 }

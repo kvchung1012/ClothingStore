@@ -10,5 +10,8 @@ namespace ClothesStore.Service.IService
     {
         public  Task<Employee> Login(string Email, string Password);
         public  Task<Employee> HasUser(string Email, string Phone);
+
+        public Task<Customer> CustomerLogin(string Email, string Password);
+        public Task<Customer> CustomerHasUser(string Email, string Phone);
     }
 }

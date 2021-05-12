@@ -30,12 +30,6 @@
                     </div>
 
                     <div class="bor8 m-b-20 how-pos4-parent">
-                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="date" name="BirthDay"
-                               placeholder="BirthDay">
-                        <img class="how-pos4 pointer-none" src="/client/images/icons/icon-email.png" alt="ICON">
-                    </div>
-
-                    <div class="bor8 m-b-20 how-pos4-parent">
                         <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="email" name="Email"
                                placeholder="Email">
                         <img class="how-pos4 pointer-none" src="/client/images/icons/icon-email.png" alt="ICON">
@@ -53,12 +47,6 @@
                         <img class="how-pos4 pointer-none" src="/client/images/icons/icon-email.png" alt="ICON">
                     </div>
 
-
-                    @*<div class="bor8 m-b-30">
-            <textarea class="stext-111 cl2 plh3 size-120 p-lr-28 p-tb-25" name="msg"
-                      placeholder="How Can We Help?"></textarea>
-        </div>*@
-
                     <button onclick="Register()" type="button" class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer">
                         Register
                     </button>
@@ -73,43 +61,11 @@
 
                     <div class="size-212 p-t-2">
                         <span class="mtext-110 cl2">
-                            Do not have an account?
+                            Do you have an account?
                         </span>
 
-                        <a href="/User/Register" class="stext-115 cl6 size-213 p-t-18">
-                            Register an account
-                        </a>
-                    </div>
-                </div>
-
-                <div class="flex-w w-full p-b-42">
-                    <span class="fs-18 cl5 txt-center size-211">
-                        <span class="lnr lnr-phone-handset"></span>
-                    </span>
-
-                    <div class="size-212 p-t-2">
-                        <span class="mtext-110 cl2">
-                            Forgot password?
-                        </span>
-
-                        <a href="/User/ForgotPassword" class="stext-115 cl6 size-213 p-t-18">
-                            Retrieve password
-                        </a>
-                    </div>
-                </div>
-
-                <div class="flex-w w-full">
-                    <span class="fs-18 cl5 txt-center size-211">
-                        <span class="lnr lnr-envelope"></span>
-                    </span>
-
-                    <div class="size-212 p-t-2">
-                        <span class="mtext-110 cl2">
-                            Password should be change each month?
-                        </span>
-
-                        <a href="/User/ChangePassword" class="stext-115 cl6 size-213 p-t-18">
-                            Change password
+                        <a href="/User/Login" class="stext-115 cl6 size-213 p-t-18">
+                            Login Now
                         </a>
                     </div>
                 </div>
@@ -120,6 +76,61 @@
 
 
 @section script {
-    <script src="~/client/js/login.js"></script>
+    <script>
+        function Register() {
+            let data = $('.register').serializeArray();
+            var registerObj = {};
+
+            jQuery.map(data, function (value, index) {
+                registerObj[value.name] = [value.value];
+            });
+
+
+            //chua validate
+
+            if (JSON.stringify(registerObj.Password) !== JSON.stringify(registerObj.ConfirmedPassword)) {
+                swal("Fail", "Password must be the same!", "warning");
+            } else {
+                swal({
+                    title: "Are you sure with above infomation?",
+                    text: "",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: false,
+                })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            $.ajax({
+                                url: '/User/Register',
+                                type: 'post',
+                                dataType: 'json',
+                                data: registerObj,
+                                beforeSend: function () {
+                                    swal("Oops!", "Are you sure with your infomation?", "question", {
+                                        button: "Yes",
+                                    });
+                                },
+                                success: function (res) {
+                                    if (res) {
+                                        swal(`Hello ${registerObj.Name}! Your account is registered!`, {
+                                            icon: "success",
+                                        }).then((value) => {
+                                            location.href = '/User/Login';
+                                        });
+                                    } else {
+                                        swal("OOps", "Something went wrong", "error");
+                                    }
+                                }
+                            })
+
+                        } else {
+                            swal("Failed!");
+                        }
+                    });
+            }
+        }
+
+    </script>
+
 }
 

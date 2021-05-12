@@ -170,7 +170,7 @@
                         <ul>
                             @foreach (var item in ViewBag.color as IEnumerable<ClothesStore.Model.Model.EF.Color>)
                             {
-                                <li class="p-b-6 pick-color" onclick="ChooseColor(this,@item.Id)">
+                                <li class="p-b-6 pick-color d-flex" onclick="ChooseColor(this,@item.Id)">
                                     <span class="fs-15 lh-12 m-r-6" style="color: @item.Value;">
                                         <i class="zmdi zmdi-circle"></i>
                                     </span>

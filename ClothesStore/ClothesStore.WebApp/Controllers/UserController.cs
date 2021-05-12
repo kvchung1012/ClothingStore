@@ -7,23 +7,20 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace ClothesStore.WebApp.Areas.Admin.Controllers
+namespace ClothesStore.WebApp.Controllers
 {
-    [Area("Admin")]
-    public class AdminController : Controller
+    public class UserController : Controller
     {
-
         private readonly IEmployeeService _employeeService;
         private readonly ILoginService _loginService;
         private readonly ISendMailService _sendMailService;
         private readonly IHttpContextAccessor _HttpContextAccessor;
 
 
-        public AdminController(IEmployeeService employeeService, ILoginService loginService, ISendMailService sendMailService, IHttpContextAccessor HttpContextAccessor)
+        public UserController(IEmployeeService employeeService, ILoginService loginService, ISendMailService sendMailService, IHttpContextAccessor HttpContextAccessor)
         {
             _employeeService = employeeService;
             _loginService = loginService;
@@ -39,8 +36,10 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult Login()
         {
+            HttpContext.Session.Clear();
             return View();
         }
+
         [HttpGet]
         public IActionResult ChangePassword()
         {
@@ -52,16 +51,11 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
         {
             string jsonUser = _HttpContextAccessor.HttpContext.Session.GetString(Constant.USER);
             var emp = new Employee();
-
-            if (string.IsNullOrEmpty(jsonUser))
-                return Json(false);
-
             emp = JsonSerializer.Deserialize<Employee>(jsonUser) as Employee;
             if (emp.Password != Utilities.ComputeSha256Hash(change.OldPassword))
             {
                 return Json(false);
             }
-
             emp.Password = Utilities.ComputeSha256Hash(change.NewPassword);
             await _employeeService.AddOrUpdate(emp);
             return Json(true);
@@ -85,7 +79,7 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
-            return RedirectToAction("Index");
+            return RedirectToAction("Login");
         }
 
         [HttpGet]

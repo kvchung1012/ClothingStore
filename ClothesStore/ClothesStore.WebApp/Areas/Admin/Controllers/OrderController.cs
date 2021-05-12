@@ -102,5 +102,11 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
             var response = await _orderService.DeleteById(Id);
             return Json(response);
         }
+
+        [HttpPost]
+        public async Task<JsonResult> GetPendingOrder()
+        {       
+           return Json(await _orderService.GetPendingOrder());
+        }
     }
 }

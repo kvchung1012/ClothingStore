@@ -13,66 +13,65 @@ namespace ClothesStore.WebApp.Controllers
     public class ProductController : Controller
     {
         private readonly IProductService _productService;
-        private readonly ISizeService _sizeService;
+        private readonly IBrandService _brandService;
+        private readonly ICategoryService _categoryService;
         private readonly IColorService _colorService;
-        private readonly IConfigProductService _configProductService;
 
-        public ProductController(IProductService productService, IColorService colorService, ISizeService sizeService, IConfigProductService configProductService)
+        public ProductController(IProductService productService, IBrandService brandService, ICategoryService categoryService, IColorService colorService)
         {
             _productService = productService;
+            _brandService = brandService;
+            _categoryService = categoryService;
             _colorService = colorService;
-            _sizeService = sizeService;
-            _configProductService = configProductService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int? CateId, int? BrandId)
         {
-            return View();
-        }
+            ViewBag.brand = (await _brandService.GetAll());
+            ViewBag.category = (await _categoryService.GetAll());
+            ViewBag.color = (await _colorService.GetAll());
 
-        public async Task<IActionResult> Detail(int id = 1)
-        {
-            var product = await _productService.GetProductDetailById(id);
-            List<Size> listSize = new List<Size>();
-            List<Color> listColor = new List<Color>();
-
-            foreach (var item in product.configs)
+            ViewBag.CateId = CateId;
+            ViewBag.BrandId = BrandId;
+            // set filter
+            FilterProduct filterProduct = new FilterProduct();
+            if (CateId != null)
+                filterProduct.categoryId = (int)CateId;
+            if (BrandId != null)
             {
-                listSize.Add(await _sizeService.GetObjectById((int)item.SizeId));
-                listColor.Add(await _colorService.GetObjectById((int)item.ColorId));
-            }
+                filterProduct.brands = new List<int>();
+                filterProduct.brands.Add((int)BrandId);
+            }    
+            var data = (await _productService.GetListProduct(filterProduct, 0));
+            return View(data);
+        }
 
-            ViewBag.Size = listSize;
-            ViewBag.Color = listColor;
-            ViewBag.RelatedPro = await _productService.GetRelatedProduct(id, 4);
+        [HttpPost]
+        public async Task<PartialViewResult> GetProduct(FilterProduct filter)
+        {
+            var data = (await _productService.GetListProduct(filter, 0));
+            return PartialView(data);
+        }
 
+        public async Task<IActionResult> Detail(int Id)
+        {
+            var product = await _productService.GetInforProduct(Id);
             return View(product);
         }
 
         [HttpPost]
-        public async Task<JsonResult> GetColor(int productId,int sizeId)
+        public async Task<PartialViewResult> GetInforProduct(int Id)
         {
-            var data = await _productService.GetColorConfig(productId, sizeId); 
-            return Json(data);
+            var data = await _productService.GetInforProduct(Id);
+            return PartialView(data);
         }
 
-        public async Task<IActionResult> SingleProduct(int Id)
-        {
-            var productViewModel = await _productService.GetProductDetailById(Id);
-            ViewBag.allSize = await _sizeService.GetAll();
-            ViewBag.allColor = await _colorService.GetAll();
-            ViewBag.RelatedPro = await _productService.GetRelatedProduct(Id, 4);
-
-            //default price with no config
-            ViewBag.originalPrice = await _configProductService.GetMinimumPrice(Id);
-
-            return View(productViewModel);
-        }
         [HttpPost]
-        public async Task<JsonResult> GetConfig(RequestConfig requestConfig)
+        public async Task<JsonResult> GetColor(int productId, int sizeId)
         {
-            ResponseConfig res = await _configProductService.GetPriceAndStock(requestConfig);
-            return Json(res);
+            var data = await _productService.GetColorConfig(productId, sizeId);
+            return Json(data);
         }
     }
 }
+

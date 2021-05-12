@@ -32,6 +32,10 @@ namespace ClothesStore.Service.IService
         public Task<List<Size>> GetAllSize();
 
         public Task<List<ColorModelView>> GetColorConfig(int productId, int sizeId);
-        public Task<List<ProductView>> GetListProduct(int CategoryId,int pageSize);
+        public Task<List<ProductView>> GetListProduct(FilterProduct filterProduct,int pageSize);
+        public Task<ProductOverView> GetInforProduct(int Id);
+
+        // order
+        public Task<bool> Order(Order order, List<OrderDetail> orderDetails);
     }
 }

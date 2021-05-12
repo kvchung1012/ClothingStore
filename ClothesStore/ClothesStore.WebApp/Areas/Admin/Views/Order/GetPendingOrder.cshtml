@@ -1,0 +1,10 @@
+﻿@model List<ClothesStore.Model.ModelView.NotificationModelView>
+
+@foreach (var item in Model)
+{
+    <div class="dropdown-item d-flex justify-content-between">
+        <div class="mr-3">Đơn hàng mới từ : @item.Name</div>
+        <div id="time-since-order">@item.Time</div>
+    </div>
+}
+

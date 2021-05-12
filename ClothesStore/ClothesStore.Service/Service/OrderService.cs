@@ -13,6 +13,7 @@ namespace ClothesStore.Service.Service
     public class OrderService : IOrderService
     {
         private readonly ClothingStoreContext db = new ClothingStoreContext();
+
         public async Task<bool> AddOrUpdate(Order order, List<OrderDetail> orderDetails)
         {
             try
@@ -139,9 +140,9 @@ namespace ClothesStore.Service.Service
             OrderFullModelView data = new OrderFullModelView();
             List<OrderDetailModelView> details = new List<OrderDetailModelView>();
             var orderDetails = await db.OrderDetails.Where(x => x.OrderId == Id).ToListAsync();
-            foreach(var item in orderDetails)
+            foreach (var item in orderDetails)
             {
-                var config =  db.ConfigProducts.Where(x => x.Id == item.ConfigProductId).First();
+                var config = db.ConfigProducts.Where(x => x.Id == item.ConfigProductId).First();
                 OrderDetailModelView detail = new OrderDetailModelView()
                 {
                     orderDetail = item,
@@ -153,6 +154,16 @@ namespace ClothesStore.Service.Service
             }
             data.order = obj;
             data.orderDetails = details;
+            return data;
+        }
+
+        public async Task<List<NotificationModelView>> GetPendingOrder()
+        {
+            var  data = await (from o in db.Orders
+                        where o.Status == false && o.IsDeleted == false
+                        join e in db.Employees on o.EmployeeId equals e.Id
+                        select new NotificationModelView { Name = e.Name, Time = (DateTime)o.CreatedDate }
+                        ).ToListAsync();
             return data;
         }
     }

@@ -1,83 +1,91 @@
-﻿@model List<ClothesStore.Model.ModelView.CartItemModelView>
-@{
+﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<form class="bg0 p-t-75 p-b-85">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
+                <div class="m-l-25 m-r--38 m-lr-0-xl">
+                    <div class="wrap-table-shopping-cart">
+                        <table class="table-shopping-cart">
+                            <thead>
+                                <tr class="table_head">
+                                    <th class="p-2">Product</th>
+                                    <th class="p-2"></th>
+                                    <th class="p-2">Price</th>
+                                    <th class="p-2">Quantity</th>
+                                    <th class="p-2">Total</th>
+                                </tr>
+                            </thead>
 
-<div class="container">
-    <div class="check">
-        <div class="col-md-9 cart-items">
-            <h1>My Shopping Bag (2)</h1>
-            <script>
-                $(document).ready(function (c) {
-                    $('.close1').on('click', function (c) {
-                        $('.cart-header').fadeOut('slow', function (c) {
-                            $('.cart-header').remove();
-                        });
-                    });
-                });
-            </script>
-            <div class="list-item">
+                            <tbody>
+                                <tr class="table_row">
+                                    <td class="">
+                                        <div class="how-itemcart1">
+                                            <img src="images/item-cart-04.jpg" alt="IMG">
+                                        </div>
+                                    </td>
+                                    <td class=""><p>Fresh Strawberries</p><p><span>M,Color</span></p></td>
+                                    <td class="">$ 36.00</td>
+                                    <td class="">
+                                        <div class="wrap-num-product flex-w m-l-auto m-r-0">
+                                            <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
+                                                <i class="fs-16 zmdi zmdi-minus"></i>
+                                            </div>
 
-            </div>
-            @foreach (var item in Model)
-            {
-                <div class="cart-header" data-id="@item.ProductId">
-                    <div class="close1"> </div>
-                    <div class="cart-sec simpleCart_shelfItem">
-                        <div class="cart-item cyc">
-                            <img src="@item.Image" class="img-responsive" alt="@item.ProductName" />
-                        </div>
-                        <div class="cart-item-info">
-                            <h3><a href="/Product/SingleProduct?Id=@item.ProductId">@item.ProductName)</a></h3>
-                            <ul class="qty">
-                                <li><p>Size : @item.Size</p></li>
-                                <li><p>Color : @item.Color</p></li>
-                                <li><p>Qty : @item.Quantity</p></li>
-                            </ul>
-                            <div class="delivery">
-                                <p>Service Charges : Rs.100.00</p>
-                                <span>Delivered in 2-3 bussiness days</span>
-                                <div class="clearfix"></div>
-                            </div>
-                        </div>
-                        <div class="clearfix"></div>
+                                            <input class="mtext-104 cl3 txt-center num-product" type="number"
+                                                   name="num-product1" value="1">
 
+                                            <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
+                                                <i class="fs-16 zmdi zmdi-plus"></i>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="">$ 36.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-            }
-
-
-        </div>
-        <div class="col-md-3 cart-total">
-            <a class="continue" href="/">Continue to basket</a>
-            <div class="price-details">
-                <h3>Price Details</h3>
-                <span>Total</span>
-                <span class="total1">6200.00</span>
-                <span>Discount</span>
-                <span class="total1">---</span>
-                <span>Delivery Charges</span>
-                <span class="total1">150.00</span>
-                <div class="clearfix"></div>
             </div>
-            <ul class="total_price">
-                <li class="last_price"> <h4>TOTAL</h4></li>
-                <li class="last_price"><span>6350.00</span></li>
-                <div class="clearfix"> </div>
-            </ul>
 
+            <div class="col-sm-10 col-lg-7 col-xl-5 m-lr-auto m-b-50">
+                <div class="bor10 p-lr-10 p-t-30 p-b-40 m-l-63 m-r-40 m-lr-0-xl p-lr-5-sm">
+                    <h4 class="mtext-109 cl2 p-b-30">
+                        Thông tin hóa đơn
+                    </h4>
+                    <div class="mb-3">
+                        <div class="flex-w flex-t mb-4">
+                            <div class="">
+                                <span class="mtext-101 cl2">
+                                    Tổng hóa đơn:
+                                </span>
+                                <span class="mtext-110 cl2 total-price" data-total="0">
+                                    $79.65
+                                </span>
+                            </div>
+                        </div>
 
-            <div class="clearfix"></div>
-            <a class="order" href="#">Place Order</a>
-            <div class="total-item">
-                <h3>OPTIONS</h3>
-                <h4>COUPONS</h4>
-                <a class="cpns" href="#">Apply Coupons</a>
-                <p><a href="#">Log In</a> to use accounts - linked coupons</p>
+                        <div class="mb-5">
+                            <p>Nhập địa chỉ nhận hàng</p>
+                            <input type="text" name="Address" value="" class="form-control" placeholder="Nhập địa chỉ nhận hàng" />
+                        </div>
+
+                        <div class="">
+                            <p>Thông tin ghi chú</p>
+                            <textarea class="form-control" name="Note" placeholder="Thông tin ghi chú"></textarea>
+                        </div>
+
+                    </div>
+                    
+                    <button class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer" type="button" onclick="Order()">
+                        Proceed to Checkout
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</form>
 
 @section script{
     <script>
@@ -85,33 +93,39 @@
             let cartStr = localStorage.getItem("Cart");
             if (cartStr != null) {
                 let cartJson = JSON.parse(cartStr);
-                $(cartJson).each(function (index, item) {
-                    let row = ` <div class="cart-header" data-id="${item.configId}">
-                                        <div class="close1"> </div>
-                                        <div class="cart-sec simpleCart_shelfItem">
-                                            <div class="cart-item cyc">
-                                                <img src="${item.img}" class="img-responsive" alt="" />
+                $('tbody').html('');
+                let totalPrice = 0;
+                $(cartJson).each(function (index, e) {
+                    totalPrice += e.stock * e.price;
+                    let row = ` <tr class="table_row">
+                                        <td class="p-2" data-id="${e.id}">
+                                            <div class="how-itemcart1" onclick="RemoveCart(this,${e.id})">
+                                                <img src="${e.img}" alt="IMG">
                                             </div>
-                                            <div class="cart-item-info">
-                                                <h3><a>${item.productName}</a></h3>
-                                                <ul class="qty">
-                                                    <li><p>Size : ${item.size}</p></li>
-                                                    <li><p>Color : ${item.color}</p></li>
-                                                    <li><p>Qty : ${item.stock}</p></li>
-                                                </ul>
-                                                <div class="delivery">
-                                                    <p>Service Charges : Rs.100.00</p>
-                                                    <span>Delivered in 2-3 bussiness days</span>
-                                                    <div class="clearfix"></div>
+                                        </td>
+                                        <td class="p-2"><p>${e.productName}</p><p><span>${e.color}, ${e.size}</span></p></td>
+                                        <td class="p-2">${e.price} VNĐ</td>
+                                        <td class="p-2">
+                                            <div class="wrap-num-product flex-w ">
+                                                <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m" onclick="SubStockDetail(this,${e.price})">
+                                                    <i class="fs-16 zmdi zmdi-minus"></i>
+                                                </div>
+
+                                                <input class="mtext-104 cl3 txt-center num-product" type="number"
+                                                       name="Stock" value="${e.stock}" data-max ="${e.stockMax}" readonly>
+
+                                                <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m" onclick="AddStockDetail(this,${e.price})">
+                                                    <i class="fs-16 zmdi zmdi-plus"></i>
                                                 </div>
                                             </div>
-                                            <div class="clearfix"></div>
-                                        </div>
-                                    </div>`;
-                    $('.list-item').append(row);
+                                        </td>
+                                        <td class="p-2" data-price="${e.stock * e.price}">${e.stock * e.price}</td>
+                                    </tr>`;
+                    $('tbody').append(row);
                 })
+                $('.total-price').text(totalPrice);
+                $('.total-price').attr('data-total',totalPrice);
             }
         })
     </script>
-
 }

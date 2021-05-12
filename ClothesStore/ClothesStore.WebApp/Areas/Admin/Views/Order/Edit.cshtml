@@ -65,11 +65,11 @@
                 <div class="col-md-12 col-form-label">
                     <div class="form-check form-check-inline mr-1">
                         <input class="form-check-input" @if (true == Model.order.Status) {<text>checked</text> } id="inline-radio1" type="radio" value="True" name="Status" >
-                        <label class="form-check-label" for="inline-radio1">Hoạt động</label>
+                        <label class="form-check-label" for="inline-radio1">Đã duyệt</label>
                     </div>
                     <div class="form-check form-check-inline mr-1">
                         <input class="form-check-input" @if (true != Model.order.Status) {<text>checked</text> } id="inline-radio2" type="radio" value="False" name="Status">
-                        <label class="form-check-label" for="inline-radio2">Khóa</label>
+                        <label class="form-check-label" for="inline-radio2">Chờ duyệt</label>
                     </div>
                 </div>
 
@@ -201,12 +201,14 @@
                             success: function (res) {
                                 if (res) {
                                     swal('Bạn đã thay đổi dữ liệu thành công !!');
+                                    ShowTotalNoti();
                                 }
                             },
                             error: function (error) {
 
                             },
                             complete: function () {
+                                
                             }
                         })
                     }

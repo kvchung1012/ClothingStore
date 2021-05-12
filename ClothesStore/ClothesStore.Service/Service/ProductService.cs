@@ -345,6 +345,24 @@ namespace ClothesStore.Service.Service
             }
             return null;
         }
+
+
+        public async Task<bool> Order(Order order, List<OrderDetail> orderDetails)
+        {
+            try
+            {
+                await db.Orders.AddAsync(order);
+                await db.SaveChangesAsync();
+                orderDetails = orderDetails.Select(x => { x.OrderId = order.Id; x.Status = true; x.IsDeleted = false; return x; }).ToList();
+                await db.OrderDetails.AddRangeAsync(orderDetails);
+                await db.SaveChangesAsync();
+                return true;
+            }
+            catch(Exception e)
+            {
+                return false;
+            }
+        }
     }
 }
 

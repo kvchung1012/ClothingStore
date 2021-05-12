@@ -3,7 +3,7 @@
     brands: [],
     sort: 0,
     search: "",
-    categoryId : 0
+    categoryId: 0
 }
 function Search(el) {
     filter.search = $(el).val();
@@ -22,7 +22,7 @@ function ChooseCate(Id) {
     LoadProduct(filter);
 }
 
-function ChooseBrand(el,Id) {
+function ChooseBrand(el, Id) {
     if (filter.brands.filter(x => x == Id).length == 0) {
         filter.brands.push(Id);
         $(el).addClass('active')
@@ -34,7 +34,7 @@ function ChooseBrand(el,Id) {
         filter.brands.splice(index, 1);
         LoadProduct(filter);
     }
-    
+
 }
 
 function ChooseColor(el, Id) {
@@ -180,6 +180,12 @@ function AddStock() {
 function AddCart() {
     // order detail
     // img, name,price,size,color,
+
+    let cartStr = localStorage.getItem("Cart");
+    if (cartStr == null)
+        cartStr = JSON.stringify([]);
+    let cartJson = JSON.parse(cartStr);
+
     if ($('.choose-color').val() > 0 && $('input[name=Stock]').val() > 0) {
         let img = $('#Image').val();
         let productName = $('.product-name').text();
@@ -190,6 +196,7 @@ function AddCart() {
         let stockMax = $('.choose-color').children('option:selected').attr('data-stock');
         let stock = $('input[name=Stock]').val();
         let obj = {
+            id: cartJson.length,
             img: img,
             productName: productName,
             price: price,
@@ -197,12 +204,9 @@ function AddCart() {
             color: color,
             configId: configId,
             stock: stock,
-            stockMax : stockMax
+            stockMax: stockMax
         };
-        let cartStr = localStorage.getItem("Cart");
-        if (cartStr == null)
-            cartStr = JSON.stringify([]);
-        let cartJson = JSON.parse(cartStr);
+
         let check = cartJson.filter(x => x.configId == obj.configId).length > 0;
         if (!check) {
             cartJson.push(obj);
@@ -249,5 +253,133 @@ function ShowCart() {
         $('.header-cart-wrapitem').append(row);
     })
     $('.wrap-header-cart').addClass('show-header-cart')
-    $('.header-cart-total').text("Tổng hóa đơn: "+totalPrice+" VNĐ");
+    $('.header-cart-total').text("Tổng hóa đơn: " + totalPrice + " VNĐ");
+}
+
+function SubStockDetail(el, price) {
+    let stock = $(el).siblings('input').val();
+    if (parseInt(stock) > 0) {
+        stock--;
+        $(el).siblings('input').val(stock);
+        let productPrice = $(el).parent().parent().siblings('td:last-child').attr('data-price') - price;
+        $(el).parent().parent().siblings('td:last-child').html('');
+        $(el).parent().parent().siblings('td:last-child').append(productPrice);
+        $(el).parent().parent().siblings('td:last-child').attr('data-price', productPrice);
+
+        let total = $('.total-price').attr('data-total');
+        total = parseInt(total) - price;
+        $('.total-price').attr('data-total', total);
+        $('.total-price').html('');
+        $('.total-price').append(total);
+
+        // set lại cart
+        let cartStr = localStorage.getItem("Cart");
+        if (cartStr == null)
+            cartStr = JSON.stringify([]);
+        let cartJson = JSON.parse(cartStr);
+
+        let id = $(el).parent().parent().siblings('td:first-child').attr('data-id');
+        let obj = cartJson.filter(x => x.id == id)[0];
+        obj.stock = stock;
+        localStorage.setItem("Cart", JSON.stringify(cartJson))
+    }
+    else {
+        alert("Bạn cần chọn số lượng sản phẩm lớn hơn 0")
+    }
+}
+
+function AddStockDetail(el, price) {
+    let stock = $(el).siblings('input').val();
+    let max = $(el).siblings('input').attr('data-max');
+    if (parseInt(stock) < parseInt(max)) {
+        stock++;
+        $(el).siblings('input').val(stock);
+
+        // cập nhật giá
+        let productPrice = $(el).parent().parent().siblings('td:last-child').attr('data-price') - (-1 * price);
+        $(el).parent().parent().siblings('td:last-child').html('');
+        $(el).parent().parent().siblings('td:last-child').append(productPrice);
+        $(el).parent().parent().siblings('td:last-child').attr('data-price', productPrice);
+
+        let total = $('.total-price').attr('data-total');
+        total = parseInt(total) + parseInt(price);
+        $('.total-price').attr('data-total', total);
+        $('.total-price').html('');
+        $('.total-price').append(total);
+
+        // set lại cart
+        let cartStr = localStorage.getItem("Cart");
+        if (cartStr == null)
+            cartStr = JSON.stringify([]);
+        let cartJson = JSON.parse(cartStr);
+
+        let id = $(el).parent().parent().siblings('td:first-child').attr('data-id');
+        let obj = cartJson.filter(x => x.id == id)[0];
+        obj.stock = stock;
+        localStorage.setItem("Cart", JSON.stringify(cartJson))
+    }
+    else {
+        alert("Bạn chỉ được mua tối đa " + max + " sản phẩm");
+    }
+}
+
+function RemoveCart(el, index) {
+    let cartStr = localStorage.getItem("Cart");
+    if (cartStr == null)
+        cartStr = JSON.stringify([]);
+    let cartJson = JSON.parse(cartStr);
+    $(el).parent().parent().remove();
+    let obj = cartJson.filter(x => x.id == index)[0];
+    cartJson = cartJson.filter(x => x.id != index);
+    localStorage.setItem("Cart", JSON.stringify(cartJson));
+
+    let total = $('.total-price').attr('data-total');
+    total = parseInt(total) - (parseInt(obj.stock) * obj.price);
+    $('.total-price').attr('data-total', total);
+    $('.total-price').html('');
+    $('.total-price').append(total);
+}
+
+function Order() {
+    let order = {
+        Id: 0,
+        EmployeeId: 0,
+        CustomerId: 0,
+        Note: $('textarea[name=Note]').val(),
+        Address: $('input[name=Address]').val(),
+    };
+    let orderDetails = [];
+    let cartStr = localStorage.getItem("Cart");
+    if (cartStr == null)
+        cartStr = JSON.stringify([]);
+    let cartJson = JSON.parse(cartStr);
+    $(cartJson).each(function (i, e) {
+        let obj = {
+            Id: 0,
+            OrderId: 0,
+            ConfigProductId: e.configId,
+            Stock: e.stock,
+            Price: e.price
+        };
+        orderDetails.push(obj);
+    })
+    $.ajax({
+        url: '/Cart/AddToCart',
+        dataType: 'json',
+        type: 'post',
+        data: {
+            order: order,
+            orderDetails: orderDetails
+        },
+        success: function (res) {
+            if (res == 0) {
+                alert("Đặt hàng thành công !! Chúng tôi sẽ liên hệ với bạn sớm nhất");
+            }
+            else if (res == 1) {
+                location.href = '/'
+            }
+            else
+                alert("Đã có lỗi xảy ra !!!");
+        }
+    })
 }

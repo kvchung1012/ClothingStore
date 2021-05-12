@@ -136,7 +136,7 @@ namespace ClothesStore.WebApp.Controllers
             if (canUpdate)
             {
                 MailContent mail = new MailContent();
-                mail.To = "nguyenkhanh21102000@gmail.com";
+                mail.To = Email;
                 mail.Subject = "ForgotPassword";
                 mail.Body = "Mật khẩu mới của bạn là :" + newPass;
                 await _sendMailService.SendMail(mail);

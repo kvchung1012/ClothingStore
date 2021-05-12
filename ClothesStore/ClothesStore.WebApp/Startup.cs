@@ -97,6 +97,37 @@ namespace ClothesStore.WebApp
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(name: "Home",
+                    pattern: "/trang-chu",
+                    defaults: new { controller = "Home", action = "Index" });
+                endpoints.MapControllerRoute(name: "Product",
+                    pattern: "/danh-muc",
+                    defaults: new { controller = "Product", action = "Index" });
+
+                endpoints.MapControllerRoute(name: "ProductDetail",
+                    pattern: "/san-pham/{slug}-{id}",
+                    defaults: new { controller = "Product", action = "Detail" });
+
+                endpoints.MapControllerRoute(name: "Cart",
+                    pattern: "/don-hang",
+                    defaults: new { controller = "Cart", action = "Index" });
+
+                endpoints.MapControllerRoute(name: "Login",
+                    pattern: "/dang-nhap",
+                    defaults: new { controller = "User", action = "Login" });
+
+                endpoints.MapControllerRoute(name: "Register",
+                    pattern: "/dang-ky",
+                    defaults: new { controller = "User", action = "Register" });
+
+                endpoints.MapControllerRoute(name: "ForgotPassword",
+                    pattern: "/quen-mat-khau",
+                    defaults: new { controller = "User", action = "ForgotPassword" });
+
+                endpoints.MapControllerRoute(name: "ChangePassword",
+                    pattern: "/doi-mat-khau",
+                    defaults: new { controller = "User", action = "ChangePassword" });
+
                 endpoints.MapControllerRoute(
                     name: "admin default",
                     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"

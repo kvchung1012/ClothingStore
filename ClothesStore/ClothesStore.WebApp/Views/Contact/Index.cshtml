@@ -29,7 +29,7 @@
                                   placeholder="How Can We Help?"></textarea>
                     </div>
 
-                    <button class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer">
+                    <button id="btn-feedback" type="button" class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer">
                         Submit
                     </button>
                 </form>
@@ -88,11 +88,19 @@
     </div>
 </section>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
 <script>
-    $(function () {
+
+    $("#btn-feedback").on('click', function () {
+        SendFeedback();
+    })
+
+    function SendFeedback() {
+        debugger
         let email = $("input[name='Email']").val();
         let message = $("textarea[name='Message']").val();
-        debugger
-    }); 
+
+    }
 </script>
 

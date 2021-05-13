@@ -43,15 +43,6 @@
                 location.href = '/Admin/Admin/Login'
             </script>
         }
-        else
-        {
-            if (emp.IsAdmin == null || emp.IsAdmin == false)
-            {
-                <script>
-                    location.href = '/'
-                </script>
-            }
-        }
     }
     @await Html.PartialAsync("_SideBar")
     <div class="c-wrapper c-fixed-components">

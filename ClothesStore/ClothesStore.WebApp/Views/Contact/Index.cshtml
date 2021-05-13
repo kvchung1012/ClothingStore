@@ -13,19 +13,19 @@
     <div class="container">
         <div class="flex-w flex-tr">
             <div class="size-210 bor10 p-lr-70 p-t-55 p-b-70 p-lr-15-lg w-full-md">
-                <form>
+                <form class="feedback">
                     <h4 class="mtext-105 cl2 txt-center p-b-30">
                         Send Us A Message
                     </h4>
 
                     <div class="bor8 m-b-20 how-pos4-parent">
-                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="email"
+                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="Email"
                                placeholder="Your Email Address">
                         <img class="how-pos4 pointer-none" src="/client/images/icons/icon-email.png" alt="ICON">
                     </div>
 
                     <div class="bor8 m-b-30">
-                        <textarea class="stext-111 cl2 plh3 size-120 p-lr-28 p-tb-25" name="msg"
+                        <textarea class="stext-111 cl2 plh3 size-120 p-lr-28 p-tb-25" name="Message"
                                   placeholder="How Can We Help?"></textarea>
                     </div>
 
@@ -87,4 +87,12 @@
         </div>
     </div>
 </section>
+
+<script>
+    $(function () {
+        let email = $("input[name='Email']").val();
+        let message = $("textarea[name='Message']").val();
+        debugger
+    }); 
+</script>
 

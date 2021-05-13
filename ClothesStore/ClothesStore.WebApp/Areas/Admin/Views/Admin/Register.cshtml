@@ -111,14 +111,14 @@
                                     });*@
                                 },
                                 success: function (res) {
-                                    if (res) {
+                                    if (res.status) {
                                         swal(`Hello ${registerObj.Name}! Your account is registered!`, {
                                             icon: "success",
                                         }).then((value)=>{
                                             location.href = '/Admin/Admin/Login';
                                         });
                                     } else {
-                                        swal("OOps", "Something went wrong", "error");
+                                        swal("OOps", res.message, "error");
                                     }
                                 }
                          })

@@ -1,4 +1,5 @@
 ﻿using System;
+using ClothesStore.Model.Model.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +19,7 @@ namespace ClothesStore.Model.Model.EF
         {
         }
 
+        public virtual DbSet<Feedback> Feedbacks { get; set; }
         public virtual DbSet<Brand> Brands { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Color> Colors { get; set; }
@@ -38,9 +40,9 @@ namespace ClothesStore.Model.Model.EF
             if (!optionsBuilder.IsConfigured)
             {
                 IConfigurationRoot configuration = new ConfigurationBuilder()
-                              .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                              .AddJsonFile("appsettings.json")
-                              .Build();
+                                              .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                                              .AddJsonFile("appsettings.json")
+                                              .Build();
                 optionsBuilder.UseSqlServer(configuration.GetConnectionString("Key"));
             }
         }
@@ -48,6 +50,25 @@ namespace ClothesStore.Model.Model.EF
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
+
+            modelBuilder.Entity<Feedback>(entity =>
+            {
+                entity.ToTable("Feedback");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.Email).HasMaxLength(100);
+
+                entity.Property(e => e.Message).HasMaxLength(4000);
+
+                entity.Property(e => e.IsDeleted).HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.Status).HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+            });
 
             modelBuilder.Entity<Brand>(entity =>
             {
@@ -280,8 +301,11 @@ namespace ClothesStore.Model.Model.EF
                 entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             });
 
+
             OnModelCreatingPartial(modelBuilder);
         }
+
+
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }

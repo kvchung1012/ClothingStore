@@ -315,7 +315,7 @@ namespace ClothesStore.Service.Service
                 }
                 return products;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }

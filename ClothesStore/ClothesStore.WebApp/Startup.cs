@@ -57,7 +57,6 @@ namespace ClothesStore.WebApp
             services.AddSingleton<ILoginService, LoginService>();
             services.AddSingleton<IOrderService, OrderService>();
             services.AddTransient<ISendMailService, SendMailService>();
-
             services.AddTransient<IConfigProductService, ConfigProductService>();
 
             services.AddSingleton<ISliderService, SliderService>();
@@ -97,9 +96,14 @@ namespace ClothesStore.WebApp
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(name: "Contact",
+                    pattern: "/lien-he",
+                    defaults: new {controller = "Contact", action="Index"});
+
                 endpoints.MapControllerRoute(name: "Home",
                     pattern: "/trang-chu",
                     defaults: new { controller = "Home", action = "Index" });
+
                 endpoints.MapControllerRoute(name: "Product",
                     pattern: "/danh-muc",
                     defaults: new { controller = "Product", action = "Index" });

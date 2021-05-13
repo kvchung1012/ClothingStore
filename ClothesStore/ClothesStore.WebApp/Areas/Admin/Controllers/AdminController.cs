@@ -4,10 +4,6 @@ using ClothesStore.Service.IService;
 using ClothesStore.WebApp.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -97,6 +93,15 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
         [HttpPost]
         public async Task<JsonResult> Register(RegisterModelView model)
         {
+            //check user
+            var hasUser = await _loginService.HasUser(model.Email, model.Phone) as Employee;
+
+            if (hasUser != null)
+            {
+                return Json(new { status = false, message = "Email or Phone already exists!" });
+            }
+
+
             Employee emp = new Employee()
             {
                 Id = 0,
@@ -109,7 +114,7 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
 
             await _employeeService.AddOrUpdate(emp);
 
-            return Json(true);
+            return Json(new { status = true, message = "" });
         }
 
         [HttpGet]
@@ -121,16 +126,20 @@ namespace ClothesStore.WebApp.Areas.Admin.Controllers
         [HttpPost]
         public async Task<JsonResult> ForgotPassword(string Email, string Phone)
         {
-            var hasUser = await _loginService.HasUser(Email, Phone); // if exists, return user
+            //check mail
+            var hasMail = await _loginService.HasUser(new Filter { Key = "Email", Value = Email }) as Employee;
+            //check phone
+            var hasPhone = await _loginService.HasUser(new Filter { Key = "Phone", Value = Phone }) as Employee;
+
 
             //user not available
-            if (hasUser == null)
-                return Json(false);
+            if (hasMail == null || hasPhone == null)
+                return Json(new { status = false, message = "Mail and Phone does not match!" });
 
             //cretae new password
             string newPass = Utilities.GenerateRandomString(8);
-            hasUser.Password = Utilities.ComputeSha256Hash(newPass);
-            bool canUpdate = await _employeeService.AddOrUpdate(hasUser);
+            hasMail.Password = Utilities.ComputeSha256Hash(newPass);
+            bool canUpdate = await _employeeService.AddOrUpdate(hasMail);
 
             if (canUpdate)
             {

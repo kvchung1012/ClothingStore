@@ -1,4 +1,5 @@
 ﻿using ClothesStore.Model.Model.EF;
+using ClothesStore.Model.ModelView;
 using ClothesStore.Service.IService;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -25,9 +26,14 @@ namespace ClothesStore.Service.Service
             return target;
         }
 
-        public async Task<Employee> HasUser(string Email, string phone)
+        public async Task<Employee> HasUser(Filter filter)
         {
-            return await db.Employees.FirstOrDefaultAsync(x => x.Email == Email && x.Phone == phone);
+            return await db.Employees.FirstOrDefaultAsync(x => x.GetType().GetProperty(filter.Key).GetValue(x) == filter.Value);
+        }
+
+        public async Task<Employee> HasUser(string Email, string Phone)
+        {
+            return await db.Employees.FirstOrDefaultAsync(x => x.Email == Email || x.Phone == Phone);
         }
 
         public async Task<Employee> Login(string Email, string Password)
